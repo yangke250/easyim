@@ -1,0 +1,5 @@
+im:
+  tcp:
+    port: 1024
+  websocket:
+    port: 1025
