@@ -30,5 +30,10 @@
 			<artifactId>zookeeper</artifactId>
 			<version>3.4.12</version>
 		</dependency>
+		<dependency>
+			<groupId>com.wl</groupId>
+			<artifactId>easyim-biz-api</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 	</dependencies>
 </project>
