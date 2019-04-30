@@ -8,8 +8,11 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 public class ImBizInputHandle extends ByteToMessageDecoder{
 
+	private IProtocolHandleService protocolHandleService;
 	
-	public ImBizInputHandle()
+	public ImBizInputHandle(){
+		
+	}
 	
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> outs) throws Exception {

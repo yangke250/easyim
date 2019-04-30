@@ -3,7 +3,7 @@ package com.wl.easyim.biz.api.protocol.c2s.dto;
 import lombok.Data;
 
 
-public abstract interface BaseC2s {
+public abstract class BaseC2s<T> {
 	public enum C2sType{
 		auth,//验证
 		authAck,//验证ack
@@ -19,5 +19,7 @@ public abstract interface BaseC2s {
 		oMsgPullAck;//拉取离线ack
 	}
 	
-	public C2sType type();
+	private  T body;
+	private  String uid;
+	private  C2sType type;
 }

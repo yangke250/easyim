@@ -46,8 +46,6 @@ public class TcpServer {
                         matcher.forEach((ByteToMessageDecoder b)->{
                         	pipeline.addLast(UUID.randomUUID().toString(),b);
                         });
-                        	pipeline.addLast(UUID.randomUUID().toString(),b);
-
                     }
                 });
 
