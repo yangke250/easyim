@@ -1,6 +1,6 @@
 package com.wl.easyim.biz.api.protocol.c2s.protocol;
 
-import com.wl.easyim.biz.api.protocol.c2s.dto.ResourceType;
+import com.wl.easyim.biz.api.protocol.c2s.enums.ResourceType;
 
 import lombok.Data;
 

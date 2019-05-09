@@ -1,5 +1,7 @@
 package com.wl.easyim.biz.api.protocol.c2s.protocol;
 
+import com.wl.easyim.biz.api.protocol.c2s.enums.Result;
+
 import lombok.Data;
 
 /**

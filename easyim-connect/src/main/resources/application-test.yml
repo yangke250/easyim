@@ -1,5 +1,9 @@
 im:
-  tcp:
-    port: 1024
-  websocket:
-    port: 1025
+  s2s:
+    tcp:
+      port: 3066
+  c2s:
+    tcp:
+      port: 1024
+    websocket:
+      port: 2048
