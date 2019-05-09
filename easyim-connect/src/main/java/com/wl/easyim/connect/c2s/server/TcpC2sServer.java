@@ -18,11 +18,13 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.json.JsonObjectDecoder;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
-public class TcpServer {
+@Slf4j
+public class TcpC2sServer {
 	
-	@Value("${im.tcp.port}")
+	@Value("${im.c2s.tcp.port}")
 	private int tcpPort;
 	
 	@PostConstruct
@@ -38,11 +40,13 @@ public class TcpServer {
             boot.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<Channel>() {
-                	//JsonObjectDecoder
+                	
                     @Override
                     protected void initChannel(Channel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        
+
+                        pipeline.addLast("JsonObjectDecoder",new JsonObjectDecoder());
+
                         matcher.forEach((ByteToMessageDecoder b)->{
                         	pipeline.addLast(UUID.randomUUID().toString(),b);
                         });
@@ -51,7 +55,7 @@ public class TcpServer {
 
             try {
                 Channel ch = boot.bind(tcpPort).sync().channel();
-                System.out.println("tcp server start at port:1024");
+                System.out.println("tcp server start at port:"+tcpPort);
                 ch.closeFuture().sync();
             } catch (InterruptedException e) {
                 e.printStackTrace();
