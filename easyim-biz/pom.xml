@@ -6,4 +6,37 @@
     <version>0.0.1</version>
   </parent>
   <artifactId>easyim-biz</artifactId>
+  <dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+			<version>3.4.12</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.linkedcare.springboot</groupId>
+			<artifactId>spring-boot-sr2f</artifactId>
+			<version>0.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.wl</groupId>
+			<artifactId>easyim-biz-api</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+	</dependencies>
 </project>
