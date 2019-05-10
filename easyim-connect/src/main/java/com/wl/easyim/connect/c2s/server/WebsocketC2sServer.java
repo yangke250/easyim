@@ -13,6 +13,7 @@ import com.wl.easyim.connect.c2s.input.protocol.WebSocketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -40,7 +41,9 @@ public class WebsocketC2sServer {
 	    new Thread(()->{
     		ServerBootstrap boot = new ServerBootstrap();
             boot.group(bossGroup, workerGroup)
-                .channel(NioServerSocketChannel.class)
+            	.option(ChannelOption.SO_KEEPALIVE, true)
+            	.channel(NioServerSocketChannel.class)
+            	.option(ChannelOption.SO_REUSEADDR,true)
                 .childHandler(new ChannelInitializer<Channel>() {
 
                     @Override

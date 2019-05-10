@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -38,7 +39,9 @@ public class TcpC2sServer {
 	    new Thread(()->{
     		ServerBootstrap boot = new ServerBootstrap();
             boot.group(bossGroup, workerGroup)
-                .channel(NioServerSocketChannel.class)
+            	.option(ChannelOption.SO_KEEPALIVE,true)
+            	.option(ChannelOption.SO_REUSEADDR,true)
+            	.channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<Channel>() {
                 	
                     @Override

@@ -11,6 +11,7 @@ import cn.linkedcare.springboot.sr2f.server.ZkServerRegister;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -37,6 +38,8 @@ public class TcpS2sServer {
 	    new Thread(()->{
     		ServerBootstrap boot = new ServerBootstrap();
             boot.group(bossGroup, workerGroup)
+            	.option(ChannelOption.SO_KEEPALIVE, true)
+            	.option(ChannelOption.SO_REUSEADDR,true)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<Channel>() {
 
@@ -67,7 +70,7 @@ public class TcpS2sServer {
 	}
 	
 	private void doRegister(){
-		ZkServerRegister zkServerRegister = new ZkServerRegister("/linkedcare/im",tcpPort);
+		ZkServerRegister zkServerRegister = new ZkServerRegister("/easyim/server",tcpPort);
 	}
 
 }
