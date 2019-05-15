@@ -48,17 +48,19 @@ public class TcpC2sServer {
                     protected void initChannel(Channel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
 
-                        pipeline.addLast("JsonObjectDecoder",new JsonObjectDecoder());
+                        pipeline.addLast(new JsonObjectDecoder());
 
                         matcher.forEach((ByteToMessageDecoder b)->{
-                        	pipeline.addLast(UUID.randomUUID().toString(),b);
+                        	pipeline.addLast(b);
                         });
                     }
                 });
 
             try {
                 Channel ch = boot.bind(tcpPort).sync().channel();
-                System.out.println("tcp server start at port:"+tcpPort);
+                log.info("===================================");
+                log.info("tcp c2s server start at port:"+tcpPort);
+                log.info("===================================");
                 ch.closeFuture().sync();
             } catch (InterruptedException e) {
                 e.printStackTrace();

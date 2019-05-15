@@ -1,9 +1,14 @@
 im:
-  s2s:
-    tcp:
-      port: 3066
   c2s:
     tcp:
       port: 1024
     websocket:
       port: 2048
+      
+      
+sr2f:
+  zookeeper:
+   url: 114.55.255.143:2181
+  path: /easy-im/server
+  server: true
+  port: 8888

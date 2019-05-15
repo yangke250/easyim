@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.wl.easyim.biz.api.protocol.c2s.dto.C2sProtocol;
-import com.wl.easyim.biz.api.protocol.c2s.enums.CommandType;
+import com.wl.easyim.biz.api.protocol.c2s.enums.C2sCommandType;
 
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
@@ -38,13 +38,13 @@ public class SessionTimeWheel {
 								
 								ChannelHandlerContext chc = session.getChc();
 								
-								if(session.getTimeWheelCycle()<=0){
+								if(session.getTimeWheelCurrentCycle()<=0){
 									C2sProtocol c2sProtocol = new C2sProtocol();
-									c2sProtocol.setType(CommandType.closeSession);
+									c2sProtocol.setType(C2sCommandType.closeSession);
 									
 									SessionManager.removeSession(chc, c2sProtocol);
 								}else{//圈数减一
-								    session.setTimeWheelCurrent(session.getTimeWheelCycle()-1);
+								    session.setTimeWheelCurrentCycle(session.getTimeWheelCurrentCycle()-1);
 								}
 							}
 						}
@@ -101,8 +101,13 @@ public class SessionTimeWheel {
 			sessionList.get(current).remove(session);
 			
 			int now  = SessionTimeWheel.current;
+			if(now==0){
+				now =60;
+			}else{
+				now--;
+			}
 			session.setTimeWheelCurrent(now);
-			session.setTimeWheelCycle(session.getTimeOutCycle());
+			session.setTimeWheelCurrentCycle(session.getTimeOutCycle());
 			
 			sessionList.get(now).put(session,session);
 		}

@@ -16,7 +16,6 @@ public class AuthAck extends AbstractAckProtocol{
 	private ResourceType resource;//多设备登录相关
 	private String userId;//用户id
 	private long tenementId;//用户租户
-	private String token;//访问权限token
 
 	public AuthAck() {
 	}

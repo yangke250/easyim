@@ -27,8 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 public class TcpS2sServer {
 
 
-	@Value("${im.s2s.tcp.port}")
+	@Value("${sr2f.port}")
 	private int tcpPort;
+	
 	
 	@PostConstruct
 	public void initTcpServer() {
@@ -56,9 +57,12 @@ public class TcpS2sServer {
 
             try {
                 Channel ch = boot.bind(tcpPort).sync().channel();
-                log.info("websocket server start at port:",tcpPort);
+
+                log.info("===================================");
+                log.info("s2s server start at port:"+tcpPort);
+                log.info("===================================");
+
                 
-                doRegister();
                 ch.closeFuture().sync();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -68,9 +72,6 @@ public class TcpS2sServer {
             }
     	}).start();
 	}
-	
-	private void doRegister(){
-		ZkServerRegister zkServerRegister = new ZkServerRegister("/easyim/server",tcpPort);
-	}
+
 
 }

@@ -22,8 +22,10 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.stream.ChunkedWriteHandler;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class WebsocketC2sServer {
 
 	@Value("${im.c2s.websocket.port}")
@@ -53,17 +55,19 @@ public class WebsocketC2sServer {
                         pipeline.addLast("http-codec",new HttpServerCodec());
                         pipeline.addLast("aggregator",new HttpObjectAggregator(65536));
                         pipeline.addLast("http-chunked",new ChunkedWriteHandler());
-                        pipeline.addLast("handler",new WebSocketHandler());       
+                        pipeline.addLast(new WebSocketHandler());       
                     
                         matcher.forEach((ByteToMessageDecoder b)->{
-                        	pipeline.addLast(UUID.randomUUID().toString(),b);
+                        	pipeline.addLast(b);
                         });
                     }
                 });
 
             try {
                 Channel ch = boot.bind(websocketPort).sync().channel();
-                System.out.println("websocket server start at port:"+websocketPort);
+                log.info("===================================");
+                log.info("websocket c2s server start at port:"+websocketPort);
+                log.info("===================================");
                 ch.closeFuture().sync();
             } catch (InterruptedException e) {
                 e.printStackTrace();

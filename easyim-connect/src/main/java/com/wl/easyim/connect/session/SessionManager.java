@@ -9,9 +9,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.wl.easyim.biz.api.protocol.c2s.dto.C2sProtocol;
+import com.wl.easyim.biz.api.protocol.c2s.enums.ResourceType;
+import com.wl.easyim.biz.api.protocol.c2s.protocol.AuthAck;
 import com.wl.easyim.biz.api.protocol.service.IC2sHandleService;
 import com.wl.easyim.connect.session.Session.SessionStatus;
 
@@ -32,6 +35,10 @@ public class SessionManager {
 	private static Map<ChannelHandlerContext,Session> sessionMap	
 		=new ConcurrentHashMap<ChannelHandlerContext,Session>();
 
+	
+	public static Session getSession(ChannelHandlerContext chc){
+		return sessionMap.get(chc);
+	}
 
 	
 	/**
@@ -43,28 +50,55 @@ public class SessionManager {
 		chc.writeAndFlush(json);
 		
 		Session session = sessionMap.get(chc);
-		if(session==null){
-			return;
+		if(session!=null){
+			//移除会话
+			String userId = session.getUserId();
+			uidMap.get(userId).remove(session);
+		
+			//移除时间轮
+			SessionTimeWheel.removeTimeWheel(session);
 		}
 		
 		//doserver logout
 		
-		//移除会话
-		String userId = session.getUserId();
-		uidMap.get(userId).remove(session);
 		sessionMap.remove(chc);
 		
-		SessionTimeWheel.removeTimeWheel(session);
 	}
 
 	/**
 	 * 更新会话状态为已登录
 	 * @param session
 	 */
-	public static void updateSessionStatus(ChannelHandlerContext chc){
+	public static boolean updateSessionStatus(ChannelHandlerContext chc,AuthAck authAck,int timeOutCycle){
+		String       userId     = authAck.getUserId();
+		ResourceType resource   = authAck.getResource();
+		long         tenementId = authAck.getTenementId();
+		
 		Session session = sessionMap.get(chc);
+		if(session==null){
+			return false;
+		}
 		
 		session.setSessionStatus(SessionStatus.auth);
+		session.setUserId(userId);
+		session.setResource(resource);
+		session.setTenementId(tenementId);
+		
+		ConcurrentHashMap<Session,Session> map = uidMap.get(userId);
+		if(map==null){
+			synchronized(uidMap){
+				map = uidMap.get(userId);
+				if(map==null){//double check
+					map =  new ConcurrentHashMap<Session,Session>();
+				}
+					map.put(session,session);
+					uidMap.put(userId,map);
+			}
+		}
+		
+		session.setTimeOutCycle(timeOutCycle);
+		SessionTimeWheel.resetTimeWheel(session);
+		return true;
 	}
 	
 	/**
@@ -72,22 +106,10 @@ public class SessionManager {
 	 * @param session
 	 */
 	public static void addSession(Session session){
-		String uid  = session.getUserId();
-		ConcurrentHashMap<Session,Session> map = uidMap.get(uid);
-		if(map==null){
-			synchronized(uidMap){
-				map = uidMap.get(uid);
-				if(session==null){//double check
-					map =  new ConcurrentHashMap<Session,Session>();
-					map.put(session,session);
-					
-					uidMap.put(uid,map);
-				}
-			}
-		}
-		
 		
 		sessionMap.put(session.getChc(),session);
+	
+		SessionTimeWheel.addTimeWheel(session);
 	}
 	
 }

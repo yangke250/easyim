@@ -19,4 +19,5 @@ public abstract class AbstractAckProtocol extends AbstractProtocol{
 		this.code = result.getCode();
 	}
 	
+	
 }

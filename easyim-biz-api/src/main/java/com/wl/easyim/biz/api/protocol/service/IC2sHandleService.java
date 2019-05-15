@@ -15,5 +15,5 @@ public interface IC2sHandleService {
 	 * @param c2sProtocol
 	 * @return
 	 */
-	public AbstractAckProtocol handleProtocol(C2sProtocol c2sProtocol);
+	public C2sProtocol handleProtocol(C2sProtocol c2sProtocol);
 }
