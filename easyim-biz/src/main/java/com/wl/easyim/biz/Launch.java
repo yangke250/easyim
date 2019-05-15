@@ -15,7 +15,7 @@ public class Launch {
 	public static void main(String[] args) throws InterruptedException {
 		SpringApplication.run(Launch.class);
 		log.info("=================================");
-		log.info("========easy im connect=========="+System.getenv("spring_profiles_active"));
+		log.info("==========easy im biz============"+System.getenv("spring_profiles_active"));
 		log.info("=================================");
 		while(true){
 			Thread.sleep(Long.MAX_VALUE);
