@@ -107,10 +107,30 @@ public enum C2sCommandType {
 	kickOff {
 		@Override
 		public	C2sCommandType getAckCommand() {
-			return C2sCommandType.kickOffAck;
+			return kickOffAck;
 		}
 	},
 	kickOffAck {
+		@Override
+		public	C2sCommandType getAckCommand() {
+			return null;
+		}
+	},login{
+		@Override
+		public	C2sCommandType getAckCommand() {
+			return loginAck;
+		}
+	},loginAck{
+		@Override
+		public	C2sCommandType getAckCommand() {
+			return null;
+		}
+	},logout{
+		@Override
+		public	C2sCommandType getAckCommand() {
+			return loginOutAck;
+		}
+	},loginOutAck{
 		@Override
 		public	C2sCommandType getAckCommand() {
 			return null;

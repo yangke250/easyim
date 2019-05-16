@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.discover;
+package com.wl.easyim.route.server.discover;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;

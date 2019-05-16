@@ -1,12 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.wl</groupId>
-    <artifactId>easyim</artifactId>
-    <version>0.0.1</version>
-  </parent>
-  <artifactId>easyim-biz</artifactId>
-  <dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.wl</groupId>
+		<artifactId>easyim</artifactId>
+		<version>0.0.1</version>
+	</parent>
+	<artifactId>easyim-biz</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -31,6 +40,11 @@
 		<dependency>
 			<groupId>cn.linkedcare.springboot</groupId>
 			<artifactId>spring-boot-sr2f</artifactId>
+			<version>0.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.linkedcare.springboot</groupId>
+			<artifactId>spring-boot-redis</artifactId>
 			<version>0.0.4</version>
 		</dependency>
 		<dependency>

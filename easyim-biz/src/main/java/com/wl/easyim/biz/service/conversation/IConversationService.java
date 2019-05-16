@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.conversation.service;
+package com.wl.easyim.biz.service.conversation;
 
 public interface IConversationService {
 	public void createConversation();

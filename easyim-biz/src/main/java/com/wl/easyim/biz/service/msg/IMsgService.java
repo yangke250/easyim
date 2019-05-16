@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.msg.service;
+package com.wl.easyim.biz.service.msg;
 
 public interface IMsgService {
 	

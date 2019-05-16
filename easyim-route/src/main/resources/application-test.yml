@@ -1,0 +1,5 @@
+sr2f:
+  zookeeper:
+   url: 114.55.255.143:2181
+  path: /easy-im/server
+  client: true
