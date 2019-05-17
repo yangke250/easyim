@@ -1,5 +1,7 @@
 package com.wl.easyim.biz;
 
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,5 +22,9 @@ public class Launch {
 		while(true){
 			Thread.sleep(Long.MAX_VALUE);
 		}
+	}
+	
+	public Mapper getMapper(){
+		return new DozerBeanMapper();
 	}
 }

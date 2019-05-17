@@ -1,8 +1,11 @@
 package com.wl.easyim.biz.service.protocol;
 
+import java.util.Map;
+
 import com.wl.easyim.biz.api.protocol.c2s.dto.C2sProtocol;
 import com.wl.easyim.biz.api.protocol.c2s.enums.C2sCommandType;
 import com.wl.easyim.biz.api.protocol.s2s.dto.S2sProtocol;
+import com.wl.easyim.biz.api.protocol.s2s.dto.UserDto;
 
 /**
  * 协议处理相关类
@@ -24,5 +27,5 @@ public interface IProtocolService {
 	 * @param version
 	 * @return
 	 */
-	public C2sProtocol handleProtocol(String uuid,String body,String version);
+	public C2sProtocol handleProtocol(UserDto userDto,C2sProtocol c2sProtocol,Map<String,String> extendsMap);
 }

@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.wl.easyim.route.dto.RouteDto;
+import com.wl.easyim.biz.api.protocol.s2s.dto.UserDto;
 import com.wl.easyim.route.service.IUserRouteService;
 
 import cn.linkedcare.springboot.redis.template.RedisTemplate;
@@ -21,12 +21,13 @@ public class UserRouteServiceImpl implements IUserRouteService {
 	
 	private final static String SPLIT="_";
 	
-	public boolean addUserRoute(RouteDto routeDto, int timeOut) {
+	public boolean addUserRoute(UserDto routeDto) {
 		String uid       =  routeDto.getTenementId()+SPLIT+routeDto.getUserId();
 		String sessionId =  routeDto.getSessionId();
 		String strKey  =  ROUTE_STRING_PRE+uid;
 		String hashKey =  ROUTE_HASH_PRE+uid;
 		
+		int timeOut = routeDto.getSessionTimeOut();
 		
 		long result = redisTemplate.setnx(strKey,routeDto.getConnectServer());
 		if(result==0){
@@ -54,10 +55,12 @@ public class UserRouteServiceImpl implements IUserRouteService {
 		return true;
 	}
 
-	public boolean pingUserRoute(RouteDto routeDto, int timeOut) {
+	public boolean pingUserRoute(UserDto routeDto) {
 		String uid       =  routeDto.getTenementId()+SPLIT+routeDto.getUserId();
 		String strKey  =  ROUTE_STRING_PRE+uid;
 		String hashKey =  ROUTE_HASH_PRE+uid;
+		
+		int timeOut = routeDto.getSessionTimeOut();
 		
 		long ttl = redisTemplate.ttl(strKey);
 		if(timeOut>ttl){
@@ -78,7 +81,7 @@ public class UserRouteServiceImpl implements IUserRouteService {
 	}
 
 
-	public boolean removeUserRoute(RouteDto routeDto, int timeOut) {
+	public boolean removeUserRoute(UserDto routeDto) {
 		String uid       =  routeDto.getTenementId()+SPLIT+routeDto.getUserId();
 		String sessionId =  routeDto.getSessionId();
 		String strKey  =  ROUTE_STRING_PRE+uid;

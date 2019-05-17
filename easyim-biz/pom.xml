@@ -9,6 +9,10 @@
 	<artifactId>easyim-biz</artifactId>
 	<dependencies>
 		<dependency>
+			<groupId>com.github.dozermapper</groupId>
+			<artifactId>dozer-core</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 		</dependency>
@@ -35,7 +39,6 @@
 		<dependency>
 			<groupId>org.apache.zookeeper</groupId>
 			<artifactId>zookeeper</artifactId>
-			<version>3.4.12</version>
 		</dependency>
 		<dependency>
 			<groupId>cn.linkedcare.springboot</groupId>
@@ -50,6 +53,11 @@
 		<dependency>
 			<groupId>com.wl</groupId>
 			<artifactId>easyim-biz-api</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.wl</groupId>
+			<artifactId>easyim-route</artifactId>
 			<version>0.0.1</version>
 		</dependency>
 	</dependencies>

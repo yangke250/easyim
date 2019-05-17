@@ -1,7 +1,10 @@
 package com.wl.easyim.biz.service.protocol.impl;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
+import org.dozer.Mapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -11,10 +14,12 @@ import com.wl.easyim.biz.api.protocol.c2s.enums.C2sCommandType;
 import com.wl.easyim.biz.api.protocol.c2s.enums.Result;
 import com.wl.easyim.biz.api.protocol.c2s.protocol.Auth;
 import com.wl.easyim.biz.api.protocol.c2s.protocol.Auth.AuthType;
+import com.wl.easyim.biz.api.protocol.s2s.dto.UserDto;
 import com.wl.easyim.biz.api.protocol.c2s.protocol.AuthAck;
 import com.wl.easyim.biz.bo.UserBo;
 import com.wl.easyim.biz.service.protocol.IProtocolService;
 import com.wl.easyim.biz.service.user.IUserService;
+import com.wl.easyim.route.service.IUserRouteService;
 
 import cn.linkedcare.springboot.redis.template.RedisTemplate;
 
@@ -25,7 +30,10 @@ public class AuthServiceImpl implements IProtocolService{
 	private IUserService userService;
 	
 	@Resource
-	private RedisTemplate redisTemplate;
+	private IUserRouteService userRouteService;
+	
+	@Resource
+	private Mapper mapper;
 	
 	
 	@Override
@@ -43,7 +51,10 @@ public class AuthServiceImpl implements IProtocolService{
 	}
 
 	@Override
-	public C2sProtocol handleProtocol(String uuid, String body, String version) {
+	public C2sProtocol handleProtocol(UserDto userDto,C2sProtocol c2sProtocol,Map<String,String> extendsMap) {
+		String uuid =  c2sProtocol.getUuid();
+		
+		String body =  c2sProtocol.getBody();
 		
 		Auth auth  = JSON.parseObject(body,Auth.class);
 		
@@ -58,7 +69,7 @@ public class AuthServiceImpl implements IProtocolService{
 		
 		AuthType authType = auth.getAuthType();
 		
-		UserBo user =  null;
+		UserBo user = null;
 		switch(authType){
 			case jwt:
 				user = userService.authDecode(auth.getAuthToken());
@@ -66,6 +77,11 @@ public class AuthServiceImpl implements IProtocolService{
 			default:
 				
 		}
+		
+		userDto.setTenementId(user.getTenementId());
+		userDto.setUserId(user.getUserId());
+		userDto.setResourceType(user.getResourceType());
+		userRouteService.addUserRoute(userDto);
 		
 		AuthAck authAck = new AuthAck();
 		authAck.setTenementId(user.getTenementId());

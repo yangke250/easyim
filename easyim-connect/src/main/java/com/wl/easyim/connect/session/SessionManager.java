@@ -15,6 +15,7 @@ import com.alibaba.fastjson.JSON;
 import com.wl.easyim.biz.api.protocol.c2s.dto.C2sProtocol;
 import com.wl.easyim.biz.api.protocol.c2s.enums.ResourceType;
 import com.wl.easyim.biz.api.protocol.c2s.protocol.AuthAck;
+import com.wl.easyim.biz.api.protocol.s2s.dto.UserDto;
 import com.wl.easyim.biz.api.protocol.service.IC2sHandleService;
 import com.wl.easyim.connect.session.Session.SessionStatus;
 
@@ -112,4 +113,12 @@ public class SessionManager {
 		SessionTimeWheel.addTimeWheel(session);
 	}
 	
+	
+	public static UserDto getUserDto(ChannelHandlerContext chc){
+		UserDto userDto = new UserDto();
+		userDto.setConnectServer(connectServer);
+		
+		
+		return userDto;
+	}
 }

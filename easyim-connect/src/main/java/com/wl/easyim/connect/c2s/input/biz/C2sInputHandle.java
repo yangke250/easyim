@@ -1,6 +1,7 @@
 package com.wl.easyim.connect.c2s.input.biz;
 
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import com.wl.easyim.biz.api.protocol.c2s.dto.C2sProtocol;
@@ -10,6 +11,7 @@ import com.wl.easyim.biz.api.protocol.c2s.protocol.AbstractAckProtocol;
 import com.wl.easyim.biz.api.protocol.c2s.protocol.Auth;
 import com.wl.easyim.biz.api.protocol.c2s.protocol.AuthAck;
 import com.wl.easyim.biz.api.protocol.c2s.protocol.PingAck;
+import com.wl.easyim.biz.api.protocol.s2s.dto.UserDto;
 import com.wl.easyim.biz.api.protocol.service.IC2sHandleService;
 import com.wl.easyim.connect.session.Session;
 import com.wl.easyim.connect.session.SessionManager;
@@ -69,7 +71,7 @@ public class C2sInputHandle extends AbstractC2sInputHandle {
 			return;
 		}
 
-		C2sProtocol ackProtocol = c2sHandleService.handleProtocol(c2sProtocol);
+		C2sProtocol ackProtocol = c2sHandleService.handleProtocol(UserDto userDto,c2sProtocol,new HashMap<String,String>);
 		C2sCommandType ackType = ackProtocol.getType();
 
 		switch (ackType) {

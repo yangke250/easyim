@@ -1,6 +1,7 @@
 package com.wl.easyim.biz.service.user;
 
 import com.wl.easyim.biz.api.protocol.c2s.enums.ResourceType;
+import com.wl.easyim.biz.api.protocol.s2s.dto.UserDto;
 import com.wl.easyim.biz.bo.UserBo;
 
 public interface IUserService {

@@ -193,8 +193,12 @@ public class ServerDiscover implements ISr2fClient {
 		Map<String, Bootstrap> map = new ConcurrentHashMap<String, Bootstrap>();
 		
 		for (ServerDto server : serverDtos) {
-
-			this.putPool(server.getIp(),server.getPort());
+			String[] strs = server.getConnectServer().split(ServerDto.SPLIT);
+			
+			String ip = strs[0];
+			int port  = Integer.parseInt(strs[1]);
+			
+			this.putPool(ip,port);
 		}
 	}
 

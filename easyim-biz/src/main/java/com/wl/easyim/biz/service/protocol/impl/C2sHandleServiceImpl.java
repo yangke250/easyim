@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
 import com.wl.easyim.biz.api.protocol.c2s.dto.C2sProtocol;
 import com.wl.easyim.biz.api.protocol.c2s.enums.C2sCommandType;
+import com.wl.easyim.biz.api.protocol.s2s.dto.UserDto;
 import com.wl.easyim.biz.api.protocol.service.IC2sHandleService;
 import com.wl.easyim.biz.service.protocol.IProtocolService;
 
@@ -24,7 +25,7 @@ public class C2sHandleServiceImpl implements IC2sHandleService,BeanPostProcessor
 	 
 	
 	@Override
-	public C2sProtocol handleProtocol(C2sProtocol c2sProtocol) {
+	public C2sProtocol handleProtocol(UserDto userDto,C2sProtocol c2sProtocol,Map<String,String> extendsMap){
 		C2sCommandType c2sCommandType = c2sProtocol.getType();
 		
 		IProtocolService service = map.get(c2sCommandType);
@@ -36,11 +37,8 @@ public class C2sHandleServiceImpl implements IC2sHandleService,BeanPostProcessor
 			log.info("handleProtocol:{}",JSON.toJSONString(c2sProtocol));
 		}
 		
-		String uuid    = c2sProtocol.getUuid();
-		String body    = c2sProtocol.getBody();
-		String version = c2sProtocol.getVersion();
 		
-		return  service.handleProtocol(uuid, body, version);
+		return  service.handleProtocol(userDto,c2sProtocol,extendsMap);
 	}
 	
 	@Override
