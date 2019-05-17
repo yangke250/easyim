@@ -3,6 +3,7 @@ package com.wl.easyim.biz.api.protocol.c2s.protocol;
 import com.wl.easyim.biz.api.protocol.c2s.enums.ResourceType;
 import com.wl.easyim.biz.api.protocol.c2s.enums.Result;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**

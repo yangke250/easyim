@@ -42,12 +42,12 @@ public class AuthServiceImpl implements IProtocolService{
 	}
 	
 	private C2sProtocol createC2sProtocolAck(String uuid,AuthAck authAck){
-		C2sProtocol c2sProtocol = new C2sProtocol();
-		c2sProtocol.setType(C2sCommandType.authAck);
-		c2sProtocol.setUuid(uuid);
-		c2sProtocol.setBody(JSON.toJSONString(authAck));
 		
-		return c2sProtocol;
+		return C2sProtocol.builder()
+		.type(C2sCommandType.authAck)
+		.uuid(uuid)
+		.body(JSON.toJSONString(authAck))
+		.build();
 	}
 
 	@Override
@@ -81,7 +81,13 @@ public class AuthServiceImpl implements IProtocolService{
 		userDto.setTenementId(user.getTenementId());
 		userDto.setUserId(user.getUserId());
 		userDto.setResourceType(user.getResourceType());
-		userRouteService.addUserRoute(userDto);
+		boolean result = userRouteService.addUserRoute(userDto);
+		if(!result){
+			AuthAck authAck = new AuthAck();
+			authAck.setResult(Result.authFailed);
+			
+			return createC2sProtocolAck(uuid,authAck);
+		}
 		
 		AuthAck authAck = new AuthAck();
 		authAck.setTenementId(user.getTenementId());

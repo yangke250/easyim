@@ -1,5 +1,6 @@
 package com.wl.easyim.connect.c2s.input.biz;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,11 +36,9 @@ public class C2sInputHandle extends AbstractC2sInputHandle {
 		this.c2sHandleService = c2sHandleService;
 	}
 
-	private static C2sProtocol authError = new C2sProtocol();
+	private static C2sProtocol authError = C2sProtocol.builder().type(C2sCommandType.kickOff).build();
 
-	static {
-		authError.setType(C2sCommandType.kickOff);
-	}
+	
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -71,7 +70,9 @@ public class C2sInputHandle extends AbstractC2sInputHandle {
 			return;
 		}
 
-		C2sProtocol ackProtocol = c2sHandleService.handleProtocol(UserDto userDto,c2sProtocol,new HashMap<String,String>);
+		
+		C2sProtocol ackProtocol = c2sHandleService.
+				handleProtocol(SessionManager.getUserDto(ctx),c2sProtocol,new HashMap<String,String>());
 		C2sCommandType ackType = ackProtocol.getType();
 
 		switch (ackType) {

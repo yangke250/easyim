@@ -3,6 +3,7 @@ package com.wl.easyim.biz.api.protocol.s2s.enums;
 
 public enum S2sCommandType {
 
+
 	messagePush {
 		@Override
 		public	S2sCommandType getAckCommand() {

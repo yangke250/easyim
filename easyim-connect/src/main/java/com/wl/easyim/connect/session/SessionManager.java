@@ -19,6 +19,7 @@ import com.wl.easyim.biz.api.protocol.s2s.dto.UserDto;
 import com.wl.easyim.biz.api.protocol.service.IC2sHandleService;
 import com.wl.easyim.connect.session.Session.SessionStatus;
 
+import cn.linkedcare.springboot.sr2f.server.AbstractServerRegister;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -115,9 +116,20 @@ public class SessionManager {
 	
 	
 	public static UserDto getUserDto(ChannelHandlerContext chc){
+		
+		String connectServer = AbstractServerRegister.getConnectServer();
+		Session session      = sessionMap.get(chc);
+		
 		UserDto userDto = new UserDto();
 		userDto.setConnectServer(connectServer);
 		
+		userDto.setSessionId(session.getSessionId());
+		
+		userDto.setTenementId(session.getTenementId());
+		userDto.setUserId(session.getUserId());
+		userDto.setResourceType(session.getResource());
+		
+		userDto.setSessionTimeOut(session.getTimeOutCycle()*60);
 		
 		return userDto;
 	}
