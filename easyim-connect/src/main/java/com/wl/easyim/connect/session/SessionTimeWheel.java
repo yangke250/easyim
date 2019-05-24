@@ -2,12 +2,10 @@ package com.wl.easyim.connect.session;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.wl.easyim.biz.api.protocol.c2s.dto.C2sProtocol;
-import com.wl.easyim.biz.api.protocol.c2s.enums.C2sCommandType;
+import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
+import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +37,8 @@ public class SessionTimeWheel {
 								ChannelHandlerContext chc = session.getChc();
 								
 								if(session.getTimeWheelCurrentCycle()<=0){
-									C2sProtocol c2sProtocol = new C2sProtocol();
-									c2sProtocol.setType(C2sCommandType.closeSession);
+									C2sProtocol c2sProtocol = C2sProtocol.builder()
+											.type(C2sCommandType.closeSession).build();
 									
 									SessionManager.removeSession(chc, c2sProtocol);
 								}else{//圈数减一

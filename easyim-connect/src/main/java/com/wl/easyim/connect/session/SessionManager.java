@@ -12,14 +12,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.wl.easyim.biz.api.protocol.c2s.dto.C2sProtocol;
-import com.wl.easyim.biz.api.protocol.c2s.enums.ResourceType;
-import com.wl.easyim.biz.api.protocol.c2s.protocol.AuthAck;
-import com.wl.easyim.biz.api.protocol.s2s.dto.UserDto;
-import com.wl.easyim.biz.api.protocol.service.IC2sHandleService;
+import com.wl.easy.springboot.c2s.server.AbstractServerRegister;
+import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
+import com.wl.easyim.biz.api.dto.protocol.s2s.UserDto;
+import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
+import com.wl.easyim.biz.api.protocol.protocol.c2s.AuthAck;
+import com.wl.easyim.biz.api.service.protocol.IC2sHandleService;
 import com.wl.easyim.connect.session.Session.SessionStatus;
 
-import cn.linkedcare.springboot.sr2f.server.AbstractServerRegister;
+
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -118,6 +119,7 @@ public class SessionManager {
 	public static UserDto getUserDto(ChannelHandlerContext chc){
 		
 		String connectServer = AbstractServerRegister.getConnectServer();
+		
 		Session session      = sessionMap.get(chc);
 		
 		UserDto userDto = new UserDto();

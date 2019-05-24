@@ -2,7 +2,7 @@ package com.wl.easyim.connect.session;
 
 import java.util.UUID;
 
-import com.wl.easyim.biz.api.protocol.c2s.enums.ResourceType;
+import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
 
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Data;
