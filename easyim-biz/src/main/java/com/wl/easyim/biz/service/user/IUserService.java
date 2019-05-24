@@ -1,6 +1,6 @@
 package com.wl.easyim.biz.service.user;
 
-import com.wl.easyim.biz.api.dto.protocol.s2s.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
 import com.wl.easyim.biz.bo.UserBo;
 

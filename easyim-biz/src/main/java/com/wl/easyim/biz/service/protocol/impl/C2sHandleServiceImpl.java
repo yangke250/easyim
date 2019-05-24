@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.wl.easyim.biz.api.dto.protocol.s2s.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 import com.wl.easyim.biz.api.service.protocol.IC2sHandleService;
 import com.wl.easyim.biz.service.protocol.IC2SProtocolService;
@@ -47,7 +47,15 @@ public class C2sHandleServiceImpl implements IC2sHandleService,BeanPostProcessor
 			IC2SProtocolService service = (IC2SProtocolService)bean;
 			C2sCommandType type = service.getC2sCommandType();
 			
-			map.put(type,service);
+			IC2SProtocolService oldService = map.get(type);
+			
+			if(oldService==null||service.order()>oldService.order()){
+				log.info("IC2SProtocolService : {} overwrite",oldService.getClass().getName());
+				map.put(type,service);
+			}else{
+				log.info("IC2SProtocolService : {} low",service.getClass().getName());
+			}
+			
 		}
 		return bean;
 	}

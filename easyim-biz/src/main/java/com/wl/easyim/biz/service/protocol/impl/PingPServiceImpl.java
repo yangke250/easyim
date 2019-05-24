@@ -6,7 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.wl.easyim.biz.api.dto.protocol.s2s.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 import com.wl.easyim.biz.api.protocol.enums.c2s.Result;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.Ping;

@@ -6,7 +6,7 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
 import com.wl.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
-import com.wl.easyim.biz.api.dto.protocol.s2s.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 
 /**
@@ -15,6 +15,14 @@ import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
  *
  */
 public interface IC2SProtocolService<I,O> {
+	
+	/**
+	 * 值高的覆盖值的服务
+	 * @return
+	 */
+	default public int order(){
+		return 0;
+	}
 
 	/**
 	 * 协议类型
