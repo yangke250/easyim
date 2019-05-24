@@ -21,8 +21,6 @@ import com.wl.easyim.biz.service.protocol.IC2SProtocolService;
 import com.wl.easyim.biz.service.user.IUserService;
 import com.wl.easyim.route.service.IUserRouteService;
 
-import cn.linkedcare.springboot.redis.template.RedisTemplate;
-
 @Service("authPService")
 public class AuthPServiceImpl implements IC2SProtocolService<Auth,AuthAck>{
 

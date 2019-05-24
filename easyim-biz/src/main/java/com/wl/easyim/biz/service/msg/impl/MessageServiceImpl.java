@@ -10,6 +10,7 @@ import javax.validation.Validator;
 import org.springframework.stereotype.Service;
 
 import com.wl.easy.springboot.hbase.api.HbaseTemplate;
+import com.wl.easy.springboot.redis.template.RedisTemplate;
 import com.wl.easyim.biz.api.dto.message.MessageSendDto;
 import com.wl.easyim.biz.api.dto.message.MessageSendResultDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
@@ -26,7 +27,6 @@ import com.wl.easyim.biz.mapper.tenement.ITenementMapper;
 import com.wl.easyim.biz.service.conversation.IConversationService;
 import com.wl.easyim.biz.service.conversation.IProxyConversationService;
 
-import cn.linkedcare.springboot.redis.template.RedisTemplate;
 import lombok.extern.slf4j.Slf4j;
 
 
