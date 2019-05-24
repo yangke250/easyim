@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.api.dto.protocol.s2s;
+package com.wl.easyim.biz.api.dto.user;
 
 import java.io.Serializable;
 

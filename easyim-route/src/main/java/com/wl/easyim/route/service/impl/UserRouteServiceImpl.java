@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.wl.easy.springboot.redis.template.RedisTemplate;
-import com.wl.easyim.biz.api.dto.protocol.s2s.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserDto;
 import com.wl.easyim.route.service.IUserRouteService;
 
 

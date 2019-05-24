@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.wl.easy.springboot.c2s.server.AbstractServerRegister;
 import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.wl.easyim.biz.api.dto.protocol.s2s.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.AuthAck;
 import com.wl.easyim.biz.api.service.protocol.IC2sHandleService;
@@ -39,10 +39,30 @@ public class SessionManager {
 		=new ConcurrentHashMap<ChannelHandlerContext,Session>();
 
 	
+	public static final String SPLIT="_";
+	
+	
 	public static Session getSession(ChannelHandlerContext chc){
 		return sessionMap.get(chc);
 	}
 
+	/**
+	 * 得到会话列表
+	 * @param uid
+	 * @return
+	 */
+	public static List<Session> getSession(String uid){
+		ConcurrentHashMap<Session,Session> map =  uidMap.get(uid);
+		
+		List<Session> list = new ArrayList<Session>();
+		list.addAll(map.values());
+		
+		return list;
+	}
+	
+	public static String getUid(long tenementId,String userId){
+		return tenementId+SPLIT+userId;
+	}
 	
 	/**
 	 * 删除会话
@@ -55,8 +75,10 @@ public class SessionManager {
 		Session session = sessionMap.get(chc);
 		if(session!=null){
 			//移除会话
-			String userId = session.getUserId();
-			uidMap.get(userId).remove(session);
+			
+			String uid =getUid(session.getTenementId(),session.getUserId());
+			
+			uidMap.get(uid).remove(session);
 		
 			//移除时间轮
 			SessionTimeWheel.removeTimeWheel(session);
@@ -73,9 +95,6 @@ public class SessionManager {
 	 * @param session
 	 */
 	public static boolean updateSessionStatus(ChannelHandlerContext chc,AuthAck authAck,int timeOutCycle){
-		String       userId     = authAck.getUserId();
-		ResourceType resource   = authAck.getResource();
-		long         tenementId = authAck.getTenementId();
 		
 		Session session = sessionMap.get(chc);
 		if(session==null){
@@ -83,19 +102,21 @@ public class SessionManager {
 		}
 		
 		session.setSessionStatus(SessionStatus.auth);
-		session.setUserId(userId);
-		session.setResource(resource);
-		session.setTenementId(tenementId);
+		session.setUserId(authAck.getUserId());
+		session.setResource(authAck.getResource());
+		session.setTenementId(authAck.getTenementId());
 		
-		ConcurrentHashMap<Session,Session> map = uidMap.get(userId);
+		String uid =getUid(session.getTenementId(),session.getUserId());
+		
+		ConcurrentHashMap<Session,Session> map = uidMap.get(uid);
 		if(map==null){
 			synchronized(uidMap){
-				map = uidMap.get(userId);
+				map = uidMap.get(uid);
 				if(map==null){//double check
 					map =  new ConcurrentHashMap<Session,Session>();
 				}
 					map.put(session,session);
-					uidMap.put(userId,map);
+					uidMap.put(uid,map);
 			}
 		}
 		

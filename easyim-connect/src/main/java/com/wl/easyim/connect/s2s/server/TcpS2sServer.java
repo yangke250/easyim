@@ -1,10 +1,12 @@
 package com.wl.easyim.connect.s2s.server;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.wl.easyim.connect.s2s.input.biz.S2sInputHandle;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -22,9 +24,11 @@ import lombok.extern.slf4j.Slf4j;
 public class TcpS2sServer {
 
 
-	@Value("${sr2f.port}")
+	@Value("${c2s.port}")
 	private int tcpPort;
 	
+	@Resource
+	private S2sInputHandle s2sInputHandle;
 	
 	@PostConstruct
 	public void initTcpServer() {
@@ -44,8 +48,7 @@ public class TcpS2sServer {
                         ChannelPipeline pipeline = ch.pipeline();
                         
                         pipeline.addLast("JsonObjectDecoder",new JsonObjectDecoder());
-
-                        
+                        pipeline.addLast("S2sInputHandle",s2sInputHandle);
                     }
 
                 });

@@ -5,9 +5,12 @@ import java.util.ServiceLoader;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import com.wl.easyim.connect.c2s.input.biz.C2sInputHandle;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -27,6 +30,9 @@ public class TcpC2sServer {
 	
 	@Value("${im.c2s.tcp.port}")
 	private int tcpPort;
+	
+	@Resource
+	private C2sInputHandle c2sInputHandle;
 	
 	@PostConstruct
 	public void initTcpServer() {
@@ -53,6 +59,8 @@ public class TcpC2sServer {
                         matcher.forEach((ByteToMessageDecoder b)->{
                         	pipeline.addLast(b);
                         });
+                        
+                       pipeline.addLast(c2sInputHandle);
                     }
                 });
 

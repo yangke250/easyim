@@ -3,7 +3,7 @@ package com.wl.easyim.biz.api.service.protocol;
 import java.util.Map;
 
 import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.wl.easyim.biz.api.dto.protocol.s2s.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserDto;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.AbstractAckProtocol;
 
 /**

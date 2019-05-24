@@ -4,10 +4,12 @@ import java.util.ServiceLoader;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.wl.easyim.connect.c2s.input.biz.C2sInputHandle;
 import com.wl.easyim.connect.c2s.input.protocol.WebSocketHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -30,6 +32,9 @@ public class WebsocketC2sServer {
 
 	@Value("${im.c2s.websocket.port}")
 	private int websocketPort;
+	
+	@Resource
+	private C2sInputHandle c2sInputHandle;
 	
 	@PostConstruct
 	public void initTcpServer() {
@@ -60,6 +65,8 @@ public class WebsocketC2sServer {
                         matcher.forEach((ByteToMessageDecoder b)->{
                         	pipeline.addLast(b);
                         });
+                        
+                        pipeline.addLast(c2sInputHandle);
                     }
                 });
 

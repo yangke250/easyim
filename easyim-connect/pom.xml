@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -9,6 +8,20 @@
 	</parent>
 	<artifactId>easyim-connect</artifactId>
 	<dependencies>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.jboss.netty</groupId>
+					<artifactId>netty</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -30,10 +43,9 @@
 			<artifactId>zookeeper</artifactId>
 		</dependency>
 		<dependency>
-				<groupId>com.wl</groupId>
-				<artifactId>easy-springboot-c2s</artifactId>
-				<version>0.0.1</version>
-			</dependency>
+			<groupId>com.wl</groupId>
+			<artifactId>easy-springboot-c2s</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.wl.easyim</groupId>
 			<artifactId>easyim-biz-api</artifactId>

@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.wl.easyim.biz.api.dto.protocol.s2s.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 import com.wl.easyim.biz.api.protocol.enums.c2s.Result;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.AbstractAckProtocol;
@@ -28,14 +31,13 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * @author wl
  *
  */
+@Service
 public class C2sInputHandle extends AbstractC2sInputHandle {
 
+	@Reference(check=false)
 	private IC2sHandleService c2sHandleService;
 
-	public C2sInputHandle(IC2sHandleService c2sHandleService) {
-		this.c2sHandleService = c2sHandleService;
-	}
-
+	
 	private static C2sProtocol authError = C2sProtocol.builder().type(C2sCommandType.kickOff).build();
 
 	
