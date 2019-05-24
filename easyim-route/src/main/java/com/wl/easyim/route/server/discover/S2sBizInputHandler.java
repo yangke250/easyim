@@ -3,7 +3,8 @@ package com.wl.easyim.route.server.discover;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
-import com.wl.easyim.biz.api.protocol.s2s.dto.S2sProtocol;
+import com.wl.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
+import com.wl.easyim.route.service.impl.ProtocolRouteServiceImpl;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,10 +17,7 @@ public class S2sBizInputHandler extends ByteToMessageDecoder{
 		for(Object o:out){
 			String json = (String)o;
 			
-			S2sProtocol s2sProtocol = JSON.parseObject(json,S2sProtocol.class);
-			
-			String uuid = s2sProtocol.getUuid();
-			
+			ProtocolRouteServiceImpl.addCallBack(json);
 		}
 	}
 
