@@ -1,16 +1,22 @@
 package com.wl.easyim.biz;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
+
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 import lombok.extern.slf4j.Slf4j;
 
 
 @SpringBootApplication
 @Slf4j
+@MapperScan("com.wl.easyim")
 public class Launch {
 	
 	
@@ -24,7 +30,15 @@ public class Launch {
 		}
 	}
 	
+	@Bean
 	public Mapper getMapper(){
 		return new DozerBeanMapper();
+	}
+	
+	@Bean("validator")
+	public Validator getValidator(){
+		Validator validator = 
+				Validation.buildDefaultValidatorFactory().getValidator();
+		return validator;
 	}
 }

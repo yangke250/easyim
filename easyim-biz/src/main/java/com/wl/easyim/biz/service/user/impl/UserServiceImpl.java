@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import com.wl.easyim.biz.api.protocol.c2s.enums.ResourceType;
+import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
 import com.wl.easyim.biz.bo.UserBo;
 import com.wl.easyim.biz.service.user.IUserService;
 

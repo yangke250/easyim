@@ -9,22 +9,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.wl.easyim.biz.api.protocol.c2s.dto.C2sProtocol;
-import com.wl.easyim.biz.api.protocol.c2s.enums.C2sCommandType;
-import com.wl.easyim.biz.api.protocol.c2s.enums.Result;
-import com.wl.easyim.biz.api.protocol.c2s.protocol.Auth;
-import com.wl.easyim.biz.api.protocol.c2s.protocol.Auth.AuthType;
-import com.wl.easyim.biz.api.protocol.s2s.dto.UserDto;
-import com.wl.easyim.biz.api.protocol.c2s.protocol.AuthAck;
+import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
+import com.wl.easyim.biz.api.dto.protocol.s2s.UserDto;
+import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.wl.easyim.biz.api.protocol.enums.c2s.Result;
+import com.wl.easyim.biz.api.protocol.protocol.c2s.Auth;
+import com.wl.easyim.biz.api.protocol.protocol.c2s.AuthAck;
+import com.wl.easyim.biz.api.protocol.protocol.c2s.Auth.AuthType;
 import com.wl.easyim.biz.bo.UserBo;
-import com.wl.easyim.biz.service.protocol.IProtocolService;
+import com.wl.easyim.biz.service.protocol.IC2SProtocolService;
 import com.wl.easyim.biz.service.user.IUserService;
 import com.wl.easyim.route.service.IUserRouteService;
 
 import cn.linkedcare.springboot.redis.template.RedisTemplate;
 
-@Service("authService")
-public class AuthServiceImpl implements IProtocolService{
+@Service("authPService")
+public class AuthPServiceImpl implements IC2SProtocolService<Auth,AuthAck>{
 
 	@Resource
 	private IUserService userService;
@@ -41,29 +41,16 @@ public class AuthServiceImpl implements IProtocolService{
 		return C2sCommandType.auth;
 	}
 	
-	private C2sProtocol createC2sProtocolAck(String uuid,AuthAck authAck){
-		
-		return C2sProtocol.builder()
-		.type(C2sCommandType.authAck)
-		.uuid(uuid)
-		.body(JSON.toJSONString(authAck))
-		.build();
-	}
-
+	
 	@Override
-	public C2sProtocol handleProtocol(UserDto userDto,C2sProtocol c2sProtocol,Map<String,String> extendsMap) {
-		String uuid =  c2sProtocol.getUuid();
-		
-		String body =  c2sProtocol.getBody();
-		
-		Auth auth  = JSON.parseObject(body,Auth.class);
-		
+	public AuthAck handleProtocolBody(UserDto userDto, Auth auth, Map<String, String> extendsMap) {
 		String authToken = auth.getAuthToken();
+		AuthAck authAck = new AuthAck();
+		
 		if(StringUtils.isEmpty(authToken)){
-			AuthAck authAck = new AuthAck();
 			authAck.setResult(Result.authFailed);
 			
-			return createC2sProtocolAck(uuid,authAck);
+			return authAck;
 		}
 		
 		
@@ -83,18 +70,14 @@ public class AuthServiceImpl implements IProtocolService{
 		userDto.setResourceType(user.getResourceType());
 		boolean result = userRouteService.addUserRoute(userDto);
 		if(!result){
-			AuthAck authAck = new AuthAck();
 			authAck.setResult(Result.authFailed);
-			
-			return createC2sProtocolAck(uuid,authAck);
+			return authAck;
 		}
 		
-		AuthAck authAck = new AuthAck();
 		authAck.setTenementId(user.getTenementId());
 		authAck.setUserId(user.getUserId());
 		authAck.setResource(user.getResourceType());
-		
-		return createC2sProtocolAck(uuid,authAck);
+		return authAck;
 	}
 
 }
