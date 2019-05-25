@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.stereotype.Service;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
 import com.wl.easyim.biz.api.dto.user.UserDto;
@@ -50,7 +50,7 @@ public class C2sHandleServiceImpl implements IC2sHandleService,BeanPostProcessor
 			IC2SProtocolService oldService = map.get(type);
 			
 			if(oldService==null||service.order()>oldService.order()){
-				log.info("IC2SProtocolService : {} overwrite",oldService.getClass().getName());
+				log.info("IC2SProtocolService : {} overwrite",service.getClass().getName());
 				map.put(type,service);
 			}else{
 				log.info("IC2SProtocolService : {} low",service.getClass().getName());

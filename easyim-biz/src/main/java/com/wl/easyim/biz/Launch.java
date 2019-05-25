@@ -1,7 +1,7 @@
 package com.wl.easyim.biz;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
+//import javax.validation.Validation;
+//import javax.validation.Validator;
 
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
@@ -11,12 +11,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
+
 import lombok.extern.slf4j.Slf4j;
 
 
 @SpringBootApplication
 @Slf4j
 @MapperScan("com.wl.easyim")
+@EnableDubbo
 public class Launch {
 	
 	
@@ -35,10 +38,10 @@ public class Launch {
 		return new DozerBeanMapper();
 	}
 	
-	@Bean("validator")
-	public Validator getValidator(){
-		Validator validator = 
-				Validation.buildDefaultValidatorFactory().getValidator();
-		return validator;
-	}
+//	@Bean("validator")
+//	public Validator getValidator(){
+//		Validator validator = 
+//				Validation.buildDefaultValidatorFactory().getValidator();
+//		return validator;
+//	}
 }

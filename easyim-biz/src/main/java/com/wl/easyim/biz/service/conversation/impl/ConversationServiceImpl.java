@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.wl.easyim.biz.mapper.conversation.IConversationMapper;
 import com.wl.easyim.biz.service.conversation.IConversationService;
 
-@Service
+@Service("conversationService")
 public class ConversationServiceImpl implements IConversationService{
 
 	@Resource

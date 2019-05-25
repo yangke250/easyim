@@ -3,13 +3,13 @@ package com.wl.easyim.biz.service.msg.impl;
 import java.util.Calendar;
 import java.util.Set;
 
+
 import javax.annotation.Resource;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
+//import javax.validation.ConstraintViolation;
+//import javax.validation.Validator;
 
 import org.springframework.stereotype.Service;
 
-import com.wl.easy.springboot.hbase.api.HbaseTemplate;
 import com.wl.easy.springboot.redis.template.RedisTemplate;
 import com.wl.easyim.biz.api.dto.message.MessageSendDto;
 import com.wl.easyim.biz.api.dto.message.MessageSendResultDto;
@@ -38,8 +38,8 @@ public class MessageServiceImpl implements IMessageService {
 	
 	public final static int OFFLINE_TIME = 15*24*60*60;//离线消息，最多15天
 	
-	@Resource
-	private HbaseTemplate baseTemplate;
+//	@Resource
+//	private HbaseTemplate baseTemplate;
 	
 	@Resource
 	private RedisTemplate redisTemplate;
@@ -47,16 +47,16 @@ public class MessageServiceImpl implements IMessageService {
 	@Resource
 	private ITenementMapper tenementMapper;
 	
-	@Resource
+	@Resource(name="conversationService")
 	private IConversationService conversationService;
 	
-	@Resource
+	@Resource(name="proxyConversationService")
 	private IProxyConversationService proxyConversationService;
 	
 
 	
-	@Resource
-	private Validator validator;
+//	@Resource
+//	private Validator validator;
 	
 	
 	/**
@@ -65,13 +65,13 @@ public class MessageServiceImpl implements IMessageService {
 	 * @return
 	 */
 	private boolean doValidator(MessageSendDto message){
-		Set<ConstraintViolation<MessageSendDto>> results = validator.validate(message);
-		if(results.size()>0){
-			for(ConstraintViolation<MessageSendDto> result:results){
-				log.error("messageServiceImpl doValidator error:{}",result.getMessage());
-			}
-			return false;
-		}
+//		Set<ConstraintViolation<MessageSendDto>> results = validator.validate(message);
+//		if(results.size()>0){
+//			for(ConstraintViolation<MessageSendDto> result:results){
+//				log.error("messageServiceImpl doValidator error:{}",result.getMessage());
+//			}
+//			return false;
+//		}
 		return true;
 	}
 	

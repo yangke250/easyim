@@ -4,11 +4,14 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+//import org.springframework.stereotype.Service;
+
 import com.wl.easyim.biz.domain.ProxyConversationDo;
 import com.wl.easyim.biz.mapper.conversation.IProxyConversationMapper;
 import com.wl.easyim.biz.service.conversation.IProxyConversationService;
 
-@Service
+
+@Service("proxyConversationService")
 public class ProxyConversationServiceImpl implements IProxyConversationService {
 
 	@Resource
