@@ -30,7 +30,7 @@ import com.wl.easyim.biz.service.conversation.IProxyConversationService;
 import lombok.extern.slf4j.Slf4j;
 
 
-@Service("messageService")
+@Service
 @Slf4j
 public class MessageServiceImpl implements IMessageService {
 	

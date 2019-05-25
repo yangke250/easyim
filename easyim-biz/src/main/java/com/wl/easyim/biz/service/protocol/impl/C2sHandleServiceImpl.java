@@ -11,13 +11,15 @@ import com.alibaba.fastjson.JSON;
 import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
 import com.wl.easyim.biz.api.dto.user.UserDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.wl.easyim.biz.api.service.message.IMessageService;
 import com.wl.easyim.biz.api.service.protocol.IC2sHandleService;
 import com.wl.easyim.biz.service.protocol.IC2SProtocolService;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Service
+
 @Slf4j
+@Service(interfaceClass=IC2sHandleService.class)
 public class C2sHandleServiceImpl implements IC2sHandleService,BeanPostProcessor{
 
 	private Map<C2sCommandType,IC2SProtocolService> map = new HashMap<C2sCommandType,IC2SProtocolService>();
