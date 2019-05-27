@@ -17,6 +17,6 @@ public interface IProxyConversationMapper {
 			@Param("proxySmallId") String proxySmallId,
 			@Param("proxyBigId") String proxyBigId);
 	
-	//@Insert("insert into t_proxy_conversation (tenement_id,proxy_small_id,proxy_big_id) values (#{proxy.tenementId),#{proxy.proxySmallId},#{proxy.proxyBigId})")
+	@Insert("insert into t_proxy_conversation (tenement_id,proxy_small_id,proxy_big_id) values (#{proxy.tenementId},#{proxy.proxySmallId},#{proxy.proxyBigId})")
 	public long insertProxyConversationDo(@Param("proxy")ProxyConversationDo cDo);
 }

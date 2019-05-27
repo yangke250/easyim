@@ -1,33 +1,33 @@
 package com.wl.easyim.biz.api.dto.message;
 
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+//import javax.validation.constraints.Min;
+//import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
 @Data
 public class MessageSendDto {
 	
-	@Min(value = 0)
+//	@Min(value = 0)
 	private long tenementId;
-	@NotNull
+//	@NotNull
 	private String fromId;
-	@NotNull
+//	@NotNull
 	private String proxyFromId;
-	@NotNull
+//	@NotNull
 	private String toId;
-	@NotNull
+//	@NotNull
 	private String proxyToId; 
-	@Min(value = 0)
+//	@Min(value = 0)
 	private long cid;
-	@Min(value = 0)
+//	@Min(value = 0)
 	private long proxyCid;
-	@NotNull
+//	@NotNull
 	private MessageType type;
-	@Min(value = 0)
+//	@Min(value = 0)
 	private int subType;
-	@NotNull
+//	@NotNull
 	private String content;
 
 	private String bizUid;//业务方唯一id

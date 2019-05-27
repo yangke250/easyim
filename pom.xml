@@ -13,7 +13,11 @@
 	</modules>
 	<dependencyManagement>
 		<dependencies>
-			<!-- https://mvnrepository.com/artifact/com.alibaba/dubbo -->
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>5.1.40</version>
+			</dependency>
 			<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>dubbo</artifactId>
