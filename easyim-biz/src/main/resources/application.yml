@@ -1,4 +1,4 @@
-sr2f:
+c2s:
   zookeeper:
    url: 114.55.255.143:2181
   path: /easy-im/server

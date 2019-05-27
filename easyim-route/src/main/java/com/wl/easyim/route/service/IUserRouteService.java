@@ -1,6 +1,6 @@
 package com.wl.easyim.route.service;
 
-import com.wl.easyim.biz.api.dto.user.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserSessionDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
 
 /**
@@ -31,14 +31,14 @@ public interface IUserRouteService {
 	 * @param routeDto
 	 * @return
 	 */
-	public boolean addUserRoute(UserDto routeDto);
+	public boolean addUserRoute(UserSessionDto routeDto);
 	
 	/**
 	 * 重置超时时间
 	 * @param routeDto
 	 * @return
 	 */
-	public boolean pingUserRoute(UserDto routeDto);
+	public boolean pingUserRoute(UserSessionDto routeDto);
 	
 	/**
 	 * 删除路由数据
@@ -46,6 +46,6 @@ public interface IUserRouteService {
 	 * @param userId
 	 * @param msg
 	 */
-	public boolean removeUserRoute(UserDto routeDto);
+	public boolean removeUserRoute(UserSessionDto routeDto);
 
 }

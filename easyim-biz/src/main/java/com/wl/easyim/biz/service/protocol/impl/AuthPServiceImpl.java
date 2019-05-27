@@ -10,15 +10,15 @@ import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.wl.easyim.biz.api.dto.user.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserAuthDto;
+import com.wl.easyim.biz.api.dto.user.UserSessionDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 import com.wl.easyim.biz.api.protocol.enums.c2s.Result;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.Auth;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.AuthAck;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.Auth.AuthType;
-import com.wl.easyim.biz.bo.UserBo;
+import com.wl.easyim.biz.api.service.user.IUserService;
 import com.wl.easyim.biz.service.protocol.IC2SProtocolService;
-import com.wl.easyim.biz.service.user.IUserService;
 import com.wl.easyim.route.service.IUserRouteService;
 
 @Service("authPService")
@@ -41,7 +41,7 @@ public class AuthPServiceImpl implements IC2SProtocolService<Auth,AuthAck>{
 	
 	
 	@Override
-	public AuthAck handleProtocolBody(UserDto userDto, Auth auth, Map<String, String> extendsMap) {
+	public AuthAck handleProtocolBody(UserSessionDto userSessionDto, Auth auth, Map<String, String> extendsMap) {
 		String authToken = auth.getAuthToken();
 		AuthAck authAck = new AuthAck();
 		
@@ -54,7 +54,7 @@ public class AuthPServiceImpl implements IC2SProtocolService<Auth,AuthAck>{
 		
 		AuthType authType = auth.getAuthType();
 		
-		UserBo user = null;
+		UserAuthDto user = null;
 		switch(authType){
 			case jwt:
 				user = userService.authDecode(auth.getAuthToken());
@@ -63,10 +63,10 @@ public class AuthPServiceImpl implements IC2SProtocolService<Auth,AuthAck>{
 				
 		}
 		
-		userDto.setTenementId(user.getTenementId());
-		userDto.setUserId(user.getUserId());
-		userDto.setResourceType(user.getResourceType());
-		boolean result = userRouteService.addUserRoute(userDto);
+		userSessionDto.setTenementId(user.getTenementId());
+		userSessionDto.setUserId(user.getUserId());
+		userSessionDto.setResourceType(user.getResourceType());
+		boolean result = userRouteService.addUserRoute(userSessionDto);
 		if(!result){
 			authAck.setResult(Result.authFailed);
 			return authAck;

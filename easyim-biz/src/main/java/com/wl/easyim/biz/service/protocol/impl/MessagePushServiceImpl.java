@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.wl.easyim.biz.api.dto.user.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserSessionDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.Message;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.MessageAck;
@@ -20,7 +20,7 @@ public class MessagePushServiceImpl implements IC2SProtocolService<Message,Messa
 	}
 
 	@Override
-	public MessageAck handleProtocolBody(UserDto userDto, Message body, Map<String, String> extendsMap) {
+	public MessageAck handleProtocolBody(UserSessionDto userSessionDto, Message body, Map<String, String> extendsMap) {
 		// TODO Auto-generated method stub
 		return null;
 	}

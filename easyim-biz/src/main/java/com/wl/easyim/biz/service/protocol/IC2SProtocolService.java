@@ -6,7 +6,7 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
 import com.wl.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
-import com.wl.easyim.biz.api.dto.user.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserSessionDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 
 /**
@@ -37,14 +37,14 @@ public interface IC2SProtocolService<I,O> {
 	 * @param version
 	 * @return
 	 */
-	public default C2sProtocol handleProtocol(UserDto userDto,C2sProtocol c2sProtocol,Map<String,String> extendsMap){
+	public default C2sProtocol handleProtocol(UserSessionDto userSessionDto,C2sProtocol c2sProtocol,Map<String,String> extendsMap){
 
 		Class<I> entityClass = 
 				(Class<I>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]; 
 
 
 		
-		O outputBody = handleProtocolBody(userDto,
+		O outputBody = handleProtocolBody(userSessionDto,
 				JSON.parseObject(c2sProtocol.getBody(),entityClass),extendsMap);
 		
 		C2sProtocol c2sProtocolAck = C2sProtocol.builder()
@@ -63,5 +63,5 @@ public interface IC2SProtocolService<I,O> {
 	 * @param version
 	 * @return
 	 */
-	public O handleProtocolBody(UserDto userDto,I body,Map<String,String> extendsMap);
+	public O handleProtocolBody(UserSessionDto userSessionDto,I body,Map<String,String> extendsMap);
 }

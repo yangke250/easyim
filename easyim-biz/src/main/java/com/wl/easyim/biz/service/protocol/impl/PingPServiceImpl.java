@@ -6,7 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.wl.easyim.biz.api.dto.user.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserSessionDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 import com.wl.easyim.biz.api.protocol.enums.c2s.Result;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.Ping;
@@ -27,10 +27,10 @@ public class PingPServiceImpl implements IC2SProtocolService<Ping, PingAck> {
 	}
 
 	@Override
-	public PingAck handleProtocolBody(UserDto userDto, Ping body, Map<String, String> extendsMap) {
+	public PingAck handleProtocolBody(UserSessionDto userSessionDto, Ping body, Map<String, String> extendsMap) {
 		PingAck pingAck = new PingAck();
 
-		boolean result = userRouteService.pingUserRoute(userDto);
+		boolean result = userRouteService.pingUserRoute(userSessionDto);
 		if (!result) {
 			pingAck.setResult(Result.pingError);
 		}

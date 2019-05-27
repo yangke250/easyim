@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.wl.easy.springboot.redis.template.RedisTemplate;
-import com.wl.easyim.biz.api.dto.user.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserSessionDto;
 import com.wl.easyim.route.service.IUserRouteService;
 
 
@@ -26,7 +26,7 @@ public class UserRouteServiceImpl implements IUserRouteService {
 	 * 添加用户路由信息
 	 */
 	@Override
-	public boolean addUserRoute(UserDto routeDto) {
+	public boolean addUserRoute(UserSessionDto routeDto) {
 		String uid       =  routeDto.getTenementId()+SPLIT+routeDto.getUserId();
 		String sessionId =  routeDto.getSessionId();
 		String strKey  =  ROUTE_STRING_PRE+uid;
@@ -64,7 +64,7 @@ public class UserRouteServiceImpl implements IUserRouteService {
 	 * 更新用户路由超时时间
 	 */
 	@Override
-	public boolean pingUserRoute(UserDto routeDto) {
+	public boolean pingUserRoute(UserSessionDto routeDto) {
 		String uid       =  routeDto.getTenementId()+SPLIT+routeDto.getUserId();
 		String strKey  =  ROUTE_STRING_PRE+uid;
 		String hashKey =  ROUTE_HASH_PRE+uid;
@@ -93,7 +93,7 @@ public class UserRouteServiceImpl implements IUserRouteService {
 	 * 删除用户路由信息
 	 */
 	@Override
-	public boolean removeUserRoute(UserDto routeDto) {
+	public boolean removeUserRoute(UserSessionDto routeDto) {
 		String uid       =  routeDto.getTenementId()+SPLIT+routeDto.getUserId();
 		String sessionId =  routeDto.getSessionId();
 		String strKey  =  ROUTE_STRING_PRE+uid;

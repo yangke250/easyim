@@ -1,12 +1,22 @@
-sr2f:
+c2s:
   zookeeper:
    url: 114.55.255.143:2181
   path: /easy-im/server
   client: true
-  
+
 mybatis:
     type-aliases-package: com.wl.easyim.biz.domain
     configuration:
         map-underscore-to-camel-case: true
         default-fetch-size: 100
         default-statement-timeout: 30
+        
+dubbo:
+  timeout: 3000
+  address: 114.55.255.143:2181
+  port: 2345
+  
+jdbc:
+  url: jdbc:mysql://114.55.255.143:3306/mall_goods?characterEncoding=utf8&amp;allowMultiQueries=true
+  username: malldev
+  password: qaz!@#

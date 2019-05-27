@@ -5,9 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import com.alibaba.dubbo.config.annotation.Service;
+import com.wl.easyim.biz.api.dto.user.UserAuthDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
-import com.wl.easyim.biz.bo.UserBo;
-import com.wl.easyim.biz.service.user.IUserService;
+import com.wl.easyim.biz.api.service.user.IUserService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
@@ -19,6 +20,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
  * @author wl
  *
  */
+@Service(interfaceClass=IUserService.class)
 public class UserServiceImpl implements IUserService{
 
 	public static final String PASSWORD="yangke250";
@@ -57,7 +59,7 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	@Override
-	public UserBo authDecode(String jwt) {
+	public UserAuthDto authDecode(String jwt) {
 
         //得到DefaultJwtParser
         Claims claims = Jwts.parser()
@@ -70,7 +72,7 @@ public class UserServiceImpl implements IUserService{
         long   tenementId  = claims.get("tenementId",Long.class);
         ResourceType resourceType = ResourceType.valueOf(claims.get("resourceType",String.class));
         
-        UserBo userBo = new UserBo();
+        UserAuthDto userBo = new UserAuthDto();
         userBo.setUserId(userId);
         userBo.setTenementId(tenementId);
         userBo.setResourceType(resourceType);

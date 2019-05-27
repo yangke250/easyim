@@ -9,7 +9,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.wl.easyim.biz.api.dto.user.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserSessionDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 import com.wl.easyim.biz.api.service.message.IMessageService;
 import com.wl.easyim.biz.api.service.protocol.IC2sHandleService;
@@ -27,7 +27,7 @@ public class C2sHandleServiceImpl implements IC2sHandleService,BeanPostProcessor
 	 
 	
 	@Override
-	public C2sProtocol handleProtocol(UserDto userDto,C2sProtocol c2sProtocol,Map<String,String> extendsMap){
+	public C2sProtocol handleProtocol(UserSessionDto userSessionDto,C2sProtocol c2sProtocol,Map<String,String> extendsMap){
 		C2sCommandType c2sCommandType = c2sProtocol.getType();
 		
 		IC2SProtocolService service = map.get(c2sCommandType);
@@ -40,7 +40,7 @@ public class C2sHandleServiceImpl implements IC2sHandleService,BeanPostProcessor
 		}
 		
 		
-		return  service.handleProtocol(userDto,c2sProtocol,extendsMap);
+		return  service.handleProtocol(userSessionDto,c2sProtocol,extendsMap);
 	}
 	
 	@Override

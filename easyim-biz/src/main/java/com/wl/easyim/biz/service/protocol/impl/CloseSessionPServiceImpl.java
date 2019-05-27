@@ -6,7 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.wl.easyim.biz.api.dto.user.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserSessionDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 import com.wl.easyim.biz.api.protocol.enums.c2s.Result;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.CloseSession;
@@ -27,8 +27,8 @@ public class CloseSessionPServiceImpl implements IC2SProtocolService<CloseSessio
 	}
 
 	@Override
-	public CloseSessionAck handleProtocolBody(UserDto userDto, CloseSession body, Map<String, String> extendsMap) {
-		boolean result = userRouteService.removeUserRoute(userDto);
+	public CloseSessionAck handleProtocolBody(UserSessionDto userSessionDto, CloseSession body, Map<String, String> extendsMap) {
+		boolean result = userRouteService.removeUserRoute(userSessionDto);
 		
 		CloseSessionAck closeSessionAck = new CloseSessionAck();
 		if(!result){

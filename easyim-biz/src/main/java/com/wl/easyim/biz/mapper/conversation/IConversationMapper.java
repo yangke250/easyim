@@ -17,5 +17,5 @@ public interface IConversationMapper {
 			@Param("bigId") String bigId);
 	
 	@Insert("insert into t_conversation (tenement_id,small_id,big_id,proxy_cid) values (#{c.tenementId},#{c.smallId},#{c.bigId},#{c.proxyCid})")
-	public long createConversationDo(@Param("c")ConversationDo cDo);
+	public long insertConversationDo(@Param("c")ConversationDo cDo);
 }

@@ -4,15 +4,20 @@ import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import com.alibaba.druid.filter.Filter;
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
 
 @Configuration
+@MapperScan("com.wl.easyim.biz.mapper")
 public class DbConfig {
 	@Value("${jdbc.url}")
 	private String url;
@@ -31,11 +36,12 @@ public class DbConfig {
 		return sf;
 	}
 
+	private DruidDataSource dds = new DruidDataSource();
+
 	@Bean(initMethod="init",destroyMethod="close")
-	public DruidDataSource getDruidDataSource(){
+	public synchronized DruidDataSource getDruidDataSource(){
 		
 		
-		DruidDataSource dds = new DruidDataSource();
 		dds.setUrl(url);
 		dds.setUsername(username);
 		dds.setPassword(password);
@@ -56,5 +62,17 @@ public class DbConfig {
 		dds.setProxyFilters(statFilterList);
 		return dds;
 	}
+	
+	@Bean
+	public DataSourceTransactionManager transactionManager() {
+	     return new DataSourceTransactionManager(getDruidDataSource());
+	}
 
+	
+	@Bean
+	public SqlSessionFactory sqlSessionFactory() throws Exception {
+		   SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+	       sessionFactory.setDataSource(getDruidDataSource());
+	       return sessionFactory.getObject();
+	}
 }

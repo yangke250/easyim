@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.wl.easy.springboot.c2s.server.AbstractServerRegister;
 import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.wl.easyim.biz.api.dto.user.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserSessionDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.AuthAck;
 import com.wl.easyim.biz.api.service.protocol.IC2sHandleService;
@@ -137,23 +137,23 @@ public class SessionManager {
 	}
 	
 	
-	public static UserDto getUserDto(ChannelHandlerContext chc){
+	public static UserSessionDto getUserDto(ChannelHandlerContext chc){
 		
 		String connectServer = AbstractServerRegister.getConnectServer();
 		
 		Session session      = sessionMap.get(chc);
 		
-		UserDto userDto = new UserDto();
-		userDto.setConnectServer(connectServer);
+		UserSessionDto userSessionDto = new UserSessionDto();
+		userSessionDto.setConnectServer(connectServer);
 		
-		userDto.setSessionId(session.getSessionId());
+		userSessionDto.setSessionId(session.getSessionId());
 		
-		userDto.setTenementId(session.getTenementId());
-		userDto.setUserId(session.getUserId());
-		userDto.setResourceType(session.getResource());
+		userSessionDto.setTenementId(session.getTenementId());
+		userSessionDto.setUserId(session.getUserId());
+		userSessionDto.setResourceType(session.getResource());
 		
-		userDto.setSessionTimeOut(session.getTimeOutCycle()*60);
+		userSessionDto.setSessionTimeOut(session.getTimeOutCycle()*60);
 		
-		return userDto;
+		return userSessionDto;
 	}
 }
