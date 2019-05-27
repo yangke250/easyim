@@ -1,8 +1,8 @@
-package com.wl.easyim.biz.service.user;
+package com.wl.easyim.biz.api.service.user;
 
-import com.wl.easyim.biz.api.dto.user.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserAuthDto;
+import com.wl.easyim.biz.api.dto.user.UserSessionDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
-import com.wl.easyim.biz.bo.UserBo;
 
 public interface IUserService {
 	
@@ -20,5 +20,5 @@ public interface IUserService {
 	 * @param jwt
 	 * @return
 	 */
-	public UserBo authDecode(String jwt);
+	public UserAuthDto authDecode(String jwt);
 }

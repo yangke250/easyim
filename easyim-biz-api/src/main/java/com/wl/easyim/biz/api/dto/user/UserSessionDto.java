@@ -7,7 +7,7 @@ import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
 import lombok.Data;
 
 @Data
-public class UserDto implements Serializable {
+public class UserSessionDto implements Serializable {
 
 	private static final long serialVersionUID = 641955703820226722L;
 

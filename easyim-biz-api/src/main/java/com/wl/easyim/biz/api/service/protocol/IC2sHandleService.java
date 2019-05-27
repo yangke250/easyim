@@ -3,7 +3,7 @@ package com.wl.easyim.biz.api.service.protocol;
 import java.util.Map;
 
 import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.wl.easyim.biz.api.dto.user.UserDto;
+import com.wl.easyim.biz.api.dto.user.UserSessionDto;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.AbstractAckProtocol;
 
 /**
@@ -18,5 +18,5 @@ public interface IC2sHandleService {
 	 * @param c2sProtocol
 	 * @return
 	 */
-	public C2sProtocol handleProtocol(UserDto userDto,C2sProtocol c2sProtocol,Map<String,String> extendsMap);
+	public C2sProtocol handleProtocol(UserSessionDto userSessionDto,C2sProtocol c2sProtocol,Map<String,String> extendsMap);
 }
