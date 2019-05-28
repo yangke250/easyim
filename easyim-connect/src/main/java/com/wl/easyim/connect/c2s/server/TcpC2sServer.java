@@ -10,7 +10,8 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.wl.easyim.connect.c2s.input.biz.C2sInputHandle;
+import com.wl.easyim.connect.c2s.input.biz.C2sInputHandler;
+import com.wl.easyim.connect.c2s.input.biz.C2sTimeoutInputHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -22,6 +23,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.json.JsonObjectDecoder;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -32,7 +34,7 @@ public class TcpC2sServer {
 	private int tcpPort;
 	
 	@Resource
-	private C2sInputHandle c2sInputHandle;
+	private C2sInputHandler c2sInputHandler;
 	
 	@PostConstruct
 	public void initTcpServer() {
@@ -60,7 +62,12 @@ public class TcpC2sServer {
                         	pipeline.addLast(b);
                         });
                         
-                       pipeline.addLast(c2sInputHandle);
+                        pipeline.addLast(new C2sTimeoutInputHandler(WebsocketC2sServer.DEFAULT_TIMEOUT));
+                        
+                        
+                        pipeline.addLast(c2sInputHandler);
+                       
+					
                     }
                 });
 

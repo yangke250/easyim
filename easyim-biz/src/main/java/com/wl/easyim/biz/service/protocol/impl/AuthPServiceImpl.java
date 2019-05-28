@@ -1,5 +1,7 @@
 package com.wl.easyim.biz.service.protocol.impl;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -34,6 +36,8 @@ public class AuthPServiceImpl implements IC2SProtocolService<Auth,AuthAck>{
 	private Mapper mapper;
 	
 	
+	
+	
 	@Override
 	public C2sCommandType getC2sCommandType() {
 		return C2sCommandType.auth;
@@ -42,7 +46,7 @@ public class AuthPServiceImpl implements IC2SProtocolService<Auth,AuthAck>{
 	
 	@Override
 	public AuthAck handleProtocolBody(UserSessionDto userSessionDto, Auth auth, Map<String, String> extendsMap) {
-		String authToken = auth.getAuthToken();
+		String authToken = auth.getToken();
 		AuthAck authAck = new AuthAck();
 		
 		if(StringUtils.isEmpty(authToken)){
@@ -57,7 +61,7 @@ public class AuthPServiceImpl implements IC2SProtocolService<Auth,AuthAck>{
 		UserAuthDto user = null;
 		switch(authType){
 			case jwt:
-				user = userService.authDecode(auth.getAuthToken());
+				user = userService.authDecode(auth.getToken());
 			break;
 			default:
 				

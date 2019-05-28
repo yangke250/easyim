@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.wl.easyim.biz.api.dto.user.UserAuthDto;
@@ -35,7 +36,12 @@ public class UserServiceImplTest extends LaunchTest{
 		String userId ="100";
 		
 		String token = userService.authEncode(tenementId, userId, ResourceType.pc);
-		
 		System.out.println(token);
+		UserAuthDto  userAuthDto = userService.authDecode(token);
+		
+		Assert.assertEquals(tenementId,userAuthDto.getTenementId());
+		
+		Assert.assertEquals(userId,userAuthDto.getUserId());
+		
 	}
 }

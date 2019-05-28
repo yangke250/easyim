@@ -9,8 +9,10 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.wl.easyim.connect.c2s.input.biz.C2sInputHandle;
+import com.wl.easyim.connect.c2s.input.biz.C2sInputHandler;
+import com.wl.easyim.connect.c2s.input.biz.C2sTimeoutInputHandler;
 import com.wl.easyim.connect.c2s.input.protocol.WebSocketHandler;
+import com.wl.easyim.connect.c2s.output.protocol.WenSocketOutputHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -24,6 +26,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.stream.ChunkedWriteHandler;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -34,7 +37,9 @@ public class WebsocketC2sServer {
 	private int websocketPort;
 	
 	@Resource
-	private C2sInputHandle c2sInputHandle;
+	private C2sInputHandler c2sInputHandle;
+	
+	public static final int DEFAULT_TIMEOUT=60;
 	
 	@PostConstruct
 	public void initTcpServer() {
@@ -67,6 +72,9 @@ public class WebsocketC2sServer {
                         });
                         
                         pipeline.addLast(c2sInputHandle);
+                        pipeline.addLast(new C2sTimeoutInputHandler(DEFAULT_TIMEOUT));
+                        
+                        pipeline.addLast(new WenSocketOutputHandler());
                     }
                 });
 

@@ -5,6 +5,7 @@ import java.util.UUID;
 import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
 
 import io.netty.channel.ChannelHandlerContext;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -13,6 +14,7 @@ import lombok.Data;
  *
  */
 @Data
+@Builder
 public class Session {
 	//会话状态
 	public static enum SessionStatus{
@@ -25,7 +27,6 @@ public class Session {
 	private long updateTime = System.currentTimeMillis();
 	
 	//登录状态
-	private String sessionId = UUID.randomUUID().toString();
 	private SessionStatus sessionStatus = SessionStatus.anonymous;
 	
 	private ChannelHandlerContext chc;
@@ -35,8 +36,13 @@ public class Session {
 	
 	private int  timeOutCycle = 1;//超时圈数
 	
-	private int  timeWheelCurrent;//时间轮的位置
-	private int  timeWheelCurrentCycle = 0;//进入时间轮的圈数
 	
+	public String getSessionId(){
+		return chc.channel().id().asLongText();
+	}
+	
+	public static String getSessionId(ChannelHandlerContext chc){
+		return chc.channel().id().asLongText();
+	}
 	
 }

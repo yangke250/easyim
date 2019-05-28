@@ -12,19 +12,20 @@ import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
 import com.wl.easyim.biz.api.dto.user.UserSessionDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 import com.wl.easyim.biz.api.protocol.enums.c2s.Result;
-import com.wl.easyim.biz.api.protocol.protocol.c2s.AbstractAckProtocol;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.Auth;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.AuthAck;
 import com.wl.easyim.biz.api.protocol.protocol.c2s.PingAck;
 import com.wl.easyim.biz.api.service.protocol.IC2sHandleService;
+import com.wl.easyim.connect.c2s.server.WebsocketC2sServer;
 import com.wl.easyim.connect.session.Session;
 import com.wl.easyim.connect.session.SessionManager;
-import com.wl.easyim.connect.session.SessionTimeWheel;
 import com.wl.easyim.connect.session.Session.SessionStatus;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.timeout.ReadTimeoutException;
+import io.netty.handler.timeout.ReadTimeoutHandler;
+import io.netty.channel.ChannelHandler.Sharable;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
@@ -32,24 +33,18 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  *
  */
 @Service
-public class C2sInputHandle extends AbstractC2sInputHandle {
+@Slf4j
+@Sharable
+public class C2sInputHandler extends AbstractC2sInputHandler {
 
-	@Reference(check=false)
+	@Reference(check = false)
 	private IC2sHandleService c2sHandleService;
 
-	
-	private static C2sProtocol authError = C2sProtocol.builder().type(C2sCommandType.kickOff).build();
-
-	
+	private static C2sProtocol authError = new C2sProtocol(C2sCommandType.kickOff);
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		super.channelActive(ctx);
-
-		Session session = new Session();
-		session.setChc(ctx);
-
-		SessionManager.addSession(session);
 	}
 
 	@Override
@@ -66,45 +61,56 @@ public class C2sInputHandle extends AbstractC2sInputHandle {
 		C2sCommandType type = c2sProtocol.getType();
 
 		Session session = SessionManager.getSession(ctx);
-		if (SessionStatus.anonymous == session.getSessionStatus() && C2sCommandType.auth != type) {
+		if (session==null && C2sCommandType.auth != type) {
 
 			SessionManager.removeSession(ctx, authError);
 			return;
 		}
 
-		
-		C2sProtocol ackProtocol = c2sHandleService.
-				handleProtocol(SessionManager.getUserDto(ctx),c2sProtocol,new HashMap<String,String>());
+		C2sProtocol ackProtocol = c2sHandleService.handleProtocol(SessionManager.getUserDto(ctx), c2sProtocol,
+				new HashMap<String, String>());
 		C2sCommandType ackType = ackProtocol.getType();
 
 		switch (ackType) {
 		case pingAck:
 			PingAck pingAck = JSON.parseObject(ackProtocol.getBody(), PingAck.class);
 
-			if (pingAck.getResult() == Result.success) {
-				SessionTimeWheel.resetTimeWheel(session);
+			ctx.channel().writeAndFlush(JSON.toJSONString(ackProtocol));
 
-				ctx.writeAndFlush(JSON.toJSONString(ackProtocol));
-			} else {
+			if (pingAck.getResult() != Result.success) {
 				SessionManager.removeSession(ctx, ackProtocol);
 			}
 			return;
 		case authAck:
 			Auth auth = JSON.parseObject(c2sProtocol.getBody(), Auth.class);
-			
+
 			AuthAck authAck = JSON.parseObject(ackProtocol.getBody(), AuthAck.class);
 
+			ctx.channel().writeAndFlush(JSON.toJSONString(ackProtocol));
+			log.info("authAck:{}", JSON.toJSONString(authAck));
+
 			if (authAck.getResult() == Result.success) {
-				SessionManager.updateSessionStatus(ctx,authAck,auth.getTimeOutCycle());
-				
-				ctx.writeAndFlush(JSON.toJSONString(ackProtocol));
+				ctx.pipeline().remove(C2sTimeoutInputHandler.class);
+
+				ctx.pipeline()
+						.addLast(new C2sTimeoutInputHandler(auth.getTimeOutCycle() * WebsocketC2sServer.DEFAULT_TIMEOUT));
+
+				SessionManager.addSession(ctx, authAck, auth.getTimeOutCycle());
 			} else {
 				SessionManager.removeSession(ctx, ackProtocol);
 			}
 			return;
 		default:
-			ctx.writeAndFlush(JSON.toJSONString(ackProtocol));
+			ctx.channel().writeAndFlush(JSON.toJSONString(ackProtocol));
 		}
 	}
 
+//	@Override
+//	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+//		if (cause instanceof ReadTimeoutException) {
+//			SessionManager.removeSession(ctx, SessionManager.TIMEOUT);
+//		} else {
+//			super.exceptionCaught(ctx, cause);
+//		}
+//	}
 }

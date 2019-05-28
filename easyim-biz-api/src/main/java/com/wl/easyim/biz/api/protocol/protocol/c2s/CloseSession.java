@@ -1,5 +1,8 @@
 package com.wl.easyim.biz.api.protocol.protocol.c2s;
 
-public class CloseSession {
+import lombok.Data;
+
+@Data
+public class CloseSession extends AbstractResultProtocol{
 
 }

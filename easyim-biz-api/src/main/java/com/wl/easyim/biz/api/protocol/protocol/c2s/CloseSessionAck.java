@@ -5,7 +5,7 @@ package com.wl.easyim.biz.api.protocol.protocol.c2s;
  * @author wl
  *
  */
-public class CloseSessionAck extends AbstractAckProtocol{
+public class CloseSessionAck extends AbstractResultProtocol{
 	/**
 	 * 
 	 */

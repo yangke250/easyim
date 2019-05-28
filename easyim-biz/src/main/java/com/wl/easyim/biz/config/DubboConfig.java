@@ -34,7 +34,8 @@ public class DubboConfig {
 	@Bean
 	public ApplicationConfig applicationConfig() {
 		ApplicationConfig applicationConfig = new ApplicationConfig();
-		applicationConfig.setName("dubbo-annotation-provider");
+		applicationConfig.setName("easy-im");
+		applicationConfig.setQosEnable(false);
 		return applicationConfig;
 	}
 
@@ -43,7 +44,6 @@ public class DubboConfig {
 		RegistryConfig registryConfig = new RegistryConfig();
 		registryConfig.setProtocol("zookeeper");
 		registryConfig.setAddress(address);
-		//registryConfig.setPort(2181);
 		return registryConfig;
 	}
 
@@ -51,7 +51,7 @@ public class DubboConfig {
 	public ProtocolConfig protocolConfig() {
 		ProtocolConfig protocolConfig = new ProtocolConfig();
 		protocolConfig.setName("dubbo");
-		protocolConfig.setPort(20880);
+		protocolConfig.setPort(port);
 		return protocolConfig;
 	}
 

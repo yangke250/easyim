@@ -22,6 +22,7 @@ public class DubboConsumerConfig {
     public ApplicationConfig applicationConfig() {
         ApplicationConfig applicationConfig = new ApplicationConfig();
         applicationConfig.setName("easy-im");
+        applicationConfig.setQosEnable(false);
         return applicationConfig;
     }
 

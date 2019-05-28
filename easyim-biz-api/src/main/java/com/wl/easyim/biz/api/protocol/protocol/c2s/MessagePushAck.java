@@ -10,7 +10,7 @@ import lombok.Data;
  *
  */
 @Data
-public class MessagePushAck extends AbstractAckProtocol{
+public class MessagePushAck extends AbstractResultProtocol{
 
 	public MessagePushAck(){
 		

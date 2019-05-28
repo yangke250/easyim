@@ -1,6 +1,7 @@
 package com.wl.easyim.biz.service.protocol;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
@@ -39,19 +40,22 @@ public interface IC2SProtocolService<I,O> {
 	 */
 	public default C2sProtocol handleProtocol(UserSessionDto userSessionDto,C2sProtocol c2sProtocol,Map<String,String> extendsMap){
 
-		Class<I> entityClass = 
-				(Class<I>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]; 
-
-
+		ParameterizedType parameterizedType=(ParameterizedType)this.getClass().getGenericInterfaces()[0];
+		Type type = parameterizedType.getActualTypeArguments()[0];
+		Class<I> classInput = null;
+		try {
+			classInput = (Class<I>) Class.forName(type.getTypeName());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		
 		
 		O outputBody = handleProtocolBody(userSessionDto,
-				JSON.parseObject(c2sProtocol.getBody(),entityClass),extendsMap);
+				JSON.parseObject(c2sProtocol.getBody(),classInput),extendsMap);
 		
-		C2sProtocol c2sProtocolAck = C2sProtocol.builder()
-				.type(getC2sCommandType().getAckCommand()).uuid(c2sProtocol.getUuid()).build();
-		
-		c2sProtocolAck.setBody(JSON.toJSONString(outputBody));
-		
+		C2sProtocol c2sProtocolAck = new C2sProtocol(getC2sCommandType().getAckCommand(),JSON.toJSONString(outputBody));
+		c2sProtocolAck.setUuid(c2sProtocol.getUuid());
 		
 		return c2sProtocolAck;
 	}

@@ -7,6 +7,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * @author wl
  *
  */
-public abstract class AbstractC2sInputHandle extends ChannelInboundHandlerAdapter{
+public abstract class AbstractC2sInputHandler extends ChannelInboundHandlerAdapter{
 
 }

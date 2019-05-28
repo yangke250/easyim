@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
 import com.wl.easyim.biz.api.dto.user.UserSessionDto;
-import com.wl.easyim.biz.api.protocol.protocol.c2s.AbstractAckProtocol;
 
 /**
  * 所有相关协议入库

@@ -12,7 +12,7 @@ import lombok.Data;
  *
  */
 @Data
-public class AuthAck extends AbstractAckProtocol{
+public class AuthAck extends AbstractResultProtocol{
 	private static final long serialVersionUID = -26783567650417475L;
 	private ResourceType resource;//多设备登录相关
 	private String userId;//用户id
