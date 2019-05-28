@@ -70,6 +70,7 @@ public class AuthPServiceImpl implements IC2SProtocolService<Auth,AuthAck>{
 		userSessionDto.setTenementId(user.getTenementId());
 		userSessionDto.setUserId(user.getUserId());
 		userSessionDto.setResourceType(user.getResourceType());
+		
 		boolean result = userRouteService.addUserRoute(userSessionDto);
 		if(!result){
 			authAck.setResult(Result.authFailed);

@@ -10,8 +10,8 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.wl.easyim.connect.c2s.input.biz.C2sInputHandler;
-import com.wl.easyim.connect.c2s.input.biz.C2sTimeoutInputHandler;
+import com.wl.easyim.connect.c2s.input.biz.C2sInputBizHandler;
+import com.wl.easyim.connect.c2s.input.biz.C2sInputTimeoutHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -34,7 +34,7 @@ public class TcpC2sServer {
 	private int tcpPort;
 	
 	@Resource
-	private C2sInputHandler c2sInputHandler;
+	private C2sInputBizHandler c2sInputBizHandler;
 	
 	@PostConstruct
 	public void initTcpServer() {
@@ -55,17 +55,18 @@ public class TcpC2sServer {
                     @Override
                     protected void initChannel(Channel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-
+                        
+                        pipeline.addLast(new C2sInputTimeoutHandler(WebsocketC2sServer.DEFAULT_TIMEOUT));
+                        
                         pipeline.addLast(new JsonObjectDecoder());
 
                         matcher.forEach((ByteToMessageDecoder b)->{
                         	pipeline.addLast(b);
                         });
                         
-                        pipeline.addLast(new C2sTimeoutInputHandler(WebsocketC2sServer.DEFAULT_TIMEOUT));
                         
                         
-                        pipeline.addLast(c2sInputHandler);
+                        pipeline.addLast(c2sInputBizHandler);
                        
 					
                     }

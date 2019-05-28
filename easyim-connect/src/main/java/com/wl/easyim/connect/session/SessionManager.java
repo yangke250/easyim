@@ -159,13 +159,15 @@ public class SessionManager {
 		
 		UserSessionDto userSessionDto = new UserSessionDto();
 		userSessionDto.setConnectServer(connectServer);
+		userSessionDto.setSessionId(Session.getSessionId(chc));
 		
 		if(session!=null){
-			userSessionDto.setSessionId(session.getSessionId());
 			userSessionDto.setTenementId(session.getTenementId());
 			userSessionDto.setUserId(session.getUserId());
 			userSessionDto.setResourceType(session.getResource());
 			userSessionDto.setSessionTimeOut(session.getTimeOutCycle()*60);
+		}else{
+			userSessionDto.setSessionTimeOut(60);
 		}
 		
 		return userSessionDto;

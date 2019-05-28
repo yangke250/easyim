@@ -45,4 +45,6 @@ public class Session {
 		return chc.channel().id().asLongText();
 	}
 	
+	
+	
 }

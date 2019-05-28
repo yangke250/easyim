@@ -6,12 +6,12 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 
-public class C2sTimeoutInputHandler extends ReadTimeoutHandler{
+public class C2sInputTimeoutHandler extends ReadTimeoutHandler{
 	
     private boolean closed;
 
 	
-	public C2sTimeoutInputHandler(int timeoutSeconds) {
+	public C2sInputTimeoutHandler(int timeoutSeconds) {
 		super(timeoutSeconds);
 	}
 	

@@ -35,9 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @Sharable
-public class C2sInputHandler extends AbstractC2sInputHandler {
+public class C2sInputBizHandler extends AbstractC2sInputHandler {
 
-	@Reference(check = false)
+	@Reference(lazy=true,check = false,retries=1)
 	private IC2sHandleService c2sHandleService;
 
 	private static C2sProtocol authError = new C2sProtocol(C2sCommandType.kickOff);
@@ -90,12 +90,12 @@ public class C2sInputHandler extends AbstractC2sInputHandler {
 			log.info("authAck:{}", JSON.toJSONString(authAck));
 
 			if (authAck.getResult() == Result.success) {
-				ctx.pipeline().remove(C2sTimeoutInputHandler.class);
+				ctx.pipeline().remove(C2sInputTimeoutHandler.class);
 
 				ctx.pipeline()
-						.addLast(new C2sTimeoutInputHandler(auth.getTimeOutCycle() * WebsocketC2sServer.DEFAULT_TIMEOUT));
+						.addFirst(new C2sInputTimeoutHandler(auth.getTimeoutCycle() * WebsocketC2sServer.DEFAULT_TIMEOUT));
 
-				SessionManager.addSession(ctx, authAck, auth.getTimeOutCycle());
+				SessionManager.addSession(ctx, authAck, auth.getTimeoutCycle());
 			} else {
 				SessionManager.removeSession(ctx, ackProtocol);
 			}
@@ -103,6 +103,8 @@ public class C2sInputHandler extends AbstractC2sInputHandler {
 		default:
 			ctx.channel().writeAndFlush(JSON.toJSONString(ackProtocol));
 		}
+		
+		ctx.fireChannelRead(msg);
 	}
 
 //	@Override

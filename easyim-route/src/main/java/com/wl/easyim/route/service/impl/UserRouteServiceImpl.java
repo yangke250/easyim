@@ -7,8 +7,8 @@ import org.springframework.util.StringUtils;
 
 import com.wl.easy.springboot.redis.template.RedisTemplate;
 import com.wl.easyim.biz.api.dto.user.UserSessionDto;
+import com.wl.easyim.route.constant.Constant;
 import com.wl.easyim.route.service.IUserRouteService;
-
 
 @Service
 public class UserRouteServiceImpl implements IUserRouteService {
@@ -16,26 +16,30 @@ public class UserRouteServiceImpl implements IUserRouteService {
 	@Resource
 	private RedisTemplate redisTemplate;
 	
-	private final static String ROUTE_STRING_PRE ="easyim_rote_s";
 	
-	private final static String ROUTE_HASH_PRE   ="easyim_rote_h";
-	
-	private final static String SPLIT="_";
 	
 	/**
 	 * 添加用户路由信息
 	 */
 	@Override
 	public boolean addUserRoute(UserSessionDto routeDto) {
-		String uid       =  routeDto.getTenementId()+SPLIT+routeDto.getUserId();
+		String uid       =  Constant.getUid(routeDto.getTenementId(),routeDto.getUserId());
 		String sessionId =  routeDto.getSessionId();
-		String strKey  =  ROUTE_STRING_PRE+uid;
-		String hashKey =  ROUTE_HASH_PRE+uid;
+		String strKey  =  Constant.getRouteString(uid);
+		String hashKey =  Constant.getRouteHash(uid);
 		
 		int timeOut = routeDto.getSessionTimeOut();
-		//设置用户地址
+		
+		if(StringUtils.isEmpty(uid)
+				||StringUtils.isEmpty(sessionId)||timeOut<=0){
+			return false;
+		}
+		
+		
+		//设置用户路由地址
 		long result = redisTemplate.setnx(strKey,routeDto.getConnectServer());
 		if(result==0){
+			//服务设置不一致的时候
 			String  value = redisTemplate.get(strKey);
 			if(!routeDto.getConnectServer().equals(value)){
 				return false;
@@ -65,9 +69,10 @@ public class UserRouteServiceImpl implements IUserRouteService {
 	 */
 	@Override
 	public boolean pingUserRoute(UserSessionDto routeDto) {
-		String uid       =  routeDto.getTenementId()+SPLIT+routeDto.getUserId();
-		String strKey  =  ROUTE_STRING_PRE+uid;
-		String hashKey =  ROUTE_HASH_PRE+uid;
+		String uid       =  Constant.getUid(routeDto.getTenementId(),routeDto.getUserId());
+		String sessionId =  routeDto.getSessionId();
+		String strKey  =  Constant.getRouteString(uid);
+		String hashKey =  Constant.getRouteHash(uid);
 		
 		int timeOut = routeDto.getSessionTimeOut();
 		
@@ -94,10 +99,10 @@ public class UserRouteServiceImpl implements IUserRouteService {
 	 */
 	@Override
 	public boolean removeUserRoute(UserSessionDto routeDto) {
-		String uid       =  routeDto.getTenementId()+SPLIT+routeDto.getUserId();
+		String uid       =  Constant.getUid(routeDto.getTenementId(),routeDto.getUserId());
 		String sessionId =  routeDto.getSessionId();
-		String strKey  =  ROUTE_STRING_PRE+uid;
-		String hashKey =  ROUTE_HASH_PRE+uid;
+		String strKey  =  Constant.getRouteString(uid);
+		String hashKey =  Constant.getRouteHash(uid);
 		
 		redisTemplate.hdel(hashKey,sessionId);
 		
@@ -111,9 +116,9 @@ public class UserRouteServiceImpl implements IUserRouteService {
 
 	@Override
 	public String getUserRoute(long tenementId, String userId) {
-		String uid     =  tenementId+SPLIT+userId;
-		String strKey  =  ROUTE_STRING_PRE+uid;
-
+		String uid       =  Constant.getUid(tenementId,userId);
+		String strKey  =  Constant.getRouteString(uid);
+		
 		return redisTemplate.get(strKey);
 	}
 
