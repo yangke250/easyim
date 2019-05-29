@@ -1,8 +1,8 @@
-package com.wl.easyim.biz.api.dto.user;
+package com.easyim.biz.api.dto.user;
 
 import java.io.Serializable;
 
-import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
+import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 
 import lombok.Data;
 

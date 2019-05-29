@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.api.service.conversation;
+package com.easyim.biz.api.service.conversation;
 
 
 /**

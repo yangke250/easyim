@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.api.protocol.protocol.s2s;
+package com.easyim.biz.api.protocol.protocol.s2s;
 
 import lombok.Data;
 

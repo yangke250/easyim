@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.api.protocol.protocol.c2s;
+package com.easyim.biz.api.protocol.protocol.c2s;
 
 public class Ping extends AbstractProtocol{
 

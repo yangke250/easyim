@@ -1,6 +1,6 @@
-package com.wl.easyim.biz.api.protocol.protocol.c2s;
+package com.easyim.biz.api.protocol.protocol.c2s;
 
-import com.wl.easyim.biz.api.dto.message.SendMsgDto.MessageType;
+import com.easyim.biz.api.dto.message.SendMsgDto.MessageType;
 
 import lombok.Data;
 

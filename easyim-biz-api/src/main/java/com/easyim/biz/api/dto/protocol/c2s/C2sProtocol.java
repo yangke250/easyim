@@ -1,9 +1,9 @@
-package com.wl.easyim.biz.api.dto.protocol.c2s;
+package com.easyim.biz.api.dto.protocol.c2s;
 
 import java.io.Serializable;
 import java.util.UUID;
 
-import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 
 import lombok.Builder;
 import lombok.Data;

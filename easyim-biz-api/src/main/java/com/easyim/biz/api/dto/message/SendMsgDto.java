@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.api.dto.message;
+package com.easyim.biz.api.dto.message;
 
 
 //import javax.validation.constraints.Min;

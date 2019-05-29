@@ -1,9 +1,9 @@
-package com.wl.easyim.biz.api.service.protocol;
+package com.easyim.biz.api.service.protocol;
 
 import java.util.Map;
 
-import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.wl.easyim.biz.api.dto.user.UserSessionDto;
+import com.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
+import com.easyim.biz.api.dto.user.UserSessionDto;
 
 /**
  * 所有相关协议入库

@@ -1,10 +1,10 @@
-package com.wl.easyim.biz.api.service.message;
+package com.easyim.biz.api.service.message;
 
-import com.wl.easyim.biz.api.dto.message.SendMsgDto;
-import com.wl.easyim.biz.api.dto.message.SendMsgResultDto;
-import com.wl.easyim.biz.api.dto.message.OfflineMsgDto;
-import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
-import com.wl.easyim.biz.api.protocol.protocol.c2s.MessagePush;
+import com.easyim.biz.api.dto.message.OfflineMsgDto;
+import com.easyim.biz.api.dto.message.SendMsgDto;
+import com.easyim.biz.api.dto.message.SendMsgResultDto;
+import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
+import com.easyim.biz.api.protocol.protocol.c2s.MessagePush;
 
 import java.util.List;
 

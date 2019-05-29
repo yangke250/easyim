@@ -1,8 +1,8 @@
-package com.wl.easyim.biz.api.service.user;
+package com.easyim.biz.api.service.user;
 
-import com.wl.easyim.biz.api.dto.user.UserAuthDto;
-import com.wl.easyim.biz.api.dto.user.UserSessionDto;
-import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
+import com.easyim.biz.api.dto.user.UserAuthDto;
+import com.easyim.biz.api.dto.user.UserSessionDto;
+import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 
 public interface IUserService {
 	

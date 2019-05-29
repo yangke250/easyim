@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.api.protocol.enums.c2s;
+package com.easyim.biz.api.protocol.enums.c2s;
 
 
 public enum C2sCommandType {

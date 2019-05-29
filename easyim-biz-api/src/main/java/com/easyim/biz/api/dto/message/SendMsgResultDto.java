@@ -1,7 +1,7 @@
-package com.wl.easyim.biz.api.dto.message;
+package com.easyim.biz.api.dto.message;
 
 
-import com.wl.easyim.biz.api.protocol.enums.c2s.Result;
+import com.easyim.biz.api.protocol.enums.c2s.Result;
 
 import lombok.Data;
 

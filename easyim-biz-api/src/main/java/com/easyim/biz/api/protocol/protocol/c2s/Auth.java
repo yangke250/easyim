@@ -1,6 +1,6 @@
-package com.wl.easyim.biz.api.protocol.protocol.c2s;
+package com.easyim.biz.api.protocol.protocol.c2s;
 
-import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
+import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
