@@ -1,15 +1,15 @@
-package com.wl.easyim.connect.service.impl;
+package com.easyim.connect.service.impl;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.wl.easyim.biz.api.protocol.enums.s2s.S2sCommandType;
-import com.wl.easyim.biz.api.protocol.protocol.s2s.S2sMessagePush;
-import com.wl.easyim.biz.api.protocol.protocol.s2s.S2sMessagePushAck;
-import com.wl.easyim.connect.service.IS2sProtocolService;
-import com.wl.easyim.connect.session.Session;
-import com.wl.easyim.connect.session.SessionManager;
+import com.easyim.biz.api.protocol.enums.s2s.S2sCommandType;
+import com.easyim.biz.api.protocol.protocol.s2s.S2sMessagePush;
+import com.easyim.biz.api.protocol.protocol.s2s.S2sMessagePushAck;
+import com.easyim.connect.service.IS2sProtocolService;
+import com.easyim.connect.session.Session;
+import com.easyim.connect.session.SessionManager;
 
 import lombok.extern.slf4j.Slf4j;
 

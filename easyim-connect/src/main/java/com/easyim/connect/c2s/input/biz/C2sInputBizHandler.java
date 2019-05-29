@@ -1,4 +1,4 @@
-package com.wl.easyim.connect.c2s.input.biz;
+package com.easyim.connect.c2s.input.biz;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,18 +8,18 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
-import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.wl.easyim.biz.api.dto.user.UserSessionDto;
-import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
-import com.wl.easyim.biz.api.protocol.enums.c2s.Result;
-import com.wl.easyim.biz.api.protocol.protocol.c2s.Auth;
-import com.wl.easyim.biz.api.protocol.protocol.c2s.AuthAck;
-import com.wl.easyim.biz.api.protocol.protocol.c2s.PingAck;
-import com.wl.easyim.biz.api.service.protocol.IC2sHandleService;
-import com.wl.easyim.connect.c2s.server.WebsocketC2sServer;
-import com.wl.easyim.connect.session.Session;
-import com.wl.easyim.connect.session.SessionManager;
-import com.wl.easyim.connect.session.Session.SessionStatus;
+import com.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
+import com.easyim.biz.api.dto.user.UserSessionDto;
+import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.Result;
+import com.easyim.biz.api.protocol.protocol.c2s.Auth;
+import com.easyim.biz.api.protocol.protocol.c2s.AuthAck;
+import com.easyim.biz.api.protocol.protocol.c2s.PingAck;
+import com.easyim.biz.api.service.protocol.IC2sHandleService;
+import com.easyim.connect.c2s.server.WebsocketC2sServer;
+import com.easyim.connect.session.Session;
+import com.easyim.connect.session.SessionManager;
+import com.easyim.connect.session.Session.SessionStatus;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.ReadTimeoutException;

@@ -1,4 +1,4 @@
-package com.wl.easyim.connect.c2s.server;
+package com.easyim.connect.c2s.server;
 
 import java.util.ServiceLoader;
 import java.util.UUID;
@@ -9,10 +9,10 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.wl.easyim.connect.c2s.input.biz.C2sInputBizHandler;
-import com.wl.easyim.connect.c2s.input.biz.C2sInputTimeoutHandler;
-import com.wl.easyim.connect.c2s.input.protocol.WebSocketHandler;
-import com.wl.easyim.connect.c2s.output.protocol.WenSocketOutputHandler;
+import com.easyim.connect.c2s.input.biz.C2sInputBizHandler;
+import com.easyim.connect.c2s.input.biz.C2sInputTimeoutHandler;
+import com.easyim.connect.c2s.input.protocol.WebSocketHandler;
+import com.easyim.connect.c2s.output.protocol.WenSocketOutputHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;

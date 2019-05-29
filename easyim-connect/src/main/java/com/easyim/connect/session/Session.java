@@ -1,8 +1,8 @@
-package com.wl.easyim.connect.session;
+package com.easyim.connect.session;
 
 import java.util.UUID;
 
-import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
+import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Builder;

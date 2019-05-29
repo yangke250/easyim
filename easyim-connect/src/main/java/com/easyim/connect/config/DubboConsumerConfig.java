@@ -1,4 +1,4 @@
-package com.wl.easyim.connect.config;
+package com.easyim.connect.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

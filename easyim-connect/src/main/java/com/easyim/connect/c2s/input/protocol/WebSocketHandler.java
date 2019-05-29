@@ -1,4 +1,4 @@
-package com.wl.easyim.connect.c2s.input.protocol;
+package com.easyim.connect.c2s.input.protocol;
 
 import java.util.UUID;
 

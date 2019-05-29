@@ -1,4 +1,4 @@
-package com.wl.easyim.connect.s2s.server;
+package com.easyim.connect.s2s.server;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -6,7 +6,7 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.wl.easyim.connect.s2s.input.biz.S2sInputHandle;
+import com.easyim.connect.s2s.input.biz.S2sInputHandle;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;

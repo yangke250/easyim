@@ -1,4 +1,4 @@
-package com.wl.easyim.connect.session;
+package com.easyim.connect.session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,17 +12,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
+import com.easyim.biz.api.dto.user.UserSessionDto;
+import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
+import com.easyim.biz.api.protocol.enums.c2s.Result;
+import com.easyim.biz.api.protocol.protocol.c2s.AuthAck;
+import com.easyim.biz.api.protocol.protocol.c2s.CloseSession;
+import com.easyim.biz.api.service.protocol.IC2sHandleService;
+import com.easyim.connect.session.Session.SessionStatus;
 import com.wl.easy.springboot.c2s.server.AbstractServerRegister;
-import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.wl.easyim.biz.api.dto.user.UserSessionDto;
-import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
-import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
-import com.wl.easyim.biz.api.protocol.enums.c2s.Result;
-import com.wl.easyim.biz.api.protocol.protocol.c2s.AuthAck;
-import com.wl.easyim.biz.api.protocol.protocol.c2s.CloseSession;
-import com.wl.easyim.biz.api.service.protocol.IC2sHandleService;
-import com.wl.easyim.connect.session.Session.SessionStatus;
-
 
 import io.netty.channel.ChannelHandlerContext;
 

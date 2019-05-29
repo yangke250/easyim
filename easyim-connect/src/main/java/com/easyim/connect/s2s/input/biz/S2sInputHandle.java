@@ -1,4 +1,4 @@
-package com.wl.easyim.connect.s2s.input.biz;
+package com.easyim.connect.s2s.input.biz;
 
 import java.util.List;
 import java.util.Map;
@@ -9,9 +9,9 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
-import com.wl.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
-import com.wl.easyim.biz.api.protocol.enums.s2s.S2sCommandType;
-import com.wl.easyim.connect.service.IS2sProtocolService;
+import com.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
+import com.easyim.biz.api.protocol.enums.s2s.S2sCommandType;
+import com.easyim.connect.service.IS2sProtocolService;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

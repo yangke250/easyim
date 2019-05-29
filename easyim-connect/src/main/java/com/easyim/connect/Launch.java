@@ -1,4 +1,4 @@
-package com.wl.easyim.connect;
+package com.easyim.connect;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;

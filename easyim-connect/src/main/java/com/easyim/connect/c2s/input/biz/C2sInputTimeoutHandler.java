@@ -1,6 +1,6 @@
-package com.wl.easyim.connect.c2s.input.biz;
+package com.easyim.connect.c2s.input.biz;
 
-import com.wl.easyim.connect.session.SessionManager;
+import com.easyim.connect.session.SessionManager;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.ReadTimeoutException;

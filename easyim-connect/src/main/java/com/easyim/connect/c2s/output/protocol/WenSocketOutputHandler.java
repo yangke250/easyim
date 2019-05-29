@@ -1,4 +1,4 @@
-package com.wl.easyim.connect.c2s.output.protocol;
+package com.easyim.connect.c2s.output.protocol;
 
 
 import io.netty.channel.ChannelHandlerContext;
