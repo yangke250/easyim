@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.domain;
+package com.easyim.biz.domain;
 
 import lombok.Data;
 

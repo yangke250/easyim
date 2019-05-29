@@ -1,14 +1,14 @@
-package com.wl.easyim.biz.service.protocol;
+package com.easyim.biz.service.protocol;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
-import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.wl.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
-import com.wl.easyim.biz.api.dto.user.UserSessionDto;
-import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
+import com.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
+import com.easyim.biz.api.dto.user.UserSessionDto;
+import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 
 /**
  * 协议处理相关类

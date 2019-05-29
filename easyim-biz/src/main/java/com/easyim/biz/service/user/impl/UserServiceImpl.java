@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.service.user.impl;
+package com.easyim.biz.service.user.impl;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.wl.easyim.biz.api.dto.user.UserAuthDto;
-import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
-import com.wl.easyim.biz.api.service.user.IUserService;
+import com.easyim.biz.api.dto.user.UserAuthDto;
+import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
+import com.easyim.biz.api.service.user.IUserService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;

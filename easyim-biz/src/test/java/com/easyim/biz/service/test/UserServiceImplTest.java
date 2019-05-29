@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.service.test;
+package com.easyim.biz.service.test;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -10,10 +10,10 @@ import javax.annotation.Resource;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.wl.easyim.biz.api.dto.user.UserAuthDto;
-import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
-import com.wl.easyim.biz.api.service.user.IUserService;
-import com.wl.easyim.biz.test.LaunchTest;
+import com.easyim.biz.api.dto.user.UserAuthDto;
+import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
+import com.easyim.biz.api.service.user.IUserService;
+import com.easyim.biz.test.LaunchTest;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;

@@ -1,10 +1,10 @@
-package com.wl.easyim.biz.service.conversation.impl;
+package com.easyim.biz.service.conversation.impl;
 
 import javax.annotation.Resource;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.wl.easyim.biz.api.service.conversation.IConversationService;
-import com.wl.easyim.biz.mapper.conversation.IConversationMapper;
+import com.easyim.biz.api.service.conversation.IConversationService;
+import com.easyim.biz.mapper.conversation.IConversationMapper;
 
 @Service(interfaceClass=IConversationService.class)
 public class ConversationServiceImpl implements IConversationService{

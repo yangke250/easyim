@@ -1,12 +1,12 @@
-package com.wl.easyim.biz.mapper.conversation;
+package com.easyim.biz.mapper.conversation;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import com.wl.easyim.biz.domain.ConversationDo;
-import com.wl.easyim.biz.domain.ProxyConversationDo;
+import com.easyim.biz.domain.ConversationDo;
+import com.easyim.biz.domain.ProxyConversationDo;
 
 @Mapper
 public interface IProxyConversationMapper {

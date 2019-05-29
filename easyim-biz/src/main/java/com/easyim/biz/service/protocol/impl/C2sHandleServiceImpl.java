@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.service.protocol.impl;
+package com.easyim.biz.service.protocol.impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,12 +8,12 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
-import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.wl.easyim.biz.api.dto.user.UserSessionDto;
-import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
-import com.wl.easyim.biz.api.service.message.IMessageService;
-import com.wl.easyim.biz.api.service.protocol.IC2sHandleService;
-import com.wl.easyim.biz.service.protocol.IC2SProtocolService;
+import com.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
+import com.easyim.biz.api.dto.user.UserSessionDto;
+import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.service.message.IMessageService;
+import com.easyim.biz.api.service.protocol.IC2sHandleService;
+import com.easyim.biz.service.protocol.IC2SProtocolService;
 
 import lombok.extern.slf4j.Slf4j;
 

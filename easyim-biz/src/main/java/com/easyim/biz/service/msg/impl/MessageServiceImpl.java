@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.service.msg.impl;
+package com.easyim.biz.service.msg.impl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,25 +12,25 @@ import javax.validation.Validator;
 
 import org.springframework.stereotype.Service;
 
+import com.easyim.biz.Launch;
+import com.easyim.biz.api.dto.message.OfflineMsgDto;
+import com.easyim.biz.api.dto.message.SendMsgDto;
+import com.easyim.biz.api.dto.message.SendMsgResultDto;
+import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
+import com.easyim.biz.api.protocol.enums.c2s.Result;
+import com.easyim.biz.api.protocol.protocol.c2s.MessagePush;
+import com.easyim.biz.api.service.conversation.IConversationService;
+import com.easyim.biz.api.service.conversation.IProxyConversationService;
+import com.easyim.biz.api.service.message.IMessageService;
+import com.easyim.biz.constant.Constant;
+import com.easyim.biz.domain.ConversationDo;
+import com.easyim.biz.domain.MessageDo;
+import com.easyim.biz.domain.ProxyConversationDo;
+import com.easyim.biz.domain.TenementDo;
+import com.easyim.biz.mapper.conversation.IConversationMapper;
+import com.easyim.biz.mapper.conversation.IProxyConversationMapper;
+import com.easyim.biz.mapper.tenement.ITenementMapper;
 import com.wl.easy.springboot.redis.template.RedisTemplate;
-import com.wl.easyim.biz.Launch;
-import com.wl.easyim.biz.api.dto.message.OfflineMsgDto;
-import com.wl.easyim.biz.api.dto.message.SendMsgDto;
-import com.wl.easyim.biz.api.dto.message.SendMsgResultDto;
-import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
-import com.wl.easyim.biz.api.protocol.enums.c2s.Result;
-import com.wl.easyim.biz.api.protocol.protocol.c2s.MessagePush;
-import com.wl.easyim.biz.api.service.conversation.IConversationService;
-import com.wl.easyim.biz.api.service.conversation.IProxyConversationService;
-import com.wl.easyim.biz.api.service.message.IMessageService;
-import com.wl.easyim.biz.constant.Constant;
-import com.wl.easyim.biz.domain.ConversationDo;
-import com.wl.easyim.biz.domain.MessageDo;
-import com.wl.easyim.biz.domain.ProxyConversationDo;
-import com.wl.easyim.biz.domain.TenementDo;
-import com.wl.easyim.biz.mapper.conversation.IConversationMapper;
-import com.wl.easyim.biz.mapper.conversation.IProxyConversationMapper;
-import com.wl.easyim.biz.mapper.tenement.ITenementMapper;
 
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Tuple;

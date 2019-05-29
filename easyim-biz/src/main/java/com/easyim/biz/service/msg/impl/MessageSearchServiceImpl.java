@@ -1,9 +1,9 @@
-package com.wl.easyim.biz.service.msg.impl;
+package com.easyim.biz.service.msg.impl;
 
 import java.util.List;
 
-import com.wl.easyim.biz.api.protocol.protocol.c2s.MessagePush;
-import com.wl.easyim.biz.api.service.message.IMessageSearchService;
+import com.easyim.biz.api.protocol.protocol.c2s.MessagePush;
+import com.easyim.biz.api.service.message.IMessageSearchService;
 
 /**
  * 消息查询服务

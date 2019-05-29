@@ -1,10 +1,10 @@
-package com.wl.easyim.biz.mapper.tenement;
+package com.easyim.biz.mapper.tenement;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import com.wl.easyim.biz.domain.TenementDo;
+import com.easyim.biz.domain.TenementDo;
 
 @Mapper
 public interface ITenementMapper {

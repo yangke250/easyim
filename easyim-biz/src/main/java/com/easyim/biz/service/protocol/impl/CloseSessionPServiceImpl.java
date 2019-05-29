@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.service.protocol.impl;
+package com.easyim.biz.service.protocol.impl;
 
 import java.util.Map;
 
@@ -6,13 +6,13 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.wl.easyim.biz.api.dto.user.UserSessionDto;
-import com.wl.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
-import com.wl.easyim.biz.api.protocol.enums.c2s.Result;
-import com.wl.easyim.biz.api.protocol.protocol.c2s.CloseSession;
-import com.wl.easyim.biz.api.protocol.protocol.c2s.CloseSessionAck;
-import com.wl.easyim.biz.service.protocol.IC2SProtocolService;
-import com.wl.easyim.route.service.IUserRouteService;
+import com.easyim.biz.api.dto.user.UserSessionDto;
+import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.Result;
+import com.easyim.biz.api.protocol.protocol.c2s.CloseSession;
+import com.easyim.biz.api.protocol.protocol.c2s.CloseSessionAck;
+import com.easyim.biz.service.protocol.IC2SProtocolService;
+import com.easyim.route.service.IUserRouteService;
 
 @Service("closeSessionPService")
 public class CloseSessionPServiceImpl implements IC2SProtocolService<CloseSession,CloseSessionAck>{

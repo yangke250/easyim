@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.config;
+package com.easyim.biz.config;
 
 import java.util.ArrayList;
 

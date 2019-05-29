@@ -1,4 +1,4 @@
-package com.wl.easyim.biz;
+package com.easyim.biz;
 
 import java.util.Set;
 

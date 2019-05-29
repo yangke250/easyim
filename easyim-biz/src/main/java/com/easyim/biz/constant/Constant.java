@@ -1,4 +1,4 @@
-package com.wl.easyim.biz.constant;
+package com.easyim.biz.constant;
 
 public abstract class Constant {
 	

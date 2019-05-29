@@ -1,14 +1,12 @@
-package com.wl.easyim.biz.service.conversation.impl;
+package com.easyim.biz.service.conversation.impl;
 
 import javax.annotation.Resource;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.wl.easyim.biz.api.service.conversation.IConversationService;
-import com.wl.easyim.biz.api.service.conversation.IProxyConversationService;
-
-
-import com.wl.easyim.biz.domain.ProxyConversationDo;
-import com.wl.easyim.biz.mapper.conversation.IProxyConversationMapper;
+import com.easyim.biz.api.service.conversation.IConversationService;
+import com.easyim.biz.api.service.conversation.IProxyConversationService;
+import com.easyim.biz.domain.ProxyConversationDo;
+import com.easyim.biz.mapper.conversation.IProxyConversationMapper;
 
 
 @Service(interfaceClass=IProxyConversationService.class)
