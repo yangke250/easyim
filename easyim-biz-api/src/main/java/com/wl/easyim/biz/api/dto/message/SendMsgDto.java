@@ -7,7 +7,7 @@ package com.wl.easyim.biz.api.dto.message;
 import lombok.Data;
 
 @Data
-public class MessageSendDto {
+public class SendMsgDto {
 	
 //	@Min(value = 0)
 	private long tenementId;

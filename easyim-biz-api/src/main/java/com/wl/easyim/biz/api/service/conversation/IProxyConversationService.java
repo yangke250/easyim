@@ -1,6 +1,5 @@
-package com.wl.easyim.biz.service.conversation;
+package com.wl.easyim.biz.api.service.conversation;
 
-import com.wl.easyim.biz.domain.ProxyConversationDo;
 
 /**
  * 代理会话服务

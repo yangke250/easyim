@@ -6,7 +6,7 @@ import com.wl.easyim.biz.api.protocol.enums.c2s.Result;
 import lombok.Data;
 
 @Data
-public class MessageSendResultDto {
+public class SendMsgResultDto {
 	private long id;
 	private Result result = Result.success;
 }
