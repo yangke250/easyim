@@ -2,12 +2,11 @@ package com.wl.easyim.biz.service.conversation.impl;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
-
+import com.alibaba.dubbo.config.annotation.Service;
+import com.wl.easyim.biz.api.service.conversation.IConversationService;
 import com.wl.easyim.biz.mapper.conversation.IConversationMapper;
-import com.wl.easyim.biz.service.conversation.IConversationService;
 
-@Service("conversationService")
+@Service(interfaceClass=IConversationService.class)
 public class ConversationServiceImpl implements IConversationService{
 
 	@Resource

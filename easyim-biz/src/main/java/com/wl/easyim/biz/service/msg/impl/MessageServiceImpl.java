@@ -1,20 +1,27 @@
 package com.wl.easyim.biz.service.msg.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Set;
 
 
 import javax.annotation.Resource;
-//import javax.validation.ConstraintViolation;
-//import javax.validation.Validator;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import org.springframework.stereotype.Service;
 
 import com.wl.easy.springboot.redis.template.RedisTemplate;
-import com.wl.easyim.biz.api.dto.message.MessageSendDto;
-import com.wl.easyim.biz.api.dto.message.MessageSendResultDto;
+import com.wl.easyim.biz.Launch;
+import com.wl.easyim.biz.api.dto.message.OfflineMsgDto;
+import com.wl.easyim.biz.api.dto.message.SendMsgDto;
+import com.wl.easyim.biz.api.dto.message.SendMsgResultDto;
 import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
 import com.wl.easyim.biz.api.protocol.enums.c2s.Result;
+import com.wl.easyim.biz.api.protocol.protocol.c2s.MessagePush;
+import com.wl.easyim.biz.api.service.conversation.IConversationService;
+import com.wl.easyim.biz.api.service.conversation.IProxyConversationService;
 import com.wl.easyim.biz.api.service.message.IMessageService;
 import com.wl.easyim.biz.constant.Constant;
 import com.wl.easyim.biz.domain.ConversationDo;
@@ -24,10 +31,9 @@ import com.wl.easyim.biz.domain.TenementDo;
 import com.wl.easyim.biz.mapper.conversation.IConversationMapper;
 import com.wl.easyim.biz.mapper.conversation.IProxyConversationMapper;
 import com.wl.easyim.biz.mapper.tenement.ITenementMapper;
-import com.wl.easyim.biz.service.conversation.IConversationService;
-import com.wl.easyim.biz.service.conversation.IProxyConversationService;
 
 import lombok.extern.slf4j.Slf4j;
+import redis.clients.jedis.Tuple;
 
 
 @Service
@@ -35,6 +41,8 @@ import lombok.extern.slf4j.Slf4j;
 public class MessageServiceImpl implements IMessageService {
 	
 	public final static long MAX_NUM = 500;
+	
+	public final static int MAX_OFFLINE_NUM =20;
 	
 	public final static int OFFLINE_TIME = 15*24*60*60;//离线消息，最多15天
 	
@@ -47,33 +55,19 @@ public class MessageServiceImpl implements IMessageService {
 	@Resource
 	private ITenementMapper tenementMapper;
 	
-	@Resource(name="conversationService")
+	@Resource
 	private IConversationService conversationService;
 	
-	@Resource(name="proxyConversationService")
+	@Resource
 	private IProxyConversationService proxyConversationService;
 	
 
 	
-//	@Resource
-//	private Validator validator;
+	@Resource
+	private Validator validator;
 	
 	
-	/**
-	 * 验证相关对象
-	 * @param message
-	 * @return
-	 */
-	private boolean doValidator(MessageSendDto message){
-//		Set<ConstraintViolation<MessageSendDto>> results = validator.validate(message);
-//		if(results.size()>0){
-//			for(ConstraintViolation<MessageSendDto> result:results){
-//				log.error("messageServiceImpl doValidator error:{}",result.getMessage());
-//			}
-//			return false;
-//		}
-		return true;
-	}
+	
 	
 	/**
 	 * 保存离线消息
@@ -92,22 +86,27 @@ public class MessageServiceImpl implements IMessageService {
 	}
 	
 	/**
+	 * 离线消息的key
+	 * @param tenementId
+	 * @param toId
+	 * @return
+	 */
+	private String getOfflineKey(long tenementId,String toId){
+		String key = Constant.OFFLINE_MSG_KEY+tenementId+"_"+toId;
+		return key;
+	}
+	/**
 	 * 保存离线消息
 	 * @param tenementId
 	 * @param toId
 	 * @param msgId
 	 * @param isMultiDevice
 	 */
-	private void saveOfflineMsg(long tenementId,String toId,long msgId,boolean isMultiDevice){
-		String key = Constant.OFFLINE_MSG_KEY+tenementId+"_"+toId;
+	private void saveOfflineMsg(long tenementId,String toId,long msgId){
+		String key = getOfflineKey(tenementId,toId);
 		
 		//多设备离线消息
-		if(isMultiDevice){
-			saveOfflineMsg(key+ResourceType.pc,msgId);
-			saveOfflineMsg(key+ResourceType.app,msgId);
-		}else{
-			saveOfflineMsg(key,msgId);
-		}
+		saveOfflineMsg(key,msgId);
 	}
 
 	/**
@@ -130,21 +129,18 @@ public class MessageServiceImpl implements IMessageService {
 		
 	}
 	
-	private void pushMsg(long msgId,MessageSendDto message){
-		
-	}
-	
+
 	
 	@Override
-	public MessageSendResultDto sendMessage(MessageSendDto message) {
+	public SendMsgResultDto sendMsg(SendMsgDto message) {
         //生产msgId
 		long msgId = getId();
         
-        MessageSendResultDto dto = new MessageSendResultDto();
+        SendMsgResultDto dto = new SendMsgResultDto();
         
         TenementDo tenement =  tenementMapper.getTenementById(message.getTenementId());
         
-        boolean result = doValidator(message);
+        boolean result = Launch.doValidator(message);
         if(tenement==null||!result){
         	dto.setResult(Result.inputError);
         	return dto;
@@ -167,7 +163,7 @@ public class MessageServiceImpl implements IMessageService {
 		}
 		
         //保存离线消息
-		saveOfflineMsg(tenementId,toId,msgId,tenement.isMultiDevice());
+		saveOfflineMsg(tenementId,toId,msgId);
 		
 		//保证未读消息数
 		saveUnreadCount(cid,toId);
@@ -182,6 +178,52 @@ public class MessageServiceImpl implements IMessageService {
 	
 	private long getId(){
 		return redisTemplate.incr(Constant.ID_KEY);
+	}
+
+	private List<MessagePush> pullOfflineMsg(String key,long lastMsgId){
+		
+		List<MessagePush> message = new ArrayList<MessagePush>();
+		
+		Set<Tuple> sets = null;
+		if(lastMsgId<=0){
+			sets = redisTemplate.zrangeWithScores(key,0,MAX_OFFLINE_NUM);
+		}else{
+			sets = redisTemplate.zrangeByScoreWithScores(key,lastMsgId,Double.MAX_VALUE,0,MAX_OFFLINE_NUM);
+		}
+		
+		List<Long> ids = new ArrayList<Long>();
+		for(Tuple set:sets){
+			String str = new String(set.getBinaryElement());
+			
+			ids.add(Long.getLong(str));
+		}
+		
+		return message;
+	}
+
+	
+
+	@Override
+	public List<MessagePush> pullOfflineMsg(OfflineMsgDto offlineMsgDto){
+		
+		List<MessagePush> list = new ArrayList<MessagePush>();
+		
+		boolean result = Launch.doValidator(offlineMsgDto);
+		if(!result){
+			return list;
+		}
+		
+		long tenementId = offlineMsgDto.getTenementId();
+		String userId   = offlineMsgDto.getUserId();
+		TenementDo  tenement = this.tenementMapper.getTenementById(offlineMsgDto.getTenementId());
+		if(tenement==null){
+			return list;
+		}
+		
+		String key = getOfflineKey(tenementId,userId);
+		long lastMsgId = offlineMsgDto.getLastMsgId();
+		
+		return pullOfflineMsg(key,lastMsgId);
 	}
 
 }

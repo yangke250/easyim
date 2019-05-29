@@ -2,16 +2,16 @@ package com.wl.easyim.biz.service.conversation.impl;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
+import com.alibaba.dubbo.config.annotation.Service;
+import com.wl.easyim.biz.api.service.conversation.IConversationService;
+import com.wl.easyim.biz.api.service.conversation.IProxyConversationService;
 
-//import org.springframework.stereotype.Service;
 
 import com.wl.easyim.biz.domain.ProxyConversationDo;
 import com.wl.easyim.biz.mapper.conversation.IProxyConversationMapper;
-import com.wl.easyim.biz.service.conversation.IProxyConversationService;
 
 
-@Service("proxyConversationService")
+@Service(interfaceClass=IProxyConversationService.class)
 public class ProxyConversationServiceImpl implements IProxyConversationService {
 
 	@Resource

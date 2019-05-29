@@ -1,5 +1,11 @@
 package com.wl.easyim.biz;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+
 //import javax.validation.Validation;
 //import javax.validation.Validator;
 
@@ -36,10 +42,31 @@ public class Launch {
 		return new DozerBeanMapper();
 	}
 	
-//	@Bean("validator")
-//	public Validator getValidator(){
-//		Validator validator = 
-//				Validation.buildDefaultValidatorFactory().getValidator();
-//		return validator;
-//	}
+	@Bean
+	public Validator getValidator(){
+		Validator validator = 
+				Validation.buildDefaultValidatorFactory().getValidator();
+		return validator;
+	}
+	
+	
+	private static Validator validator = 
+			Validation.buildDefaultValidatorFactory().getValidator();
+	
+	
+	/**
+	 * 验证相关对象
+	 * @param message
+	 * @return
+	 */
+	public static boolean doValidator(Object object){
+		Set<ConstraintViolation<Object>> results = validator.validate(object);
+		if(results.size()>0){
+			for(ConstraintViolation<Object> result:results){
+				log.error("messageServiceImpl doValidator error:{}",result.getMessage());
+			}
+			return false;
+		}
+		return true;
+	}
 }
