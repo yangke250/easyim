@@ -1,14 +1,14 @@
-package com.wl.easyim.route.service.impl;
+package com.easyim.route.service.impl;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.easyim.biz.api.dto.user.UserSessionDto;
+import com.easyim.route.constant.Constant;
+import com.easyim.route.service.IUserRouteService;
 import com.wl.easy.springboot.redis.template.RedisTemplate;
-import com.wl.easyim.biz.api.dto.user.UserSessionDto;
-import com.wl.easyim.route.constant.Constant;
-import com.wl.easyim.route.service.IUserRouteService;
 
 @Service
 public class UserRouteServiceImpl implements IUserRouteService {

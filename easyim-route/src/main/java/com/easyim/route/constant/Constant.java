@@ -1,4 +1,4 @@
-package com.wl.easyim.route.constant;
+package com.easyim.route.constant;
 
 public abstract class Constant {
 	

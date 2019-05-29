@@ -1,4 +1,4 @@
-package com.wl.easyim.route.service.impl;
+package com.easyim.route.service.impl;
 
 import java.util.Queue;
 import java.util.UUID;
@@ -18,12 +18,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.wl.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
-import com.wl.easyim.biz.api.protocol.enums.s2s.S2sCommandType;
-import com.wl.easyim.route.server.discover.ServerDiscover;
-import com.wl.easyim.route.service.IProtocolRouteService;
-import com.wl.easyim.route.service.IUserRouteService;
+import com.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
+import com.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
+import com.easyim.biz.api.protocol.enums.s2s.S2sCommandType;
+import com.easyim.route.discover.ServerDiscover;
+import com.easyim.route.service.IProtocolRouteService;
+import com.easyim.route.service.IUserRouteService;
 
 import io.netty.channel.Channel;
 import io.reactivex.Observable;

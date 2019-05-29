@@ -1,4 +1,4 @@
-package com.wl.easyim.route.server.discover;
+package com.easyim.route.discover;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -27,11 +27,10 @@ import javax.annotation.PreDestroy;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
+import com.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
+import com.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
 import com.wl.easy.springboot.c2s.client.IC2sClient;
 import com.wl.easy.springboot.c2s.dto.ServerDto;
-import com.wl.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.wl.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
-
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;

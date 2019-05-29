@@ -1,4 +1,4 @@
-package com.wl.easyim.route.service;
+package com.easyim.route.service;
 
 /**
  * 协议路由

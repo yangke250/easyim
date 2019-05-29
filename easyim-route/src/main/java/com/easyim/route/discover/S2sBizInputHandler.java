@@ -1,10 +1,10 @@
-package com.wl.easyim.route.server.discover;
+package com.easyim.route.discover;
 
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
-import com.wl.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
-import com.wl.easyim.route.service.impl.ProtocolRouteServiceImpl;
+import com.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
+import com.easyim.route.service.impl.ProtocolRouteServiceImpl;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

@@ -1,7 +1,7 @@
-package com.wl.easyim.route.service;
+package com.easyim.route.service;
 
-import com.wl.easyim.biz.api.dto.user.UserSessionDto;
-import com.wl.easyim.biz.api.protocol.enums.c2s.ResourceType;
+import com.easyim.biz.api.dto.user.UserSessionDto;
+import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 
 /**
  * 用户路由服务
