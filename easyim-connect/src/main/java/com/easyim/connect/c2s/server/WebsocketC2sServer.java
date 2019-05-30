@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WebsocketC2sServer {
 
-	@Value("${im.c2s.websocket.port}")
+	@Value("${c2s.websocket.port}")
 	private int websocketPort;
 	
 	@Resource

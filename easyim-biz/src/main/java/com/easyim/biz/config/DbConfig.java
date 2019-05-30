@@ -20,11 +20,6 @@ import com.alibaba.druid.pool.DruidDataSource;
 
 @Component
 @Configuration
-@PropertySource(
-value = {
-		"classpath:application-easyim-biz.properties",
-		"classpath:application-easyim-biz-${spring.profiles.active}.properties"},
-ignoreResourceNotFound = true, encoding = "UTF-8")
 public class DbConfig {
 	@Value("${jdbc.url}")
 	private String url;

@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TcpC2sServer {
 	
-	@Value("${im.c2s.tcp.port}")
+	@Value("${c2s.tcp.port}")
 	private int tcpPort;
 	
 	@Resource
