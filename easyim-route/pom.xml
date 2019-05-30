@@ -2,11 +2,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.wl.easyim</groupId>
+		<groupId>com.easyim</groupId>
 		<artifactId>easyim</artifactId>
 		<version>0.0.1</version>
 	</parent>
-	<artifactId>easyim-route</artifactId>
+	<artifactId>route</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -33,17 +33,17 @@
 			<artifactId>fastjson</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.wl.easyim</groupId>
-			<artifactId>easyim-biz-api</artifactId>
+			<groupId>com.easyim</groupId>
+			<artifactId>biz-api</artifactId>
 			<version>0.0.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.wl</groupId>
-			<artifactId>easy-springboot-c2s</artifactId>
+			<groupId>com.easy-springboot</groupId>
+			<artifactId>c2s</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.wl</groupId>
-			<artifactId>easy-springboot-redis</artifactId>
+			<groupId>com.easy-springboot</groupId>
+			<artifactId>redis</artifactId>
 		</dependency>
 		<dependency>
 				<groupId>io.reactivex.rxjava2</groupId>

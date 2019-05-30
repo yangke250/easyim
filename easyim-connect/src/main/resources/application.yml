@@ -11,9 +11,8 @@ c2s:
    url: 114.55.255.143:2181
   path: /easy-im/server
   server: true
-  port: 8888
-  
+  port: 8888  
 
 dubbo:
-  timeOut: 3000
+  timeout: 3000
   address: 114.55.255.143:2181

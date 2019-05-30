@@ -12,6 +12,7 @@ import javax.validation.Validator;
 
 import org.springframework.stereotype.Service;
 
+import com.easy.springboot.redis.template.RedisTemplate;
 import com.easyim.biz.Launch;
 import com.easyim.biz.api.dto.message.OfflineMsgDto;
 import com.easyim.biz.api.dto.message.SendMsgDto;
@@ -30,7 +31,6 @@ import com.easyim.biz.domain.TenementDo;
 import com.easyim.biz.mapper.conversation.IConversationMapper;
 import com.easyim.biz.mapper.conversation.IProxyConversationMapper;
 import com.easyim.biz.mapper.tenement.ITenementMapper;
-import com.wl.easy.springboot.redis.template.RedisTemplate;
 
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Tuple;

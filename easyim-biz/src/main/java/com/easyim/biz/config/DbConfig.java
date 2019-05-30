@@ -10,14 +10,21 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.stereotype.Component;
 
 import com.alibaba.druid.filter.Filter;
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
 
+@Component
 @Configuration
-@MapperScan("com.wl.easyim.biz.mapper")
+@PropertySource(
+value = {
+		"classpath:application-easyim-biz.properties",
+		"classpath:application-easyim-biz-${spring.profiles.active}.properties"},
+ignoreResourceNotFound = true, encoding = "UTF-8")
 public class DbConfig {
 	@Value("${jdbc.url}")
 	private String url;

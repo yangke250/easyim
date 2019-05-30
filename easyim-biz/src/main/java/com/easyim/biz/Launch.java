@@ -16,14 +16,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@SpringBootApplication
+//@SpringBootApplication
 @EnableDubbo
+@Configuration
+@ComponentScan
+@MapperScan("com.easyim.biz.mapper")
 public class Launch {
 	
 	

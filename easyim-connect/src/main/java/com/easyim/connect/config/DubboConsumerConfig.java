@@ -3,15 +3,17 @@ package com.easyim.connect.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.ConsumerConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
 
 @Configuration
+@Component
 public class DubboConsumerConfig {
 	
-	@Value("${dubbo.timeOut}")
+	@Value("${dubbo.timeout}")
 	private int timeOut;
 
 	@Value("${dubbo.address}")

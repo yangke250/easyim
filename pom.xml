@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.wl.easyim</groupId>
+	<groupId>com.easyim</groupId>
 	<artifactId>easyim</artifactId>
 	<version>0.0.1</version>
 	<packaging>pom</packaging>
@@ -39,23 +39,23 @@
 				<version>2.0.1</version>
 			</dependency>
 			<dependency>
-				<groupId>com.wl</groupId>
-				<artifactId>easy-springboot-hbase</artifactId>
+				<groupId>com.easy-springboot</groupId>
+				<artifactId>hbase</artifactId>
 				<version>0.0.1</version>
 			</dependency>
 			<dependency>
-				<groupId>com.wl</groupId>
-				<artifactId>easy-springboot-c2s</artifactId>
+				<groupId>com.easy-springboot</groupId>
+				<artifactId>c2s</artifactId>
 				<version>0.0.1</version>
 			</dependency>
 			<dependency>
-				<groupId>com.wl</groupId>
-				<artifactId>easy-springboot-kafka</artifactId>
+				<groupId>com.easy-springboot</groupId>
+				<artifactId>kafka</artifactId>
 				<version>0.0.1</version>
 			</dependency>
 			<dependency>
-				<groupId>com.wl</groupId>
-				<artifactId>easy-springboot-redis</artifactId>
+				<groupId>com.easy-springboot</groupId>
+				<artifactId>redis</artifactId>
 				<version>0.0.1</version>
 			</dependency>
 			<dependency>

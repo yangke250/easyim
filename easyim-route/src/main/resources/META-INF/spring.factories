@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.wl.easyim.route.Launch
+com.easyim.route.Launch
