@@ -17,9 +17,8 @@ public class MessageDo {
 	private int type;//1 文本  
 	private int subType;
 	private String content;
+	private String bizUid;//消息唯一业务码
 	private Date gmtCreate;
-	private String ticket;//消息唯一业务码
-
 	
 	
 

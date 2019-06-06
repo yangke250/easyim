@@ -8,7 +8,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
-import com.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
+import com.easyim.biz.api.dto.protocol.C2sProtocol;
 import com.easyim.biz.api.dto.user.UserSessionDto;
 import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 import com.easyim.biz.api.service.message.IMessageService;
@@ -59,6 +59,12 @@ public class C2sHandleServiceImpl implements IC2sHandleService,BeanPostProcessor
 			}
 			
 		}
+		return bean;
+	}
+
+	@Override
+	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+		// TODO Auto-generated method stub
 		return bean;
 	}
 

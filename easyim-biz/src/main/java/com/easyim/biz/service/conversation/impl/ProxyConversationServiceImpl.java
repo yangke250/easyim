@@ -31,8 +31,8 @@ public class ProxyConversationServiceImpl implements IProxyConversationService {
 		if(proxyConversation==null){
 			proxyConversation = new ProxyConversationDo();
 			proxyConversation.setTenementId(tenementId);
-			proxyConversation.setProxySmallId(proxyFromId);
-			proxyConversation.setProxyBigId(proxyToId);
+			proxyConversation.setProxySmallId(proxySmallId);
+			proxyConversation.setProxyBigId(proxyBigId);
 			proxyConversationMapper.insertProxyConversationDo(proxyConversation);
 		}
 			return proxyConversation.getId();

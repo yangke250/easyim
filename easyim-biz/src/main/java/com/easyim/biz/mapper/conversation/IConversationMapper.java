@@ -2,6 +2,7 @@ package com.easyim.biz.mapper.conversation;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -17,5 +18,6 @@ public interface IConversationMapper {
 			@Param("bigId") String bigId);
 	
 	@Insert("insert into t_conversation (tenement_id,small_id,big_id,proxy_cid) values (#{c.tenementId},#{c.smallId},#{c.bigId},#{c.proxyCid})")
+	@Options(useGeneratedKeys = true,keyProperty="id",keyColumn="id") // Adding this line instread of @SelectKey 
 	public long insertConversationDo(@Param("c")ConversationDo cDo);
 }

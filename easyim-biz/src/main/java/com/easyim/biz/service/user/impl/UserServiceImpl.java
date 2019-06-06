@@ -5,10 +5,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Resource;
+
+import com.alibaba.druid.util.StringUtils;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.easyim.biz.Launch;
 import com.easyim.biz.api.dto.user.UserAuthDto;
+import com.easyim.biz.api.dto.user.UserConnectDto;
 import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 import com.easyim.biz.api.service.user.IUserService;
+import com.easyim.route.server.ServerDiscover;
+import com.easyim.route.service.IUserRouteService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
@@ -24,9 +31,37 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class UserServiceImpl implements IUserService{
 
 	public static final String PASSWORD="yangke250";
+
+	@Resource
+	private IUserRouteService userRouteService;
 	
 	@Override
-	public String authEncode(long tenementId, String userId, ResourceType resoureType) {
+	public UserConnectDto getConnectInfo(UserAuthDto userAuthDto) {
+		
+		String auth = authEncode(userAuthDto);
+		
+		long tenementId  = userAuthDto.getTenementId();
+		String userId    = userAuthDto.getUserId();
+		
+		String connectServer = userRouteService.getUserRoute(tenementId, userId);
+		if(StringUtils.isEmpty(connectServer)){
+			connectServer =  ServerDiscover.pollingConnectServer();
+		}
+		UserConnectDto userConnectDto = new UserConnectDto();
+		userConnectDto.setToken(auth);
+		userConnectDto.setConnectServer(connectServer);
+		
+		return userConnectDto;
+	}
+	
+	@Override
+	public String authEncode(UserAuthDto userAuthDto) {
+		Launch.doValidatorDoError(userAuthDto);
+		
+		long tenementId =userAuthDto.getTenementId();
+		ResourceType  resourceType =userAuthDto.getResourceType();
+		String userId =userAuthDto.getUserId();
+		
 		//指定签名的时候使用的签名算法，也就是header那部分，jjwt已经将这部分内容封装好了。
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
@@ -36,7 +71,7 @@ public class UserServiceImpl implements IUserService{
         //创建payload的私有声明（根据特定的业务需要添加，如果要拿这个做验证，一般是需要和jwt的接收方提前沟通好验证方式的）
         Map<String, Object> claims = new HashMap<String, Object>();
         claims.put("tenementId",tenementId);
-        claims.put("resourceType",resoureType);
+        claims.put("resourceType",resourceType);
 
 
         //这里其实就是new一个JwtBuilder，设置jwt的body
@@ -78,5 +113,7 @@ public class UserServiceImpl implements IUserService{
         userBo.setResourceType(resourceType);
         return userBo;
 	}
+
+
 
 }

@@ -8,16 +8,25 @@
 	</parent>
 	<artifactId>biz</artifactId>
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/io.shardingjdbc/sharding-jdbc-core -->
 		<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-web</artifactId>
-				<exclusions>
-					<exclusion>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-starter-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
+			<groupId>io.shardingjdbc</groupId>
+			<artifactId>sharding-jdbc-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -79,8 +88,8 @@
 			<artifactId>c2s</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.easy-springboot</groupId>
-			<artifactId>redis</artifactId>
+			<groupId>cn.linkedcare.springboot</groupId>
+			<artifactId>spring-boot-redis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -109,14 +118,8 @@
 			<groupId>com.easyim</groupId>
 			<artifactId>route</artifactId>
 			<version>0.0.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
-		
+
 	</dependencies>
 </project>

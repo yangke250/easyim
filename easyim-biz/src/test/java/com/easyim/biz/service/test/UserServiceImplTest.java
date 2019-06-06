@@ -35,7 +35,7 @@ public class UserServiceImplTest extends LaunchTest{
 		long tenementId =1;
 		String userId ="100";
 		
-		String token = userService.authEncode(tenementId, userId, ResourceType.pc);
+		String token = userService.authEncode(null);
 		System.out.println(token);
 		UserAuthDto  userAuthDto = userService.authDecode(token);
 		

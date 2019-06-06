@@ -7,10 +7,10 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.easyim.biz.api.dto.user.UserSessionDto;
+import com.easyim.biz.api.protocol.c2s.CloseSession;
+import com.easyim.biz.api.protocol.c2s.CloseSessionAck;
 import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 import com.easyim.biz.api.protocol.enums.c2s.Result;
-import com.easyim.biz.api.protocol.protocol.c2s.CloseSession;
-import com.easyim.biz.api.protocol.protocol.c2s.CloseSessionAck;
 import com.easyim.biz.service.protocol.IC2SProtocolService;
 import com.easyim.route.service.IUserRouteService;
 

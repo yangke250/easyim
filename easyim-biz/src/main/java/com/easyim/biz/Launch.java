@@ -21,11 +21,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
+import com.alibaba.fastjson.JSON;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-//@SpringBootApplication
+@SpringBootApplication
 @EnableDubbo
 @Configuration
 @ComponentScan
@@ -53,12 +54,7 @@ public class Launch {
 		return new DozerBeanMapper();
 	}
 	
-	@Bean
-	public Validator getValidator(){
-		Validator validator = 
-				Validation.buildDefaultValidatorFactory().getValidator();
-		return validator;
-	}
+
 	
 	
 	private static Validator validator = 
@@ -79,5 +75,20 @@ public class Launch {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * 验证相关对象
+	 * @param message
+	 * @return
+	 */
+	public static void doValidatorDoError(Object object){
+		Set<ConstraintViolation<Object>> results = validator.validate(object);
+		if(results.size()>0){
+			for(ConstraintViolation<Object> result:results){
+				log.error("messageServiceImpl doValidator error:{}",result.getMessage());
+			}
+			throw new RuntimeException("doValidatorDoError:"+JSON.toJSONString(object));
+		}
 	}
 }

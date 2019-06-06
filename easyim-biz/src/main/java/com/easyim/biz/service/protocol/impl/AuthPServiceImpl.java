@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
+import com.easyim.biz.api.dto.protocol.C2sProtocol;
 import com.easyim.biz.api.dto.user.UserAuthDto;
 import com.easyim.biz.api.dto.user.UserSessionDto;
+import com.easyim.biz.api.protocol.c2s.Auth;
+import com.easyim.biz.api.protocol.c2s.AuthAck;
+import com.easyim.biz.api.protocol.c2s.Auth.AuthType;
 import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 import com.easyim.biz.api.protocol.enums.c2s.Result;
-import com.easyim.biz.api.protocol.protocol.c2s.Auth;
-import com.easyim.biz.api.protocol.protocol.c2s.AuthAck;
-import com.easyim.biz.api.protocol.protocol.c2s.Auth.AuthType;
 import com.easyim.biz.api.service.user.IUserService;
 import com.easyim.biz.service.protocol.IC2SProtocolService;
 import com.easyim.route.service.IUserRouteService;

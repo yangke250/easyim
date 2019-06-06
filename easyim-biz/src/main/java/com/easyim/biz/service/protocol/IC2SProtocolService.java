@@ -5,9 +5,10 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
-import com.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
+import com.easyim.biz.api.dto.protocol.C2sProtocol;
+import com.easyim.biz.api.dto.protocol.S2sProtocol;
 import com.easyim.biz.api.dto.user.UserSessionDto;
+import com.easyim.biz.api.protocol.c2s.AbstractProtocol;
 import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 
 /**
@@ -52,9 +53,10 @@ public interface IC2SProtocolService<I,O> {
 		
 		
 		O outputBody = handleProtocolBody(userSessionDto,
-				JSON.parseObject(c2sProtocol.getBody(),classInput),extendsMap);
+				(I) c2sProtocol.getBody(),extendsMap);
 		
-		C2sProtocol c2sProtocolAck = new C2sProtocol(getC2sCommandType().getAckCommand(),JSON.toJSONString(outputBody));
+		C2sProtocol c2sProtocolAck = new C2sProtocol(getC2sCommandType().getAckCommand(),
+				(AbstractProtocol) outputBody);
 		c2sProtocolAck.setUuid(c2sProtocol.getUuid());
 		
 		return c2sProtocolAck;

@@ -2,7 +2,7 @@ package com.easyim.biz.service.msg.impl;
 
 import java.util.List;
 
-import com.easyim.biz.api.protocol.protocol.c2s.MessagePush;
+import com.easyim.biz.api.protocol.c2s.MessagePush;
 import com.easyim.biz.api.service.message.IMessageSearchService;
 
 /**
