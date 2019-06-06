@@ -16,6 +16,4 @@ public class OfflineMsgDto {
 	private String userId;
 	@Min(value=0)
 	private long lastMsgId = 0;
-	@NotNull
-	private ResourceType resource;
 }

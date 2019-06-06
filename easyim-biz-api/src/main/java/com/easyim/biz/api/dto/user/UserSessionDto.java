@@ -6,6 +6,12 @@ import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 
 import lombok.Data;
 
+
+/**
+ * 用户会话session相关数据
+ * @author wl
+ *
+ */
 @Data
 public class UserSessionDto implements Serializable {
 

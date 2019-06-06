@@ -1,6 +1,9 @@
 package com.easyim.biz.api.dto.message;
 
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 //import javax.validation.constraints.Min;
 //import javax.validation.constraints.NotNull;
 
@@ -9,25 +12,25 @@ import lombok.Data;
 @Data
 public class SendMsgDto {
 	
-//	@Min(value = 0)
+	@Min(value = 0)
 	private long tenementId;
-//	@NotNull
+	@NotNull
 	private String fromId;
-//	@NotNull
+	
 	private String proxyFromId;
-//	@NotNull
+	@NotNull
 	private String toId;
-//	@NotNull
+
 	private String proxyToId; 
-//	@Min(value = 0)
+	@Min(value = 0)
 	private long cid;
-//	@Min(value = 0)
+	@Min(value = 0)
 	private long proxyCid;
-//	@NotNull
+	@NotNull
 	private MessageType type;
-//	@Min(value = 0)
-	private int subType;
-//	@NotNull
+	@Min(value = 0)
+	private String subType;
+	@NotNull
 	private String content;
 
 	private String bizUid;//业务方唯一id

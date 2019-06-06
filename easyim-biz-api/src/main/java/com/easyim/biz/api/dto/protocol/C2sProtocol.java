@@ -1,8 +1,10 @@
-package com.easyim.biz.api.dto.protocol.c2s;
+package com.easyim.biz.api.dto.protocol;
 
 import java.io.Serializable;
 import java.util.UUID;
 
+import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
+import com.easyim.biz.api.protocol.c2s.AbstractProtocol;
 import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 
 import lombok.Builder;
@@ -16,9 +18,12 @@ public class C2sProtocol implements Serializable{
 	
 	private  String uuid = UUID.randomUUID().toString();
 	private  String version = "1.0";
-
+	@Protobuf
 	private  C2sCommandType type;
-	private  String body;
+	@Protobuf
+	private  AbstractProtocol body;
+	
+	
 	
 	public C2sProtocol(){
 		
@@ -28,7 +33,7 @@ public class C2sProtocol implements Serializable{
 		this.type = type;
 	}
 	
-	public C2sProtocol(C2sCommandType type,String body){
+	public C2sProtocol(C2sCommandType type,AbstractProtocol body){
 		this.type = type;
 		this.body = body;
 	}

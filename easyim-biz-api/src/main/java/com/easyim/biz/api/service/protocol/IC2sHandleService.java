@@ -2,7 +2,7 @@ package com.easyim.biz.api.service.protocol;
 
 import java.util.Map;
 
-import com.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
+import com.easyim.biz.api.dto.protocol.C2sProtocol;
 import com.easyim.biz.api.dto.user.UserSessionDto;
 
 /**

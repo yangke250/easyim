@@ -2,7 +2,7 @@ package com.easyim.biz.api.service.message;
 
 import java.util.List;
 
-import com.easyim.biz.api.protocol.protocol.c2s.MessagePush;
+import com.easyim.biz.api.protocol.c2s.MessagePush;
 
 /**
  * 消息查询服务

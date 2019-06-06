@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
-import com.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
+import com.easyim.biz.api.dto.protocol.C2sProtocol;
 import com.easyim.biz.api.dto.user.UserSessionDto;
+import com.easyim.biz.api.protocol.c2s.Auth;
+import com.easyim.biz.api.protocol.c2s.AuthAck;
+import com.easyim.biz.api.protocol.c2s.PingAck;
 import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 import com.easyim.biz.api.protocol.enums.c2s.Result;
-import com.easyim.biz.api.protocol.protocol.c2s.Auth;
-import com.easyim.biz.api.protocol.protocol.c2s.AuthAck;
-import com.easyim.biz.api.protocol.protocol.c2s.PingAck;
 import com.easyim.biz.api.service.protocol.IC2sHandleService;
 import com.easyim.connect.c2s.server.WebsocketC2sServer;
 import com.easyim.connect.session.Session;
@@ -73,8 +73,8 @@ public class C2sInputBizHandler extends AbstractC2sInputHandler {
 
 		switch (ackType) {
 		case pingAck:
-			PingAck pingAck = JSON.parseObject(ackProtocol.getBody(), PingAck.class);
-
+			PingAck pingAck = (PingAck)ackProtocol.getBody();
+			
 			ctx.channel().writeAndFlush(JSON.toJSONString(ackProtocol));
 
 			if (pingAck.getResult() != Result.success) {
@@ -82,10 +82,10 @@ public class C2sInputBizHandler extends AbstractC2sInputHandler {
 			}
 			return;
 		case authAck:
-			Auth auth = JSON.parseObject(c2sProtocol.getBody(), Auth.class);
-
-			AuthAck authAck = JSON.parseObject(ackProtocol.getBody(), AuthAck.class);
-
+			Auth auth = (Auth)c2sProtocol.getBody();
+			
+			AuthAck authAck = (AuthAck)ackProtocol.getBody();
+			
 			ctx.channel().writeAndFlush(JSON.toJSONString(ackProtocol));
 			log.info("authAck:{}", JSON.toJSONString(authAck));
 

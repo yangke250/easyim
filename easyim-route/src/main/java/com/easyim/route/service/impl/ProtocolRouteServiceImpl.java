@@ -18,10 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
-import com.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
+import com.easyim.biz.api.dto.protocol.C2sProtocol;
+import com.easyim.biz.api.dto.protocol.S2sProtocol;
 import com.easyim.biz.api.protocol.enums.s2s.S2sCommandType;
-import com.easyim.route.discover.ServerDiscover;
+import com.easyim.route.server.ServerDiscover;
 import com.easyim.route.service.IProtocolRouteService;
 import com.easyim.route.service.IUserRouteService;
 
@@ -76,7 +76,7 @@ public class ProtocolRouteServiceImpl implements IProtocolRouteService{
 
 	private void route(String routeInfo,String body){
 		S2sProtocol  s2sProtocol = createS2sProtocol(body);
-		//添加队列
+		//添加消息响应的队列
 		LinkedBlockingQueue<C2sProtocol> queue = new LinkedBlockingQueue<C2sProtocol>();
 		try{
 			inputOutputMap.put(s2sProtocol.getUuid(),queue);

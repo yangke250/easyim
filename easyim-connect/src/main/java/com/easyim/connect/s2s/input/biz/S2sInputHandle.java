@@ -9,7 +9,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
-import com.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
+import com.easyim.biz.api.dto.protocol.S2sProtocol;
 import com.easyim.biz.api.protocol.enums.s2s.S2sCommandType;
 import com.easyim.connect.service.IS2sProtocolService;
 

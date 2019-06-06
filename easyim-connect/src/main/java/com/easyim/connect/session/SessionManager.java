@@ -13,13 +13,13 @@ import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.easy.springboot.c2s.server.AbstractServerRegister;
-import com.easyim.biz.api.dto.protocol.c2s.C2sProtocol;
+import com.easyim.biz.api.dto.protocol.C2sProtocol;
 import com.easyim.biz.api.dto.user.UserSessionDto;
+import com.easyim.biz.api.protocol.c2s.AuthAck;
+import com.easyim.biz.api.protocol.c2s.CloseSession;
 import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 import com.easyim.biz.api.protocol.enums.c2s.Result;
-import com.easyim.biz.api.protocol.protocol.c2s.AuthAck;
-import com.easyim.biz.api.protocol.protocol.c2s.CloseSession;
 import com.easyim.biz.api.service.protocol.IC2sHandleService;
 import com.easyim.connect.session.Session.SessionStatus;
 
@@ -51,7 +51,7 @@ public class SessionManager {
 		CloseSession cs = new CloseSession();
 		cs.setResult(Result.timeOut);
 		
-		TIMEOUT.setBody(JSON.toJSONString(cs));
+		TIMEOUT.setBody(cs);
 	}
 	
 	public static Session getSession(ChannelHandlerContext chc){

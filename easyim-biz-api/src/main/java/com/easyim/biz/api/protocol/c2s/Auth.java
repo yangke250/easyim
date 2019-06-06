@@ -1,4 +1,4 @@
-package com.easyim.biz.api.protocol.protocol.c2s;
+package com.easyim.biz.api.protocol.c2s;
 
 import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 
@@ -20,7 +20,6 @@ public class Auth extends AbstractProtocol{
 	private String token;//用户登录token
 	private long tenementId;//由客户端决定tenmentId
 	private int timeoutCycle = 1;//默认60秒超时
-	private ResourceType resourceType;
 	
 	public static final int MAX_CYCLE = 15;
 	

@@ -200,7 +200,7 @@ public class MessageServiceImpl implements IMessageService {
 		message.setProxyFromId(proxyFromId);
 		message.setProxyToId(proxyToId);
 		
-		this.messageMapper.insertMessage(message);
+		long result =this.messageMapper.insertMessage(message);
 	}
 	
 

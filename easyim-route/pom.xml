@@ -42,12 +42,12 @@
 			<artifactId>c2s</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.easy-springboot</groupId>
-			<artifactId>redis</artifactId>
-		</dependency>
-		<dependency>
 				<groupId>io.reactivex.rxjava2</groupId>
 				<artifactId>rxjava</artifactId>
+		</dependency>
+		<dependency>
+				<groupId>cn.linkedcare.springboot</groupId>
+    			<artifactId>spring-boot-redis</artifactId>
 		</dependency>
 	</dependencies>
 </project>

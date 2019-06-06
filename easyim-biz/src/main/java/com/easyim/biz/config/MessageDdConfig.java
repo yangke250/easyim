@@ -407,6 +407,9 @@ public class MessageDdConfig {
 	
 	
 	
+	public static void main(String[] args){
+		System.out.println(2/10%10);
+	}
 	
 	
 	@Bean(name="message")
@@ -414,8 +417,12 @@ public class MessageDdConfig {
 		
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
         shardingRuleConfig.getTableRuleConfigs().add(getMessageTableRuleConfiguration());
-        shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("proxy_cid", "im_msg_0${proxy_cid / 10 % 10}"));
-        shardingRuleConfig.setDefaultTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("proxy_cid", "t_message_0${proxy_cid % 10}"));
+        shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(
+        		new StandardShardingStrategyConfiguration("proxy_cid","com.easyim.biz.db.ShardingDbAlgorithm"));
+        		//new InlineShardingStrategyConfiguration("proxy_cid", "im_msg_0${(proxy_cid/10)%10}"));
+        shardingRuleConfig.setDefaultTableShardingStrategyConfig(
+        		new StandardShardingStrategyConfiguration("proxy_cid","com.easyim.biz.db.ShardingTableAlgorithm"));
+        		//new InlineShardingStrategyConfiguration("proxy_cid", "t_message_0${proxy_cid%10}"));
         
         return ShardingDataSourceFactory.createDataSource(createDataSourceMap(), shardingRuleConfig,new HashMap<String, Object>(),null);
 

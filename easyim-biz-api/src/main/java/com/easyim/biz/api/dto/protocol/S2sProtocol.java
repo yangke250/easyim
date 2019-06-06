@@ -1,4 +1,4 @@
-package com.easyim.biz.api.dto.protocol.s2s;
+package com.easyim.biz.api.dto.protocol;
 
 import java.io.Serializable;
 import java.util.UUID;

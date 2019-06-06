@@ -1,4 +1,4 @@
-package com.easyim.biz.api.protocol.protocol.c2s;
+package com.easyim.biz.api.protocol.c2s;
 
 import com.easyim.biz.api.dto.message.SendMsgDto.MessageType;
 

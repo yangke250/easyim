@@ -1,4 +1,6 @@
-package com.easyim.biz.api.protocol.protocol.c2s;
+package com.easyim.biz.api.protocol.c2s;
+
+import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 
 import lombok.Data;
 
@@ -10,16 +12,24 @@ import lombok.Data;
 @Data
 public abstract class AbstractMessagePush extends AbstractProtocol{
 	private static final long serialVersionUID = 7545645657214366760L;
-	
+    @Protobuf
 	private long tenementId;
-	private long id;
+    @Protobuf
+    private long id;
+    @Protobuf
 	private int type;
-	private int subType;
-	private String fromId;
-	private String toId;
-	private String content;//消息内容
+    @Protobuf
+	private String subType;
+    @Protobuf
+    private String fromId;
+    @Protobuf
+    private String toId;
+    @Protobuf
+    private String content;//消息内容
+    @Protobuf
 	private String time;//消息时间
-	private String bizUuid;//业务uuid
+    @Protobuf
+    private String bizUuid;//业务uuid
 	
 
 	

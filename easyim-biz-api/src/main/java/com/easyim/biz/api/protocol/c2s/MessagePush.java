@@ -1,4 +1,6 @@
-package com.easyim.biz.api.protocol.protocol.c2s;
+package com.easyim.biz.api.protocol.c2s;
+
+import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 
 import lombok.Data;
 
@@ -12,8 +14,11 @@ public class MessagePush extends AbstractMessagePush implements Cloneable{
 
 	private static final long serialVersionUID = 7545645657214366760L;
 	
+    @Protobuf
 	private long cid;//会话id
 
+    @Protobuf
+    private long proxyCid;//代理会话id
 	
 	@Override
 	public MessagePush clone(){

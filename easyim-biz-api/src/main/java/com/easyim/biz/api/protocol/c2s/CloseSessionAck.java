@@ -1,4 +1,4 @@
-package com.easyim.biz.api.protocol.protocol.c2s;
+package com.easyim.biz.api.protocol.c2s;
 
 /**
  * 通知客户端断开连接

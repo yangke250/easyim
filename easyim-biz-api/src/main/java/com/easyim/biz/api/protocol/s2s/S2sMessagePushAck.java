@@ -1,4 +1,4 @@
-package com.easyim.biz.api.protocol.protocol.s2s;
+package com.easyim.biz.api.protocol.s2s;
 
 public class S2sMessagePushAck {
 

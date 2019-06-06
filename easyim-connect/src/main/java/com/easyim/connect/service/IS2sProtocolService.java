@@ -1,6 +1,6 @@
 package com.easyim.connect.service;
 
-import com.easyim.biz.api.dto.protocol.s2s.S2sProtocol;
+import com.easyim.biz.api.dto.protocol.S2sProtocol;
 import com.easyim.biz.api.protocol.enums.s2s.S2sCommandType;
 
 public interface IS2sProtocolService<I,O> {
