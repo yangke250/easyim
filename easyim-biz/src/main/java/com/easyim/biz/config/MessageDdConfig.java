@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -133,8 +134,8 @@ public class MessageDdConfig {
 		return sf;
 	}
 
-
-	private DruidDataSource getDruidDataSource0(){
+	@Bean(name="easyim.msgDb0",initMethod="init",destroyMethod="close")
+	public DruidDataSource getDruidDataSource0(){
 		DruidDataSource dds = new DruidDataSource();
 		dds.setUrl(url0);
 		dds.setUsername(username0);
@@ -154,15 +155,11 @@ public class MessageDdConfig {
 		
 		dds.setProxyFilters(statFilterList);
 		
-		try {
-			dds.init();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
 		return dds;
 	}
 	
-	private DruidDataSource getDruidDataSource1(){
+	@Bean(name="easyim.msgDb1",initMethod="init",destroyMethod="close")
+	public DruidDataSource getDruidDataSource1(){
 		DruidDataSource dds = new DruidDataSource();
 		dds.setUrl(url1);
 		dds.setUsername(username1);
@@ -181,15 +178,12 @@ public class MessageDdConfig {
 		
 		
 		dds.setProxyFilters(statFilterList);
-		try {
-			dds.init();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		
 		return dds;
 	}
 	
-	private DruidDataSource getDruidDataSource2(){
+	@Bean(name="easyim.msgDb2",initMethod="init",destroyMethod="close")
+	public DruidDataSource getDruidDataSource2(){
 		DruidDataSource dds = new DruidDataSource();
 		dds.setUrl(url2);
 		dds.setUsername(username2);
@@ -208,15 +202,12 @@ public class MessageDdConfig {
 		
 		
 		dds.setProxyFilters(statFilterList);
-		try {
-			dds.init();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		
 		return dds;
 	}
 	
-	private DruidDataSource getDruidDataSource3(){
+	@Bean(name="easyim.msgDb3",initMethod="init",destroyMethod="close")
+	public DruidDataSource getDruidDataSource3(){
 		DruidDataSource dds = new DruidDataSource();
 		dds.setUrl(url3);
 		dds.setUsername(username3);
@@ -235,15 +226,12 @@ public class MessageDdConfig {
 		
 		
 		dds.setProxyFilters(statFilterList);
-		try {
-			dds.init();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		
 		return dds;
 	}
 	
-	private DruidDataSource getDruidDataSource4(){
+	@Bean(name="easyim.msgDb4",initMethod="init",destroyMethod="close")
+	public DruidDataSource getDruidDataSource4(){
 		DruidDataSource dds = new DruidDataSource();
 		dds.setUrl(url4);
 		dds.setUsername(username4);
@@ -262,15 +250,12 @@ public class MessageDdConfig {
 		
 		
 		dds.setProxyFilters(statFilterList);
-		try {
-			dds.init();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		
 		return dds;
 	}
 	
-	private DruidDataSource getDruidDataSource5(){
+	@Bean(name="easyim.msgDb5",initMethod="init",destroyMethod="close")
+	public DruidDataSource getDruidDataSource5(){
 		DruidDataSource dds = new DruidDataSource();
 		dds.setUrl(url5);
 		dds.setUsername(username5);
@@ -289,15 +274,12 @@ public class MessageDdConfig {
 		
 		
 		dds.setProxyFilters(statFilterList);
-		try {
-			dds.init();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		
 		return dds;
 	}
 	
-	private DruidDataSource getDruidDataSource6(){
+	@Bean(name="easyim.msgDb6",initMethod="init",destroyMethod="close")
+	public DruidDataSource getDruidDataSource6(){
 		DruidDataSource dds = new DruidDataSource();
 		dds.setUrl(url6);
 		dds.setUsername(username6);
@@ -316,15 +298,12 @@ public class MessageDdConfig {
 		
 		
 		dds.setProxyFilters(statFilterList);
-		try {
-			dds.init();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		
 		return dds;
 	}
 	
-	private DruidDataSource getDruidDataSource7(){
+	@Bean(name="easyim.msgDb7",initMethod="init",destroyMethod="close")
+	public DruidDataSource getDruidDataSource7(){
 		DruidDataSource dds = new DruidDataSource();
 		dds.setUrl(url7);
 		dds.setUsername(username7);
@@ -343,15 +322,12 @@ public class MessageDdConfig {
 		
 		
 		dds.setProxyFilters(statFilterList);
-		try {
-			dds.init();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		
 		return dds;
 	}
 	
-	private DruidDataSource getDruidDataSource8(){
+	@Bean(name="easyim.msgDb8",initMethod="init",destroyMethod="close")
+	public DruidDataSource getDruidDataSource8(){
 		DruidDataSource dds = new DruidDataSource();
 		dds.setUrl(url8);
 		dds.setUsername(username8);
@@ -370,15 +346,13 @@ public class MessageDdConfig {
 		
 		
 		dds.setProxyFilters(statFilterList);
-		try {
-			dds.init();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		
 		return dds;
 	}
 	
-	private DruidDataSource getDruidDataSource9(){
+	
+	@Bean(name="easyim.msgDb9",initMethod="init",destroyMethod="close")
+	public DruidDataSource getDruidDataSource9(){
 		DruidDataSource dds = new DruidDataSource();
 		dds.setUrl(url9);
 		dds.setUsername(username9);
@@ -397,11 +371,7 @@ public class MessageDdConfig {
 		
 		
 		dds.setProxyFilters(statFilterList);
-		try {
-			dds.init();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		
 		return dds;
 	}
 	
@@ -412,8 +382,8 @@ public class MessageDdConfig {
 	}
 	
 	
-	@Bean(name="message")
-	public DataSource getDataSource() throws SQLException {
+	@Bean(name="easyim.msgShardingDb")
+	public DataSource getDataSource(@Qualifier("easyim.msgMap") Map<String, DataSource> map) throws SQLException {
 		
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
         shardingRuleConfig.getTableRuleConfigs().add(getMessageTableRuleConfiguration());
@@ -424,7 +394,7 @@ public class MessageDdConfig {
         		new StandardShardingStrategyConfiguration("proxy_cid","com.easyim.biz.db.ShardingTableAlgorithm"));
         		//new InlineShardingStrategyConfiguration("proxy_cid", "t_message_0${proxy_cid%10}"));
         
-        return ShardingDataSourceFactory.createDataSource(createDataSourceMap(), shardingRuleConfig,new HashMap<String, Object>(),null);
+        return ShardingDataSourceFactory.createDataSource(map, shardingRuleConfig,new HashMap<String, Object>(),null);
 
     }
 	
@@ -435,18 +405,31 @@ public class MessageDdConfig {
         return result;
     }
 	
-	private Map<String, DataSource> createDataSourceMap() {
+	
+	@Bean(name="easyim.msgMap")
+	public Map<String, DataSource> createDataSourceMap(
+			@Qualifier("easyim.msgDb0") DruidDataSource msg0,
+			@Qualifier("easyim.msgDb1") DruidDataSource msg1,
+			@Qualifier("easyim.msgDb2") DruidDataSource msg2,
+			@Qualifier("easyim.msgDb3") DruidDataSource msg3,
+			@Qualifier("easyim.msgDb4") DruidDataSource msg4,
+			@Qualifier("easyim.msgDb5") DruidDataSource msg5,
+			@Qualifier("easyim.msgDb6") DruidDataSource msg6,
+			@Qualifier("easyim.msgDb7") DruidDataSource msg7,
+			@Qualifier("easyim.msgDb8") DruidDataSource msg8,
+			@Qualifier("easyim.msgDb9") DruidDataSource msg9
+			) {
          Map<String, DataSource> result = new HashMap<String, DataSource>();
-         result.put("im_msg_00", getDruidDataSource0());
-         result.put("im_msg_01", getDruidDataSource1());
-         result.put("im_msg_02", getDruidDataSource2());
-         result.put("im_msg_03", getDruidDataSource3());
-         result.put("im_msg_04", getDruidDataSource4());
-         result.put("im_msg_05", getDruidDataSource5());
-         result.put("im_msg_06", getDruidDataSource6());
-         result.put("im_msg_07", getDruidDataSource7());
-         result.put("im_msg_08", getDruidDataSource8());
-         result.put("im_msg_09", getDruidDataSource9());
+         result.put("im_msg_00", msg0);
+         result.put("im_msg_01", msg1);
+         result.put("im_msg_02", msg2);
+         result.put("im_msg_03", msg3);
+         result.put("im_msg_04", msg4);
+         result.put("im_msg_05", msg5);
+         result.put("im_msg_06", msg6);
+         result.put("im_msg_07", msg7);
+         result.put("im_msg_08", msg8);
+         result.put("im_msg_09", msg9);
          
          return result;
      }

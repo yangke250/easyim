@@ -21,7 +21,7 @@ public class C2sProtocol implements Serializable{
 	@Protobuf
 	private  C2sCommandType type;
 	@Protobuf
-	private  AbstractProtocol body;
+	private  String body;
 	
 	
 	
@@ -33,7 +33,7 @@ public class C2sProtocol implements Serializable{
 		this.type = type;
 	}
 	
-	public C2sProtocol(C2sCommandType type,AbstractProtocol body){
+	public C2sProtocol(C2sCommandType type,String body){
 		this.type = type;
 		this.body = body;
 	}

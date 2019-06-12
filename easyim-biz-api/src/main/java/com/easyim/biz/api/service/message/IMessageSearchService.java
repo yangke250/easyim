@@ -2,6 +2,7 @@ package com.easyim.biz.api.service.message;
 
 import java.util.List;
 
+import com.easyim.biz.api.dto.message.SearchMsgCidDto;
 import com.easyim.biz.api.protocol.c2s.MessagePush;
 
 /**
@@ -16,7 +17,7 @@ public interface IMessageSearchService {
 	 * @param minMsgId
 	 * @return
 	 */
-	public List<MessagePush> selectReverseMsg(long cid,long minMsgId);
+	public List<MessagePush> selectReverseMsg(SearchMsgCidDto searchMsgCidDto);
 
 	/**
 	 * 逆向查询消息历史
@@ -24,7 +25,16 @@ public interface IMessageSearchService {
 	 * @param minMsgId
 	 * @return
 	 */
-	public List<MessagePush> selectReverseMsgByProxyCid(long proxyCid,long minMsgId);
+	public List<MessagePush> selectReverseMsgByProxyCid(long proxyCid,String userId,long minMsgId);
+	
+	/**
+	 * 逆向查询消息历史
+	 * @param cid
+	 * @param minMsgId
+	 * @return
+	 */
+	public List<MessagePush> selectReverseMsgByFromToId(long proxyCid,long minMsgId);
+	
 	
 	/**
 	 * 根据biz id查询消息

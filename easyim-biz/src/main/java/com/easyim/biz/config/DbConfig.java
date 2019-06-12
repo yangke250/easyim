@@ -31,8 +31,8 @@ import com.easyim.biz.db.DynamicDataSource;
 public class DbConfig {
 
 	@Bean("datasource")
-	public DynamicDataSource dataSource(@Qualifier("im") DataSource im,
-	              @Qualifier("message") DataSource message) {
+	public DynamicDataSource dataSource(@Qualifier("esayim.imDb") DataSource im,
+	              @Qualifier("easyim.msgShardingDb") DataSource message) {
 	          Map<Object,Object> targetDataSources = new HashMap<>();
 	          targetDataSources.put(DatabaseType.im, im);
 	          targetDataSources.put(DatabaseType.message, message);

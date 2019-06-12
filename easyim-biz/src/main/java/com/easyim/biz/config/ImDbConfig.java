@@ -25,8 +25,8 @@ public class ImDbConfig {
 	@Value("${jdbc.password}")
 	private String password;
 	
-	public static final int INIT_SIZE =5;
-	public static final int MIN_IDLE =5;
+	public static final int INIT_SIZE =2;
+	public static final int MIN_IDLE =2;
 	public static final int MAX_SIZE =5;
 	
 	
@@ -39,7 +39,7 @@ public class ImDbConfig {
 	}
 
 
-	@Bean(name="im",initMethod="init",destroyMethod="close")
+	@Bean(name="esayim.imDb",initMethod="init",destroyMethod="close")
 	@Primary
 	public DruidDataSource getDruidDataSource(){
 		

@@ -26,7 +26,7 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@SpringBootApplication
+//@SpringBootApplication
 @EnableDubbo
 @Configuration
 @ComponentScan
@@ -70,6 +70,7 @@ public class Launch {
 		Set<ConstraintViolation<Object>> results = validator.validate(object);
 		if(results.size()>0){
 			for(ConstraintViolation<Object> result:results){
+				System.err.println("messageServiceImpl doValidator error:{}"+result.getMessage());
 				log.error("messageServiceImpl doValidator error:{}",result.getMessage());
 			}
 			return false;

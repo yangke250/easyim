@@ -14,4 +14,6 @@ public interface IMessageMapper {
 								+ "(#{m.id},#{m.tenementId},#{m.fromId},#{m.toId},#{m.proxyFromId},#{m.proxyToId},#{m.cid},#{m.proxyCid},#{m.type},#{m.subType},#{m.content},#{m.bizUid})")
 	public long insertMessage(@Param("m")MessageDo mDo);
 
+	
+ 
 }

@@ -51,12 +51,13 @@ public interface IC2SProtocolService<I,O> {
 			throw new RuntimeException(e);
 		}
 		
+		I input =JSON.parseObject(c2sProtocol.getBody(),classInput);
 		
 		O outputBody = handleProtocolBody(userSessionDto,
-				(I) c2sProtocol.getBody(),extendsMap);
+				input,extendsMap);
 		
 		C2sProtocol c2sProtocolAck = new C2sProtocol(getC2sCommandType().getAckCommand(),
-				(AbstractProtocol) outputBody);
+				JSON.toJSONString(outputBody));
 		c2sProtocolAck.setUuid(c2sProtocol.getUuid());
 		
 		return c2sProtocolAck;

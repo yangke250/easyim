@@ -49,7 +49,7 @@ public class UserServiceImpl implements IUserService{
 		}
 		UserConnectDto userConnectDto = new UserConnectDto();
 		userConnectDto.setToken(auth);
-		userConnectDto.setConnectServer(connectServer);
+		userConnectDto.setConnectServer(connectServer.split(":")[0]);
 		
 		return userConnectDto;
 	}
