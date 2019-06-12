@@ -1,4 +1,4 @@
-package com.easyim.connect.c2s.input.biz;
+package com.easyim.connect.c2s.input;
 
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +73,7 @@ public class C2sInputBizHandler extends AbstractC2sInputHandler {
 
 		switch (ackType) {
 		case pingAck:
-			PingAck pingAck = (PingAck)ackProtocol.getBody();
+			PingAck pingAck = JSON.parseObject(ackProtocol.getBody(),PingAck.class);
 			
 			ctx.channel().writeAndFlush(JSON.toJSONString(ackProtocol));
 
@@ -82,9 +82,9 @@ public class C2sInputBizHandler extends AbstractC2sInputHandler {
 			}
 			return;
 		case authAck:
-			Auth auth = (Auth)c2sProtocol.getBody();
+			Auth auth = JSON.parseObject(c2sProtocol.getBody(),Auth.class);
 			
-			AuthAck authAck = (AuthAck)ackProtocol.getBody();
+			AuthAck authAck = JSON.parseObject(ackProtocol.getBody(),AuthAck.class);
 			
 			ctx.channel().writeAndFlush(JSON.toJSONString(ackProtocol));
 			log.info("authAck:{}", JSON.toJSONString(authAck));

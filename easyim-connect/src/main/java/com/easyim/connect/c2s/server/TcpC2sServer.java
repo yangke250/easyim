@@ -10,8 +10,8 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.easyim.connect.c2s.input.biz.C2sInputBizHandler;
-import com.easyim.connect.c2s.input.biz.C2sInputTimeoutHandler;
+import com.easyim.connect.c2s.input.C2sInputBizHandler;
+import com.easyim.connect.c2s.input.C2sInputTimeoutHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -47,7 +47,6 @@ public class TcpC2sServer {
 	    new Thread(()->{
     		ServerBootstrap boot = new ServerBootstrap();
             boot.group(bossGroup, workerGroup)
-            	.option(ChannelOption.SO_KEEPALIVE,true)
             	.option(ChannelOption.SO_REUSEADDR,true)
             	.channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<Channel>() {

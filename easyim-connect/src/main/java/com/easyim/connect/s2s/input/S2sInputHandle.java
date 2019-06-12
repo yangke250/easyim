@@ -1,4 +1,4 @@
-package com.easyim.connect.s2s.input.biz;
+package com.easyim.connect.s2s.input;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +16,9 @@ import com.easyim.connect.service.IS2sProtocolService;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import lombok.extern.slf4j.Slf4j;
+import io.netty.channel.ChannelHandler.Sharable;
+
 
 /**
  * 
@@ -23,12 +26,16 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  *
  */
 @Component
+@Sharable
+@Slf4j
 public class S2sInputHandle extends ChannelInboundHandlerAdapter implements BeanPostProcessor{
 
 	private Map<S2sCommandType,IS2sProtocolService> map = new ConcurrentHashMap<S2sCommandType,IS2sProtocolService>();
 	
 	
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+		log.info("S2sInputHandle:{}",msg.toString());
+		
 		S2sProtocol s2sProtocol = JSON.parseObject(msg.toString(),S2sProtocol.class);
 		
 		switch(s2sProtocol.getType()){

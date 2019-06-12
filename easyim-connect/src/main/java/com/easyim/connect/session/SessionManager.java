@@ -51,7 +51,7 @@ public class SessionManager {
 		CloseSession cs = new CloseSession();
 		cs.setResult(Result.timeOut);
 		
-		TIMEOUT.setBody(cs);
+		TIMEOUT.setBody(JSON.toJSONString(cs));
 	}
 	
 	public static Session getSession(ChannelHandlerContext chc){

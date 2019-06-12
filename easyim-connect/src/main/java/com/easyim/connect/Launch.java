@@ -13,7 +13,7 @@ import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 import lombok.extern.slf4j.Slf4j;
 
 
-//@SpringBootApplication
+@SpringBootApplication
 @Slf4j
 @EnableDubbo
 @ComponentScan

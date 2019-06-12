@@ -9,10 +9,10 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.easyim.connect.c2s.input.biz.C2sInputBizHandler;
-import com.easyim.connect.c2s.input.biz.C2sInputTimeoutHandler;
-import com.easyim.connect.c2s.input.protocol.WebSocketHandler;
-import com.easyim.connect.c2s.output.protocol.WenSocketOutputHandler;
+import com.easyim.connect.c2s.input.C2sInputBizHandler;
+import com.easyim.connect.c2s.input.C2sInputTimeoutHandler;
+import com.easyim.connect.c2s.input.WebSocketHandler;
+import com.easyim.connect.c2s.output.WenSocketOutputHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -53,7 +53,6 @@ public class WebsocketC2sServer {
 	    new Thread(()->{
     		ServerBootstrap boot = new ServerBootstrap();
             boot.group(bossGroup, workerGroup)
-            	.option(ChannelOption.SO_KEEPALIVE, true)
             	.channel(NioServerSocketChannel.class)
             	.option(ChannelOption.SO_REUSEADDR,true)
                 .childHandler(new ChannelInitializer<Channel>() {

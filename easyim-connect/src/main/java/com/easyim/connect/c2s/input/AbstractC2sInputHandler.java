@@ -1,4 +1,4 @@
-package com.easyim.connect.c2s.input.biz;
+package com.easyim.connect.c2s.input;
 
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
