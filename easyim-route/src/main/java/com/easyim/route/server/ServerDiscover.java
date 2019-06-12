@@ -2,6 +2,7 @@ package com.easyim.route.server;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,7 @@ import com.easyim.route.inputHandler.S2sClientInputHandler;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -50,9 +52,16 @@ import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.channel.pool.ChannelPoolMap;
 import io.netty.channel.pool.FixedChannelPool;
 import io.netty.channel.pool.SimpleChannelPool;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.json.JsonObjectDecoder;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.util.CharsetUtil;
+import io.netty.util.concurrent.GenericFutureListener;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -82,9 +91,7 @@ public class ServerDiscover implements IC2sClient {
 		connectList.clear();
 	}
 
-	public static void main(String[] args){
-		System.out.println(1%0);
-	}
+	
 	
 	/**
 	 * 轮询得到连接的server
@@ -106,7 +113,7 @@ public class ServerDiscover implements IC2sClient {
 	}
 
 	public static void write(String key, S2sProtocol s2sProtocol) {
-		Future<Channel> channel = null;
+		Channel channel = null;
 		FixedChannelPool fcp = null;
 		try {
 			readLock.lock();
@@ -114,24 +121,71 @@ public class ServerDiscover implements IC2sClient {
 			fcp = connectPoolMap.get(key);
 
 			if (fcp == null) {
-				log.warn("key:{} server is empty", key);
+				log.error("key:{} server is empty", key);
 				return;
 			}
-			channel = fcp.acquire();
-			channel.get().writeAndFlush(s2sProtocol);
+			
+			channel = fcp.acquire().get();
+			String json = JSON.toJSONString(s2sProtocol);
+			
+			channel.writeAndFlush(json);
+			
+			log.info("key3:{} writeAndFlush:", json);
 		}catch(Exception e){
+			e.printStackTrace();
+			log.error("exception:",e);
 			throw new RuntimeException(e);
 		}finally {
-			try {
-				fcp.release(channel.get());
-			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
+			if(fcp!=null)
+				fcp.release(channel);
 			readLock.unlock();
 		}
 	}
 
+	public static void main(String[] args) throws InterruptedException, ExecutionException{
+		ChannelPoolHandler handler = new ChannelPoolHandler() {
+			@Override
+			public void channelReleased(Channel ch) throws Exception {
+		    
+			}
+
+			@Override
+			public void channelCreated(Channel ch) throws Exception {
+	
+				ChannelPipeline pipeline = ch.pipeline();
+				
+				pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
+				
+				pipeline.addLast(new JsonObjectDecoder());
+				pipeline.addLast(new S2sClientInputHandler());
+			}
+
+			@Override
+			public void channelAcquired(Channel ch) throws Exception {
+				
+			}
+		};
+
+		EventLoopGroup workerGroup = new NioEventLoopGroup();
+		
+		Bootstrap boot = new Bootstrap();
+		InetSocketAddress remoteAddress = InetSocketAddress.createUnresolved("127.0.0.1",8888);// 连接地址
+		
+		
+		boot.group(workerGroup)
+		.channel(NioSocketChannel.class)
+		.option(ChannelOption.TCP_NODELAY, true)
+		.option(ChannelOption.SO_KEEPALIVE, true)
+		.remoteAddress(remoteAddress);
+		
+		FixedChannelPool fcp = new FixedChannelPool(boot, handler, Runtime.getRuntime().availableProcessors()*2);
+		S2sProtocol s2s = new S2sProtocol();
+		s2s.setBody("5555");
+		fcp.acquire().get().writeAndFlush(JSON.toJSONString(s2s));
+		
+		System.out.println("3334455");
+	}
+	
 	/**
 	 * 
 	 * @param ip
@@ -142,33 +196,40 @@ public class ServerDiscover implements IC2sClient {
 		ChannelPoolHandler handler = new ChannelPoolHandler() {
 			@Override
 			public void channelReleased(Channel ch) throws Exception {
+		    
 			}
 
 			@Override
 			public void channelCreated(Channel ch) throws Exception {
+	
+				ChannelPipeline pipeline = ch.pipeline();
+				
+				pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
+				
+				pipeline.addLast(new JsonObjectDecoder());
+				pipeline.addLast(new S2sClientInputHandler());
 			}
 
 			@Override
 			public void channelAcquired(Channel ch) throws Exception {
+				
 			}
 		};
 
 		EventLoopGroup workerGroup = new NioEventLoopGroup();
+		
 		Bootstrap boot = new Bootstrap();
-		boot.group(workerGroup).option(ChannelOption.TCP_NODELAY, true).channel(NioServerSocketChannel.class)
-				.handler(new ChannelInitializer<Channel>() {
-
-					@Override
-					protected void initChannel(Channel ch) throws Exception {
-						ChannelPipeline pipeline = ch.pipeline();
-						pipeline.addLast(new JsonObjectDecoder());
-						pipeline.addLast(new S2sClientInputHandler());
-					}
-				});
-
-		boot.connect(ip, port);
-
-		FixedChannelPool fcp = new FixedChannelPool(boot, handler, 2);
+		InetSocketAddress remoteAddress = InetSocketAddress.createUnresolved(ip,port);// 连接地址
+		
+        log.info("InetSocketAddress.createUnresolved(ip,port),{},{}",ip,port);
+		
+		boot.group(workerGroup)
+		.channel(NioSocketChannel.class)
+		.option(ChannelOption.TCP_NODELAY, true)
+		.option(ChannelOption.SO_KEEPALIVE, true)
+		.remoteAddress(remoteAddress);
+		
+		FixedChannelPool fcp = new FixedChannelPool(boot, handler, Runtime.getRuntime().availableProcessors()*2);
 
 		connectPoolMap.put(conServer, fcp);
 

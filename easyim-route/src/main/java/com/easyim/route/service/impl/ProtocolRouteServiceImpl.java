@@ -77,38 +77,15 @@ public class ProtocolRouteServiceImpl implements IProtocolRouteService{
 	private void route(String routeInfo,String body){
 		S2sProtocol  s2sProtocol = createS2sProtocol(body);
 		//添加消息响应的队列
-		LinkedBlockingQueue<C2sProtocol> queue = new LinkedBlockingQueue<C2sProtocol>();
-		try{
-			inputOutputMap.put(s2sProtocol.getUuid(),queue);
-			
-			ServerDiscover.write(routeInfo, s2sProtocol);
-		
-			Future<C2sProtocol> future = executorService.submit(new Callable<C2sProtocol>() {
-				@Override
-				public C2sProtocol call() throws Exception {
-						return queue.poll(TIME_OUT, TimeUnit.MILLISECONDS);
-				}
-			});
-		
-			C2sProtocol result;
-			try {
-				result = future.get(TIME_OUT, TimeUnit.MILLISECONDS);
-				if(result==null){
-					future.cancel(true);
-					throw new RuntimeException("handle time out:"+body);
-				}
-			} catch (InterruptedException | ExecutionException | TimeoutException e) {
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
-		}finally{
-			inputOutputMap.remove(s2sProtocol.getUuid());
-		}
+		ServerDiscover.write(routeInfo, s2sProtocol);
 	}
 	
 	@Override
 	public boolean route(long tenementId, String userId, String body) {
 		String routeInfo = this.userRouteService.getUserRoute(tenementId, userId);
+		
+		log.info("route info:{},{}",userId,routeInfo);
+		
 		if(StringUtils.isEmpty(routeInfo)){
 			return false;
 		}

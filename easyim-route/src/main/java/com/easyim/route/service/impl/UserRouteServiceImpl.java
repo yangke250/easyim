@@ -72,7 +72,6 @@ public class UserRouteServiceImpl implements IUserRouteService {
 	@Override
 	public boolean pingUserRoute(UserSessionDto routeDto) {
 		String uid       =  Constant.getUid(routeDto.getTenementId(),routeDto.getUserId());
-		String sessionId =  routeDto.getSessionId();
 		String strKey  =  Constant.getRouteString(uid);
 		String hashKey =  Constant.getRouteHash(uid);
 		
