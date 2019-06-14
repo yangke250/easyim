@@ -35,7 +35,10 @@ import com.easy.springboot.c2s.client.IC2sClient;
 import com.easy.springboot.c2s.dto.ServerDto;
 import com.easyim.biz.api.dto.protocol.C2sProtocol;
 import com.easyim.biz.api.dto.protocol.S2sProtocol;
+import com.easyim.route.dto.FixedChannelPoolDto;
 import com.easyim.route.inputHandler.S2sClientInputHandler;
+import com.easyim.route.inputHandler.pool.RouteChannelPoolHandler;
+import com.easyim.route.inputHandler.pool.RouteFixedChannelPool;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
@@ -70,9 +73,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 @Slf4j
 public class ServerDiscover implements IC2sClient {
 
-	private static Map<String, FixedChannelPool> connectPoolMap = new ConcurrentHashMap<String, FixedChannelPool>();
-
-	private static List<String> connectList = new CopyOnWriteArrayList<String>();
+	private static Map<String, FixedChannelPoolDto> connectPoolMap = new ConcurrentHashMap<String, FixedChannelPoolDto>();
 
 	private static ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 	private static ReadLock readLock = lock.readLock();
@@ -82,13 +83,13 @@ public class ServerDiscover implements IC2sClient {
 
 	@PreDestroy
 	public void preDestory() {
-		for (FixedChannelPool fcp : connectPoolMap.values()) {
+		for (FixedChannelPoolDto fcp : connectPoolMap.values()) {
 			if (fcp != null) {
-				fcp.close();
+				fcp.getFixedChannelPool().close();
 			}
 		}
-
-		connectList.clear();
+		
+		connectPoolMap.clear();
 	}
 
 	
@@ -103,10 +104,12 @@ public class ServerDiscover implements IC2sClient {
 		try{
 			readLock.lock();
 			
-			int size = connectList.size();
+			Set<String> set = connectPoolMap.keySet();
+			int size = set.size();
 			int i = (int) (num%size);
 		
-			return connectList.get(i);
+			String[] arrays = (String[]) set.toArray();
+			return arrays[i];
 		}finally{
 			readLock.unlock();
 		}
@@ -114,7 +117,7 @@ public class ServerDiscover implements IC2sClient {
 
 	public static void write(String key, S2sProtocol s2sProtocol) {
 		Channel channel = null;
-		FixedChannelPool fcp = null;
+		FixedChannelPoolDto fcp = null;
 		try {
 			readLock.lock();
 
@@ -125,7 +128,9 @@ public class ServerDiscover implements IC2sClient {
 				return;
 			}
 			
-			channel = fcp.acquire().get();
+			channel = fcp.getFixedChannelPool().acquire().get();
+			
+			s2sProtocol.setPassword(fcp.getPassword());
 			String json = JSON.toJSONString(s2sProtocol);
 			
 			channel.writeAndFlush(json);
@@ -137,87 +142,25 @@ public class ServerDiscover implements IC2sClient {
 			throw new RuntimeException(e);
 		}finally {
 			if(fcp!=null)
-				fcp.release(channel);
+				fcp.getFixedChannelPool().release(channel);
 			readLock.unlock();
 		}
 	}
 
-	public static void main(String[] args) throws InterruptedException, ExecutionException{
-		ChannelPoolHandler handler = new ChannelPoolHandler() {
-			@Override
-			public void channelReleased(Channel ch) throws Exception {
-		    
-			}
-
-			@Override
-			public void channelCreated(Channel ch) throws Exception {
-	
-				ChannelPipeline pipeline = ch.pipeline();
-				
-				pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
-				
-				pipeline.addLast(new JsonObjectDecoder());
-				pipeline.addLast(new S2sClientInputHandler());
-			}
-
-			@Override
-			public void channelAcquired(Channel ch) throws Exception {
-				
-			}
-		};
-
-		EventLoopGroup workerGroup = new NioEventLoopGroup();
-		
-		Bootstrap boot = new Bootstrap();
-		InetSocketAddress remoteAddress = InetSocketAddress.createUnresolved("127.0.0.1",8888);// 连接地址
-		
-		
-		boot.group(workerGroup)
-		.channel(NioSocketChannel.class)
-		.option(ChannelOption.TCP_NODELAY, true)
-		.option(ChannelOption.SO_KEEPALIVE, true)
-		.remoteAddress(remoteAddress);
-		
-		FixedChannelPool fcp = new FixedChannelPool(boot, handler, Runtime.getRuntime().availableProcessors()*2);
-		S2sProtocol s2s = new S2sProtocol();
-		s2s.setBody("5555");
-		fcp.acquire().get().writeAndFlush(JSON.toJSONString(s2s));
-		
-		System.out.println("3334455");
-	}
 	
 	/**
 	 * 
 	 * @param ip
 	 * @param port
 	 */
-	private void putPool(String conServer, String ip, int port) {
+	private void putPool(String conServer, String ip, int port,String password) {
 
-		ChannelPoolHandler handler = new ChannelPoolHandler() {
-			@Override
-			public void channelReleased(Channel ch) throws Exception {
-		    
-			}
-
-			@Override
-			public void channelCreated(Channel ch) throws Exception {
-	
-				ChannelPipeline pipeline = ch.pipeline();
-				
-				pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
-				
-				pipeline.addLast(new JsonObjectDecoder());
-				pipeline.addLast(new S2sClientInputHandler());
-			}
-
-			@Override
-			public void channelAcquired(Channel ch) throws Exception {
-				
-			}
-		};
 
 		EventLoopGroup workerGroup = new NioEventLoopGroup();
+
 		
+		RouteChannelPoolHandler handler = new RouteChannelPoolHandler();
+
 		Bootstrap boot = new Bootstrap();
 		InetSocketAddress remoteAddress = InetSocketAddress.createUnresolved(ip,port);// 连接地址
 		
@@ -229,11 +172,15 @@ public class ServerDiscover implements IC2sClient {
 		.option(ChannelOption.SO_KEEPALIVE, true)
 		.remoteAddress(remoteAddress);
 		
-		FixedChannelPool fcp = new FixedChannelPool(boot, handler, Runtime.getRuntime().availableProcessors()*2);
-
-		connectPoolMap.put(conServer, fcp);
+		RouteFixedChannelPool fcp = new RouteFixedChannelPool(boot, handler, Runtime.getRuntime().availableProcessors()*2);
+		
+		FixedChannelPoolDto dto = new FixedChannelPoolDto();
+		dto.setFixedChannelPool(fcp);
+		dto.setPassword(password);
+		connectPoolMap.put(conServer, dto);
 
 	}
+	
 
 	@Override
 	public void changeNotify(List<ServerDto> serverDtos) {
@@ -242,6 +189,8 @@ public class ServerDiscover implements IC2sClient {
 			writeLock.lock();
 
 			preDestory();
+			
+			log.info("serverDtos:{}",JSON.toJSONString(serverDtos));
 
 			for (ServerDto server : serverDtos) {
 
@@ -251,13 +200,11 @@ public class ServerDiscover implements IC2sClient {
 				String ip = str[0];
 				int port = Integer.parseInt(str[1]);
 				// 初始化连接池
-				putPool(conServer, ip, port);
+				putPool(conServer, ip, port,server.getPassword());
 
-				connectList.add(conServer);
 			}
 			
 			log.info("map pool:{}",connectPoolMap);
-			log.info("connectList:{}",connectList);
 		} finally {
 			writeLock.unlock();
 		}

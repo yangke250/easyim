@@ -21,6 +21,7 @@ import com.alibaba.fastjson.JSON;
 import com.easyim.biz.api.dto.protocol.C2sProtocol;
 import com.easyim.biz.api.dto.protocol.S2sProtocol;
 import com.easyim.biz.api.protocol.enums.s2s.S2sCommandType;
+import com.easyim.biz.api.protocol.s2s.S2sMessagePush;
 import com.easyim.route.server.ServerDiscover;
 import com.easyim.route.service.IProtocolRouteService;
 import com.easyim.route.service.IUserRouteService;
@@ -44,24 +45,13 @@ public class ProtocolRouteServiceImpl implements IProtocolRouteService{
 	private final static int THREAD_NUM = 100;
 	
 	private final static long TIME_OUT  = 2000l;//写入2秒没有应答，代表处理失败
-	
-	//线程池
-	private static ExecutorService executorService = Executors.newFixedThreadPool(THREAD_NUM);
-	
-	//同步等待结果
-	private static ConcurrentHashMap<String,Queue<C2sProtocol>> inputOutputMap 
-	 = new ConcurrentHashMap<String,Queue<C2sProtocol>>();
+
+
 	
 	@Resource
 	private IUserRouteService userRouteService;
 	
-	public static void addCallBack(String protocol){
-		C2sProtocol c2sProtocol =  JSON.parseObject(protocol,C2sProtocol.class);
-		Queue<C2sProtocol> queue = inputOutputMap.get(c2sProtocol.getUuid());
-		if(queue!=null){
-			queue.add(c2sProtocol);
-		}
-	}
+	
 	
 	
 	private S2sProtocol createS2sProtocol(String body){
@@ -90,7 +80,12 @@ public class ProtocolRouteServiceImpl implements IProtocolRouteService{
 			return false;
 		}
 		
-		route(routeInfo,body);
+		S2sMessagePush s = new S2sMessagePush();
+		s.setTenementId(tenementId);
+		s.setToId(userId);
+		s.setBody(body);
+		
+		route(routeInfo,JSON.toJSONString(s));
 		
 		
 		return true;
