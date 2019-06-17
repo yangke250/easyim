@@ -29,7 +29,7 @@ public class TcpS2sServer {
 
 
 	@Value("${c2s.server.port}")
-	private int tcpPort;
+	private int s2sTcpPort;
 	
 	@Resource
 	private S2sInputHandle s2sInputHandle;
@@ -59,10 +59,10 @@ public class TcpS2sServer {
                 });
 
             try {
-                Channel ch = boot.bind(tcpPort).sync().channel();
+                Channel ch = boot.bind(s2sTcpPort).sync().channel();
 
                 log.info("===================================");
-                log.info("s2s server start at port:"+tcpPort);
+                log.info("s2s server start at port:"+s2sTcpPort);
                 log.info("===================================");
 
                 

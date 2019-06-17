@@ -24,12 +24,14 @@ import com.easyim.biz.api.service.protocol.IC2sHandleService;
 import com.easyim.connect.session.Session.SessionStatus;
 
 import io.netty.channel.ChannelHandlerContext;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * session的会话管理
  * @author wl
  *
  */
+@Slf4j
 @Component
 public class SessionManager {
 	
@@ -65,9 +67,14 @@ public class SessionManager {
 	 */
 	public static List<Session> getSession(String uid){
 		ConcurrentHashMap<String,Session> map =  uidMap.get(uid);
+		log.info("getSession:{},{}",uid,uidMap);
+		
 		
 		List<Session> list = new ArrayList<Session>();
-		list.addAll(map.values());
+		
+		if(map!=null){
+			list.addAll(map.values());
+		}
 		
 		return list;
 	}
@@ -81,9 +88,6 @@ public class SessionManager {
 	 * @param session
 	 */
 	public static void removeSession(ChannelHandlerContext chc,C2sProtocol c2sProtocol){
-		String json  = JSON.toJSONString(c2sProtocol);
-		chc.channel().writeAndFlush(json);
-		
 		
 		Session session = sessionIdMap.get(Session.getSessionId(chc));
 		if(session!=null){
@@ -103,11 +107,18 @@ public class SessionManager {
 					}
 				}
 			}
+			
+			log.info("uid map:{},{}",uid,sessionMap);
 		}
 		
 		//doserver logout
 		
 		sessionIdMap.remove(Session.getSessionId(chc));
+		
+		if(c2sProtocol!=null){
+			String json  = JSON.toJSONString(c2sProtocol);
+			chc.channel().writeAndFlush(json);
+		}
 		
 		chc.close();
 	}
@@ -135,10 +146,14 @@ public class SessionManager {
 				if(map==null){//double check
 					map =  new ConcurrentHashMap<String,Session>();
 				}
-					map.put(session.getSessionId(),session);
-					uidMap.put(uid,map);
+				uidMap.put(uid,map);
 			}
 		}
+		
+		map.put(session.getSessionId(),session);
+	
+
+		log.info("uid map:{},{}",uid,map.size());
 		
 		sessionIdMap.put(Session.getSessionId(chc),session);
 		

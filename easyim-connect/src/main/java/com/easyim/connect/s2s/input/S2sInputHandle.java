@@ -9,6 +9,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
+import com.easy.springboot.c2s.server.AbstractServerRegister;
 import com.easyim.biz.api.dto.protocol.S2sProtocol;
 import com.easyim.biz.api.protocol.enums.s2s.S2sCommandType;
 import com.easyim.connect.service.IS2sProtocolService;
@@ -30,18 +31,19 @@ import io.netty.channel.ChannelHandler.Sharable;
 @Slf4j
 public class S2sInputHandle extends ChannelInboundHandlerAdapter implements BeanPostProcessor{
 
-	private Map<S2sCommandType,IS2sProtocolService> map = new ConcurrentHashMap<S2sCommandType,IS2sProtocolService>();
+	private Map<S2sCommandType,IS2sProtocolService<?,?>> map = new ConcurrentHashMap<S2sCommandType,IS2sProtocolService<?,?>>();
 	
 	
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		log.info("S2sInputHandle:{}",msg.toString());
 		
 		S2sProtocol s2sProtocol = JSON.parseObject(msg.toString(),S2sProtocol.class);
-		
-		switch(s2sProtocol.getType()){
-			case s2sMessagePush:
+		if(!AbstractServerRegister.getPassword().equals(s2sProtocol.getPassword())){
+			log.error("S2sInputHandle password error:{},{}",AbstractServerRegister.getPassword(),s2sProtocol.getPassword());
 		}
 		
+		IS2sProtocolService<?,?> service =  map.get(s2sProtocol.getType());
+		service.handleProtocolBody(s2sProtocol.getBody());
 	}
 
 	@Override

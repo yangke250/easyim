@@ -168,6 +168,7 @@ public class MessageServiceImpl implements IMessageService {
 	public SendMsgResultDto sendMsg(SendMsgDto messageDto) {
 		// 生产msgId
 		long msgId = getId();
+		log.info("sendMsg msg:{}",msgId);
 
 		SendMsgResultDto dto = new SendMsgResultDto();
 
@@ -295,7 +296,7 @@ public class MessageServiceImpl implements IMessageService {
 				}
 				emitter.onComplete();
 			}
-		}, BackpressureStrategy.ERROR); 
+		}, BackpressureStrategy.BUFFER); 
 		
 		Subscriber<SendMsgDto> subscriber = new Subscriber<SendMsgDto>() {
 			@Override

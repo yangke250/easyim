@@ -31,13 +31,14 @@ public class MessagePushServiceImpl implements IS2sProtocolService<S2sMessagePus
 		List<Session> sessions =  SessionManager.getSession(uid);
 		
 		for(Session s:sessions){
-			log.info("uid : {} flush ",uid);
 			try{
-				s.getChc().writeAndFlush(messagePush.getBody());
+				s.getChc().channel().writeAndFlush(messagePush.getBody());
 			}catch(Exception e){
 				log.error("exception:{}",e);
 			}
 		}
+		log.info("uid :{},{} flush ",sessions.size(),messagePush.getBody());
+		
 		
 		return new S2sMessagePushAck();
 	}

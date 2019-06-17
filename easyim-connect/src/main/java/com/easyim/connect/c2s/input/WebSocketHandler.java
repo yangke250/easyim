@@ -5,6 +5,8 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.easyim.connect.session.SessionManager;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -64,9 +66,11 @@ public class WebSocketHandler  extends SimpleChannelInboundHandler<Object>{
                 //logger.info("服务端收到：" + request);
                 
                 ctx.fireChannelRead(request);
-             }else{
-                throw new UnsupportedOperationException(String.format(
-                            "%s frame types not supported", frame.getClass().getName()));
+             }else if (frame instanceof CloseWebSocketFrame){
+                 
+                 SessionManager.removeSession(ctx, null);
+              }else{
+             	log.error("服务端收到 ：" + frame.content());
             }
         	
         }
@@ -80,12 +84,14 @@ public class WebSocketHandler  extends SimpleChannelInboundHandler<Object>{
     
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        super.channelActive(ctx);
+    	log.error("channelActive:{}",ctx);
+    	super.channelActive(ctx);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
             throws Exception {
+    	log.error("exceptionCaught:{}",cause);
         ctx.close();
     }
 

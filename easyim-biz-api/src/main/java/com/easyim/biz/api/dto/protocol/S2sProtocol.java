@@ -13,7 +13,7 @@ public class S2sProtocol implements Serializable {
 	private static final long serialVersionUID = -3602377614974262619L;
 	
 	private  String uuid = UUID.randomUUID().toString();
-	private  String version;
+	private  String password;
 
 	private  S2sCommandType type;
 	private  String body;
