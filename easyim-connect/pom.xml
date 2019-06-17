@@ -6,7 +6,7 @@
 		<artifactId>easyim</artifactId>
 		<version>0.0.1</version>
 	</parent>
-	<artifactId>connect</artifactId>
+	<artifactId>easyim-connect</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>com.alibaba</groupId>

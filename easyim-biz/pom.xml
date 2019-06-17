@@ -6,7 +6,7 @@
 		<artifactId>easyim</artifactId>
 		<version>0.0.1</version>
 	</parent>
-	<artifactId>biz</artifactId>
+	<artifactId>easyim-biz</artifactId>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/io.shardingjdbc/sharding-jdbc-core -->
 		<dependency>

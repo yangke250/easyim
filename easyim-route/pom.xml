@@ -6,7 +6,7 @@
 		<artifactId>easyim</artifactId>
 		<version>0.0.1</version>
 	</parent>
-	<artifactId>route</artifactId>
+	<artifactId>easyim-route</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

@@ -5,7 +5,7 @@
     <artifactId>easyim</artifactId>
     <version>0.0.1</version>
   </parent>
-  <artifactId>biz-api</artifactId>
+  <artifactId>easyim-biz-api</artifactId>
   <dependencies>
   		<dependency>
 			<groupId>com.baidu</groupId>
