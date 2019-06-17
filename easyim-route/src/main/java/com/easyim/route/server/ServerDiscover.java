@@ -108,8 +108,9 @@ public class ServerDiscover implements IC2sClient {
 			int size = set.size();
 			int i = (int) (num%size);
 		
-			String[] arrays = (String[]) set.toArray();
-			return arrays[i];
+			
+			Object[] arrays = set.toArray();
+			return arrays[i].toString();
 		}finally{
 			readLock.unlock();
 		}
