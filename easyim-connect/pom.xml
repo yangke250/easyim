@@ -47,6 +47,14 @@
 			<artifactId>c2s</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>io.reactivex.rxjava2</groupId>
+			<artifactId>rxjava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.reactivex.rxjava2</groupId>
+			<artifactId>rxjava</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.easyim</groupId>
 			<artifactId>biz-api</artifactId>
 			<version>0.0.1</version>
