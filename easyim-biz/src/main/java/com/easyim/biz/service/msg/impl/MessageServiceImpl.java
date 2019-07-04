@@ -14,6 +14,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.dozer.Mapper;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
@@ -38,6 +41,9 @@ import com.easyim.biz.domain.ConversationDo;
 import com.easyim.biz.domain.MessageDo;
 import com.easyim.biz.domain.ProxyConversationDo;
 import com.easyim.biz.domain.TenementDo;
+import com.easyim.biz.enums.EnventType;
+import com.easyim.biz.listener.EnventListener;
+import com.easyim.biz.listener.EnventListenerMap;
 import com.easyim.biz.mapper.conversation.IConversationMapper;
 import com.easyim.biz.mapper.conversation.IProxyConversationMapper;
 import com.easyim.biz.mapper.message.IMessageMapper;
@@ -57,7 +63,7 @@ import redis.clients.util.SafeEncoder;
 
 @Slf4j
 @Service(interfaceClass = IMessageService.class)
-public class MessageServiceImpl implements IMessageService {
+public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 
 	public final static long MAX_NUM = 500;
 
@@ -89,6 +95,9 @@ public class MessageServiceImpl implements IMessageService {
 	@Resource
 	private Mapper mapper;
 
+	@Resource
+	private BeanFactory beanFactory;
+	
 	private Codec<C2sProtocol> simpleTypeCodec = ProtobufProxy.create(C2sProtocol.class);
 
 	/**
@@ -220,12 +229,29 @@ public class MessageServiceImpl implements IMessageService {
 		// 保存消息
 		saveMsg(messagePush, proxyFromId, proxyToId);
 
-		// 保存离线消息
+		//保存离线消息
 		C2sProtocol c2sProtocol = saveOfflineMsg(messagePush);
-
+		//路由协议
 		this.protocolRouteService.route(tenementId, toId, JSON.toJSONString(c2sProtocol));
 
-		return new SendMsgResultDto();
+		SendMsgResultDto sendMsgResultDto = new SendMsgResultDto();
+		sendMsgResultDto.setMessagePush(messagePush);
+		
+		/**
+		 * 回调相关方法
+		 */
+		List<EnventListener>  list = EnventListenerMap.getEnventListener(EnventType.sendMsg);
+		if(list!=null){
+			list.forEach(l->{
+				try{
+					l.callback(messagePush);
+				}catch(Exception e){
+					e.printStackTrace();//ignor exceptpion
+					log.warn("exception:",e);
+				}
+			});
+		}
+		return sendMsgResultDto;
 	}
 
 	private long getId() {
@@ -235,20 +261,21 @@ public class MessageServiceImpl implements IMessageService {
 	private List<C2sProtocol> pullOfflineMsg(String key, long lastMsgId) {
 
 
-		Set<String> sets = null;
+		Set<Tuple> sets = null;
 		if (lastMsgId <= 0) {
-			sets = redisTemplate.zrange(key, 0, MAX_OFFLINE_NUM);
+			//查询最近的
+			sets = redisTemplate.zrangeWithScores(key, 0, MAX_OFFLINE_NUM);
 		} else {
-			sets = redisTemplate.zrangeByScore(key, lastMsgId, Double.MAX_VALUE, 0, MAX_OFFLINE_NUM);
+			sets = redisTemplate.zrangeByScoreWithScores(key,Double.parseDouble(String.valueOf(lastMsgId)), Double.MAX_VALUE, 0, MAX_OFFLINE_NUM);
 		}
 
 		List<C2sProtocol> list = new ArrayList<C2sProtocol>();
-		for (String set : sets) {
+		for (Tuple set : sets) {
 //			try {
 //				byte[] bytes = set.getBinaryElement();
 //				System.out.println(bytes.length);
 //				C2sProtocol newStt = simpleTypeCodec.decode(bytes);
-				list.add(JSON.parseObject(set,C2sProtocol.class));
+				list.add(JSON.parseObject(set.getElement(),C2sProtocol.class));
 //			} catch (IOException e) {
 //				e.printStackTrace();// ignore
 //				log.error("exception:{}", e);
@@ -306,7 +333,7 @@ public class MessageServiceImpl implements IMessageService {
 
 			@Override
 			public void onNext(SendMsgDto dto) {
-				sendMsg(dto);
+				 SendMsgResultDto  sendMsgResultDto = sendMsg(dto);
 			}
 
 			@Override
@@ -321,5 +348,10 @@ public class MessageServiceImpl implements IMessageService {
 		return new SendMsgResultDto();
 	}
 	
-	public static void main(String[] args) throws InterruptedException{}
+
+	@Override
+	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+		// TODO Auto-generated method stub
+		
+	}
 }
