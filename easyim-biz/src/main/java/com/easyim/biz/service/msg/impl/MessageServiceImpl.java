@@ -28,7 +28,9 @@ import com.easyim.biz.api.dto.message.OfflineMsgDto;
 import com.easyim.biz.api.dto.message.SendMsgDto;
 import com.easyim.biz.api.dto.message.SendMsgResultDto;
 import com.easyim.biz.api.dto.protocol.C2sProtocol;
+import com.easyim.biz.api.listener.SendMsgListener;
 import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.EnventType;
 import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 import com.easyim.biz.api.protocol.enums.c2s.Result;
 import com.easyim.biz.api.protocol.c2s.MessagePush;
@@ -41,8 +43,6 @@ import com.easyim.biz.domain.ConversationDo;
 import com.easyim.biz.domain.MessageDo;
 import com.easyim.biz.domain.ProxyConversationDo;
 import com.easyim.biz.domain.TenementDo;
-import com.easyim.biz.enums.EnventType;
-import com.easyim.biz.listener.EnventListener;
 import com.easyim.biz.listener.EnventListenerMap;
 import com.easyim.biz.mapper.conversation.IConversationMapper;
 import com.easyim.biz.mapper.conversation.IProxyConversationMapper;
@@ -237,20 +237,7 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 		SendMsgResultDto sendMsgResultDto = new SendMsgResultDto();
 		sendMsgResultDto.setMessagePush(messagePush);
 		
-		/**
-		 * 回调相关方法
-		 */
-		List<EnventListener>  list = EnventListenerMap.getEnventListener(EnventType.sendMsg);
-		if(list!=null){
-			list.forEach(l->{
-				try{
-					l.callback(messagePush);
-				}catch(Exception e){
-					e.printStackTrace();//ignor exceptpion
-					log.warn("exception:",e);
-				}
-			});
-		}
+		EnventListenerMap.callBack(EnventType.sendMsg,messagePush);
 		return sendMsgResultDto;
 	}
 
@@ -310,7 +297,12 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 	}
 
 	@Override
-	public SendMsgResultDto sendMsg(SendMsgDto message, List<String> userIds) {
+	public void sendMsg(SendMsgDto message, List<String> userIds) {
+		sendMsg(message,userIds,null);
+	}
+	
+	@Override
+	public void sendMsg(SendMsgDto message, List<String> userIds,SendMsgListener sendMsgListener) {
 
 		Flowable<SendMsgDto> upstream = Flowable.create(new FlowableOnSubscribe<SendMsgDto>() {
 			@Override
@@ -334,6 +326,9 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 			@Override
 			public void onNext(SendMsgDto dto) {
 				 SendMsgResultDto  sendMsgResultDto = sendMsg(dto);
+				 if(sendMsgListener!=null&&sendMsgResultDto.getResult()==Result.success){
+					 sendMsgListener.callback(sendMsgResultDto.getMessagePush());
+				 }
 			}
 
 			@Override
@@ -345,7 +340,6 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 			}
 		};
 		upstream.subscribeOn(Schedulers.io(), true).observeOn(Schedulers.computation()).subscribe(subscriber);
-		return new SendMsgResultDto();
 	}
 	
 

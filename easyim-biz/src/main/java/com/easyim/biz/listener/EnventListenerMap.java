@@ -8,11 +8,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration.BeanPostProcessorsRegistrar;
 import org.springframework.stereotype.Component;
 
-import com.easyim.biz.enums.EnventType;
+import com.easyim.biz.api.listener.EnventListener;
+import com.easyim.biz.api.protocol.enums.c2s.EnventType;
+
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
+@Slf4j
 @Component
 public class EnventListenerMap implements BeanPostProcessor{
 	private static Map<EnventType,List<EnventListener>> map = new ConcurrentHashMap<EnventType,List<EnventListener>>();
@@ -22,6 +26,21 @@ public class EnventListenerMap implements BeanPostProcessor{
 		return map.get(type);
 	}
 
+	public static void callBack(EnventType type,Object o){
+		List<EnventListener> list =  map.get(type);
+		if(list==null){
+			return;
+		}
+		
+		list.forEach(l->{
+			try{
+				l.callback(o);
+			}catch(Exception e){
+				e.printStackTrace();
+				log.warn("exception:{}",e);
+			}
+		});
+	}
 
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {

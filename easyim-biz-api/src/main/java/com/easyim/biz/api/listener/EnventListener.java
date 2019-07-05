@@ -1,6 +1,6 @@
-package com.easyim.biz.listener;
+package com.easyim.biz.api.listener;
 
-import com.easyim.biz.enums.EnventType;
+import com.easyim.biz.api.protocol.enums.c2s.EnventType;
 
 /**
  * im相关的事件通知

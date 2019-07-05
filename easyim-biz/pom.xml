@@ -111,13 +111,13 @@
 		</dependency>
 		<dependency>
 			<groupId>com.easyim</groupId>
-			<artifactId>biz-api</artifactId>
-			<version>0.0.1</version>
+			<artifactId>easyim-biz-api</artifactId>
+			<version>0.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.easyim</groupId>
-			<artifactId>route</artifactId>
-			<version>0.0.1</version>
+			<artifactId>easyim-route</artifactId>
+			<version>0.0.2</version>
 		</dependency>
 
 

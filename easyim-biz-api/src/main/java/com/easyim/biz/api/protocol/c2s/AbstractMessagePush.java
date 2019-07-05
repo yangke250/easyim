@@ -31,6 +31,7 @@ public abstract class AbstractMessagePush extends AbstractProtocol{
     @Protobuf
     private String bizUuid;//业务uuid
 	
+     
 
 	
 	
