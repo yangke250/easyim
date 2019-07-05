@@ -33,9 +33,8 @@ public class MessageImplTest extends LaunchTest{
 		List<String> list = new ArrayList<String>();
 		list.add("29aafb35-25ec-418d-8309-fa232f0d7eb0_1176");
 		
-		SendMsgResultDto  result = msgService.sendMsg(message,list);
+		msgService.sendMsg(message,list);
 		Thread.sleep(5000000);
-		System.out.println("result:"+result);
 	}
 	
 	

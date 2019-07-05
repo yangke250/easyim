@@ -102,6 +102,7 @@ public class ServerDiscover implements IC2sClient {
 		long num = POLLING_NUM.incrementAndGet();
 		
 		try{
+			
 			readLock.lock();
 			
 			Set<String> set = connectPoolMap.keySet();
