@@ -28,7 +28,7 @@ public class SendMsgDto {
 	private long proxyCid;
 	@NotNull
 	private MessageType type;
-	@Min(value = 0)
+	@NotNull
 	private String subType;
 	@NotNull
 	private String content;

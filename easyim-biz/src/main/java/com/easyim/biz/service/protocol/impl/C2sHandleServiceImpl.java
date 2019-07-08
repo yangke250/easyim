@@ -32,7 +32,8 @@ public class C2sHandleServiceImpl implements IC2sHandleService,BeanPostProcessor
 		
 		IC2SProtocolService service = map.get(c2sCommandType);
 		if(service==null){
-			throw new RuntimeException(c2sCommandType+" service is null!");
+			log.warn(c2sCommandType+" service is null!");
+			return null;
 		}
 		
 		if(C2sCommandType.ping!=c2sCommandType){

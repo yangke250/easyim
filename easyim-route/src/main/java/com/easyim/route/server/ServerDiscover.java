@@ -137,7 +137,7 @@ public class ServerDiscover implements IC2sClient {
 			
 			channel.writeAndFlush(json);
 			
-			log.info("key3:{} writeAndFlush:", json);
+			log.info("key new:{} writeAndFlush:", json);
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("exception:",e);

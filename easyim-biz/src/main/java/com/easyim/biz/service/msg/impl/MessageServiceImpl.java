@@ -1,8 +1,10 @@
 package com.easyim.biz.service.msg.impl;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -70,6 +72,8 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 	public final static int MAX_OFFLINE_NUM = 20;
 
 	public final static int OFFLINE_TIME = 15 * 24 * 60 * 60;// 离线消息，最多15天
+	
+	public final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 
 	// @Resource
 	// private HbaseTemplate baseTemplate;
@@ -165,12 +169,15 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 	 * @param cid
 	 * @param toId
 	 */
-	private void saveMsg(MessagePush messagePush, String proxyFromId, String proxyToId) {
+	private MessageDo saveMsg(MessagePush messagePush, String proxyFromId, String proxyToId) {
 		MessageDo message = mapper.map(messagePush, MessageDo.class);
 		message.setProxyFromId(proxyFromId);
 		message.setProxyToId(proxyToId);
-
+		message.setGmtCreate(new Date());
+		
 		this.messageMapper.insertMessage(message);
+	
+		return message;
 	}
 
 	@Override
@@ -225,10 +232,12 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 		messagePush.setTenementId(tenementId);
 		messagePush.setToId(toId);
 		messagePush.setType(messageDto.getType().getValue());
-
-		// 保存消息
-		saveMsg(messagePush, proxyFromId, proxyToId);
-
+		
+		// 保存db消息
+		MessageDo messageDo = saveMsg(messagePush, proxyFromId, proxyToId);
+		messagePush.setTime(sdf.format(messageDo.getGmtCreate()));
+		
+		log.info("messagePush:{}",JSON.toJSONString(messagePush));
 		//保存离线消息
 		C2sProtocol c2sProtocol = saveOfflineMsg(messagePush);
 		//路由协议

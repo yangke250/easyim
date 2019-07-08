@@ -14,7 +14,7 @@ import com.easyim.biz.api.protocol.enums.c2s.Result;
 import com.easyim.biz.service.protocol.IC2SProtocolService;
 import com.easyim.route.service.IUserRouteService;
 
-@Service("pingPService")
+@Service("messagePushPService")
 public class PingPServiceImpl implements IC2SProtocolService<Ping, PingAck> {
 
 	@Resource
