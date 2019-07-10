@@ -48,16 +48,18 @@ public class UserRouteServiceImpl implements IUserRouteService {
 			}
 			
 			long ttl = redisTemplate.ttl(strKey);
-			if(timeOut>ttl){
+			if(timeOut>ttl){//如果超时时间大于，已设置的超时时间
 				redisTemplate.expire(strKey,timeOut);
 			}
 			
+			//设置同一个用户有多少链接
 			redisTemplate.hset(hashKey,sessionId,sessionId);
 			ttl = redisTemplate.ttl(hashKey);
 			if(timeOut>ttl){
 				redisTemplate.expire(hashKey,timeOut);
 			}
 		}else{
+			
 			redisTemplate.expire(strKey,timeOut);
 			redisTemplate.hset(hashKey,sessionId,sessionId);
 			redisTemplate.expire(hashKey,timeOut);
