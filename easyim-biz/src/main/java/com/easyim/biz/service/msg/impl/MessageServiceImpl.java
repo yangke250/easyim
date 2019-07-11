@@ -69,7 +69,7 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 
 	public final static long MAX_NUM = 500;
 
-	public final static int MAX_OFFLINE_NUM = 20;
+	public final static int MAX_OFFLINE_NUM = 50;
 
 	public final static int OFFLINE_TIME = 15 * 24 * 60 * 60;// 离线消息，最多15天
 	
