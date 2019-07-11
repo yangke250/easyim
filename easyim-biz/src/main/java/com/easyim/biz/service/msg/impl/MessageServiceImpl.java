@@ -261,8 +261,8 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 		if (lastMsgId <= 0) {
 			//查询最近的
 			sets = redisTemplate.zrangeWithScores(key, 0, MAX_OFFLINE_NUM);
-		} else {
-			sets = redisTemplate.zrangeByScoreWithScores(key,Double.parseDouble(String.valueOf(lastMsgId)), Double.MAX_VALUE, 0, MAX_OFFLINE_NUM);
+		} else {//最小id，为lastMsgId+1
+			sets = redisTemplate.zrangeByScoreWithScores(key,Double.parseDouble(String.valueOf(lastMsgId+1)), Double.MAX_VALUE, 0, MAX_OFFLINE_NUM);
 		}
 
 		List<C2sProtocol> list = new ArrayList<C2sProtocol>();
