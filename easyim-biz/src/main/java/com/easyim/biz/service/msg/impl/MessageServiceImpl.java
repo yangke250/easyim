@@ -219,7 +219,10 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 		if (cid == 0) {
 			cid = conversationService.getCid(tenementId, fromId, toId, proxyCid);
 		}
+		
+		log.info("sendMsg msg:{} cid succ",msgId);
 
+		
 		// build msg push
 		MessagePush messagePush = new MessagePush();
 		messagePush.setId(msgId);
@@ -241,8 +244,13 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 		log.info("messagePush:{}",JSON.toJSONString(messagePush));
 		//保存离线消息
 		C2sProtocol c2sProtocol = saveOfflineMsg(messagePush);
+		
+		log.info("sendMsg msg:{} offline succ",msgId);
+
 		//路由协议
 		this.protocolRouteService.route(tenementId, toId, JSON.toJSONString(c2sProtocol));
+
+		log.info("sendMsg msg:{} route succ",msgId);
 
 		SendMsgResultDto sendMsgResultDto = new SendMsgResultDto();
 		sendMsgResultDto.setMessagePush(messagePush);
