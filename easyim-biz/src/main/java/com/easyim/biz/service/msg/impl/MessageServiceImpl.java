@@ -192,6 +192,7 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 
 		boolean result = Launch.doValidator(messageDto);
 		if (tenement == null || !result) {
+			log.warn("sendMsg error:{}",JSON.toJSONString(messageDto));
 			dto.setResult(Result.inputError);
 			return dto;
 		}
