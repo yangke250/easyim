@@ -184,7 +184,7 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 	public SendMsgResultDto sendMsg(SendMsgDto messageDto) {
 		// 生产msgId
 		long msgId = getId();
-		log.info("sendMsg msg:{}",msgId);
+		log.info("sendMsg msg:{},{}",msgId,messageDto.getToId());
 
 		SendMsgResultDto dto = new SendMsgResultDto();
 
@@ -192,7 +192,7 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 
 		boolean result = Launch.doValidator(messageDto);
 		if (tenement == null || !result) {
-			log.warn("sendMsg error:{}",JSON.toJSONString(messageDto));
+			log.warn("sendMsg error:{},{}",messageDto.getToId(),JSON.toJSONString(messageDto));
 			dto.setResult(Result.inputError);
 			return dto;
 		}
@@ -220,7 +220,7 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 			cid = conversationService.getCid(tenementId, fromId, toId, proxyCid);
 		}
 		
-		log.info("sendMsg msg:{} cid succ",msgId);
+		log.info("sendMsg msg:{},{} cid succ",msgId,messageDto.getToId());
 
 		
 		// build msg push
@@ -241,16 +241,16 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 		MessageDo messageDo = saveMsg(messagePush, proxyFromId, proxyToId);
 		messagePush.setTime(sdf.format(messageDo.getGmtCreate()));
 		
-		log.info("messagePush:{}",JSON.toJSONString(messagePush));
+		log.info("messagePush:{},{}",msgId,messageDto.getToId());
 		//保存离线消息
 		C2sProtocol c2sProtocol = saveOfflineMsg(messagePush);
 		
-		log.info("sendMsg msg:{} offline succ",msgId);
+		log.info("sendMsg msg:{},{} offline succ",msgId,messageDto.getToId());
 
 		//路由协议
 		this.protocolRouteService.route(tenementId, toId, JSON.toJSONString(c2sProtocol));
 
-		log.info("sendMsg msg:{} route succ",msgId);
+		log.info("sendMsg msg:{},{} route succ",msgId,messageDto.getToId());
 
 		SendMsgResultDto sendMsgResultDto = new SendMsgResultDto();
 		sendMsgResultDto.setMessagePush(messagePush);
