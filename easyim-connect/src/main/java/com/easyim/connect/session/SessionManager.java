@@ -67,7 +67,7 @@ public class SessionManager {
 	 */
 	public static List<Session> getSession(String uid){
 		ConcurrentHashMap<String,Session> map =  uidMap.get(uid);
-		log.info("getSession:{},{}",uid,uidMap);
+		log.info("getSession:{},{}",uid,uidMap.size());
 		
 		
 		List<Session> list = new ArrayList<Session>();
@@ -108,7 +108,7 @@ public class SessionManager {
 				}
 			}
 			
-			log.info("uid map:{},{}",uid,sessionMap);
+			log.info("uid map:{},{}",uid,sessionMap.size());
 		}
 		
 		//doserver logout
