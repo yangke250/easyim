@@ -7,6 +7,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
@@ -50,6 +54,7 @@ import com.easyim.biz.mapper.conversation.IConversationMapper;
 import com.easyim.biz.mapper.conversation.IProxyConversationMapper;
 import com.easyim.biz.mapper.message.IMessageMapper;
 import com.easyim.biz.mapper.tenement.ITenementMapper;
+import com.easyim.biz.task.SynMessageTask;
 import com.easyim.route.service.IProtocolRouteService;
 
 import cn.linkedcare.springboot.redis.template.RedisTemplate;
@@ -75,9 +80,9 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 	
 	public final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 
-	// @Resource
-	// private HbaseTemplate baseTemplate;
 
+	
+	
 	@Resource
 	private RedisTemplate redisTemplate;
 
@@ -321,43 +326,12 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 	
 	@Override
 	public void sendMsg(SendMsgDto message, List<String> userIds,SendMsgListener sendMsgListener) {
-
-		Flowable<SendMsgDto> upstream = Flowable.create(new FlowableOnSubscribe<SendMsgDto>() {
-			@Override
-			public void subscribe(FlowableEmitter<SendMsgDto> emitter) throws Exception {
-				for(String userId:userIds){
-					SendMsgDto messageMapper = mapper.map(message,SendMsgDto.class);
-					messageMapper.setToId(userId);
+			for(String userId:userIds){
+					SendMsgDto dto = mapper.map(message,SendMsgDto.class);
+					dto.setToId(userId);
 					
-					emitter.onNext(messageMapper);
-				}
-				emitter.onComplete();
+					SynMessageTask.addTask(dto);
 			}
-		}, BackpressureStrategy.BUFFER); 
-		
-		Subscriber<SendMsgDto> subscriber = new Subscriber<SendMsgDto>() {
-			@Override
-			public void onSubscribe(Subscription s) {
-				s.request(Long.MAX_VALUE);
-			}
-
-			@Override
-			public void onNext(SendMsgDto dto) {
-				 SendMsgResultDto  sendMsgResultDto = sendMsg(dto);
-				 if(sendMsgListener!=null&&sendMsgResultDto.getResult()==Result.success){
-					 sendMsgListener.callback(sendMsgResultDto.getMessagePush());
-				 }
-			}
-
-			@Override
-			public void onError(Throwable t) {
-			}
-
-			@Override
-			public void onComplete() {
-			}
-		};
-		upstream.subscribeOn(Schedulers.io(), true).observeOn(Schedulers.computation()).subscribe(subscriber);
 	}
 	
 
