@@ -27,7 +27,7 @@ public class SynMessageTask {
 	@PostConstruct
 	public void init(){
 		for(int i=0;i<Runtime.getRuntime().availableProcessors();i++){
-			new Runnable() {
+			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					while(true){
@@ -40,7 +40,7 @@ public class SynMessageTask {
 						}
 					}
 				}
-			};
+			}).start();
 		}
 	}
 	
