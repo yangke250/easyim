@@ -72,7 +72,7 @@ import redis.clients.util.SafeEncoder;
 @Service(interfaceClass = IMessageService.class)
 public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 
-	public final static long MAX_NUM = 500;
+	public final static long MAX_NUM = 200;
 
 	public final static int MAX_OFFLINE_NUM = 50;
 
