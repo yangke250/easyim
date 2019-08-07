@@ -1,6 +1,8 @@
 package com.easyim.biz.service.msg.impl;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,6 +25,7 @@ import org.reactivestreams.Subscription;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
@@ -32,6 +35,7 @@ import com.baidu.bjf.remoting.protobuf.ProtobufProxy;
 import com.easyim.biz.Launch;
 import com.easyim.biz.api.dto.message.OfflineMsgDto;
 import com.easyim.biz.api.dto.message.SendMsgDto;
+import com.easyim.biz.api.dto.message.SendMsgDto.MessageType;
 import com.easyim.biz.api.dto.message.SendMsgResultDto;
 import com.easyim.biz.api.dto.protocol.C2sProtocol;
 import com.easyim.biz.api.listener.SendMsgListener;
@@ -72,15 +76,16 @@ import redis.clients.util.SafeEncoder;
 @Service(interfaceClass = IMessageService.class)
 public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 
-	public final static long MAX_NUM = 200;
+	public final static long MAX_OFFLINE_NUM = 50;
 
-	public final static int MAX_OFFLINE_NUM = 50;
+	@Value("${offline.msg.nums}")
+	private int MAX_GET_OFFLINE_NUM = 50;
 
 	public final static int OFFLINE_TIME = 15 * 24 * 60 * 60;// 离线消息，最多15天
 	
 	public final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 
-
+	public final static String CHARSET = "UTF-8";
 	
 	
 	@Resource
@@ -114,35 +119,55 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 	 * 
 	 * @param key
 	 * @param msgId
+	 * @throws IOException 
 	 */
-	private void saveOfflineMsg(String key, long msgId, C2sProtocol c2sProtocol) {
+	private void saveOfflineMsg(String key, long msgId, C2sProtocol c2sProtocol) throws IOException {
 
 		// 序列化
-//		byte[] bytes = null;
-//		try {
-//			bytes = simpleTypeCodec.encode(c2sProtocol);
-//		} catch (IOException e) {
-//			throw new RuntimeException(e);
-//		}
+		byte[] msg = simpleTypeCodec.encode(c2sProtocol);
 		
-		redisTemplate.zadd(key, Double.parseDouble(String.valueOf(msgId)),JSON.toJSONString(c2sProtocol));
+		String offlineMsgKey = getOfflineMsgKey(msgId);
+		//保存离线消息id list
+		redisTemplate.zadd(key, Double.parseDouble(String.valueOf(msgId)),JSON.toJSONString(msgId));
+		
+		redisTemplate.setex(offlineMsgKey.getBytes(CHARSET),OFFLINE_TIME,msg);
+		
 		long count = redisTemplate.zcard(key);
-		if (count > MAX_NUM) {// 离线消息超过最大数
-			redisTemplate.zremrangeByRank(key, 0, Integer.parseInt((count - MAX_NUM) + ""));
+		if (count > MAX_OFFLINE_NUM) {// 离线消息超过最大数
+			int end = Integer.parseInt((count - MAX_OFFLINE_NUM) + "");
+			
+			Set<String> ids = redisTemplate.zrange(key, 0, end);
+			for(String id:ids){
+				String outSizeMsgKey = getOfflineMsgKey(Long.parseLong(id));
+				redisTemplate.del(outSizeMsgKey.getBytes(CHARSET));
+			}
+			
+			redisTemplate.zremrangeByRank(key, 0, Integer.parseInt((count - MAX_OFFLINE_NUM) + ""));
 		}
 
-		redisTemplate.expire(key, OFFLINE_TIME);
 	}
 
 	/**
-	 * 离线消息的key
+	 * 离线消息的的key
 	 * 
 	 * @param tenementId
 	 * @param toId
 	 * @return
 	 */
-	private String getOfflineKey(long tenementId, String toId) {
-		String key = Constant.OFFLINE_MSG_KEY + tenementId + "_" + toId;
+	private String getOfflineMsgKey(long msgId) {
+		String key = Constant.OFFLINE_MSG_KEY +msgId;
+		return key;
+	}
+	
+	/**
+	 * 离线消息的id列表的key
+	 * 
+	 * @param tenementId
+	 * @param toId
+	 * @return
+	 */
+	private String getOfflineSetKey(long tenementId, String toId) {
+		String key = Constant.OFFLINE_MSG_SET_KEY + tenementId + "_" + toId;
 		return key;
 	}
 
@@ -160,9 +185,16 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 		c2sProtocol.setType(C2sCommandType.messagePush);
 		c2sProtocol.setBody(JSON.toJSONString(messagePush));
 
-		String key = getOfflineKey(messagePush.getTenementId(), messagePush.getToId());
-		// 多设备离线消息
-		saveOfflineMsg(key, messagePush.getId(), c2sProtocol);
+		if(MessageType.isSaveOffline(messagePush.getType())){
+			String key = getOfflineSetKey(messagePush.getTenementId(), messagePush.getToId());
+			// 多设备离线消息
+			try {
+				saveOfflineMsg(key, messagePush.getId(), c2sProtocol);
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
 
 		return c2sProtocol;
 	}
@@ -180,7 +212,9 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 		message.setProxyToId(proxyToId);
 		message.setGmtCreate(new Date());
 		
-		this.messageMapper.insertMessage(message);
+		if(MessageType.isSaveDb(messagePush.getType())){
+			this.messageMapper.insertMessage(message);
+		}
 	
 		return message;
 	}
@@ -268,31 +302,46 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 		return redisTemplate.incr(Constant.ID_KEY);
 	}
 
-	private List<C2sProtocol> pullOfflineMsg(String key, long lastMsgId) {
+	private List<C2sProtocol> pullOfflineMsg(String key, long lastMsgId)  {
 
 
 		Set<Tuple> sets = null;
 		if (lastMsgId <= 0) {
 			//查询最近的
-			sets = redisTemplate.zrangeWithScores(key, 0, MAX_OFFLINE_NUM);
+			sets = redisTemplate.zrangeWithScores(key, 0, MAX_GET_OFFLINE_NUM);
 		} else {//最小id，为lastMsgId+1
-			sets = redisTemplate.zrangeByScoreWithScores(key,Double.parseDouble(String.valueOf(lastMsgId+1)), Double.MAX_VALUE, 0, MAX_OFFLINE_NUM);
+			sets = redisTemplate.zrangeByScoreWithScores(key,Double.parseDouble(String.valueOf(lastMsgId+1)), Double.MAX_VALUE, 0, MAX_GET_OFFLINE_NUM);
 		}
 
-		List<C2sProtocol> list = new ArrayList<C2sProtocol>();
+		
+		List<byte[]> idsKey = new ArrayList<byte[]>();
 		for (Tuple set : sets) {
-//			try {
-//				byte[] bytes = set.getBinaryElement();
-//				System.out.println(bytes.length);
-//				C2sProtocol newStt = simpleTypeCodec.decode(bytes);
-				list.add(JSON.parseObject(set.getElement(),C2sProtocol.class));
-//			} catch (IOException e) {
-//				e.printStackTrace();// ignore
-//				log.error("exception:{}", e);
-//			}
-
+				String offlineKey = this.getOfflineMsgKey(Long.parseLong(set.getElement()));
+				try {
+					idsKey.add(offlineKey.getBytes(CHARSET));
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+					throw new RuntimeException(e);
+				}
 		}
 
+		byte[][] bytes = idsKey.toArray(new byte[][]{});
+		List<byte[]> c2sBytes = this.redisTemplate.mget(bytes);
+		
+		
+		List<C2sProtocol> list = new ArrayList<C2sProtocol>();
+		for(byte[] b:c2sBytes){
+			C2sProtocol newStt = null;
+			try {
+				newStt = simpleTypeCodec.decode(b);
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+			
+			list.add(newStt);
+		}
+		
 		return list;
 	}
 
@@ -313,7 +362,7 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 			return list;
 		}
 
-		String key = getOfflineKey(tenementId, userId);
+		String key = getOfflineSetKey(tenementId, userId);
 		long lastMsgId = offlineMsgDto.getLastMsgId();
 
 		return pullOfflineMsg(key, lastMsgId);

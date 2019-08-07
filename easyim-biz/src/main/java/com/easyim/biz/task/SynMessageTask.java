@@ -26,7 +26,7 @@ public class SynMessageTask {
 	
 	@PostConstruct
 	public void init(){
-		for(int i=0;i<Runtime.getRuntime().availableProcessors();i++){
+		for(int i=0;i<Runtime.getRuntime().availableProcessors()*2;i++){
 			new Thread(new Runnable() {
 				@Override
 				public void run() {

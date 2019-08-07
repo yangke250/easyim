@@ -45,7 +45,9 @@ public class SendMsgDto {
 		pic(1),//图片
 		voice(2),//声音
 		notify(3),//系统通知,不落库,只走离线消息
-		file(4);//文件
+		file(4),//文件
+		onlyPushOnline(5)//系统通知,不落库,不走离线消息,只推在线
+		;//文件
 		
 		MessageType(int value){
 			this.value = value;
@@ -59,14 +61,39 @@ public class SendMsgDto {
 		}
 		
 		
-		public static MessageType getMessageType(int value){
+		public static boolean isSaveDb(int type){
+			if(type==text.value
+					||type==pic.value
+					||type==voice.value
+					||type==file.value
+					){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
+		public static boolean isSaveOffline(int type){
+			if(type==text.value
+					||type==pic.value
+					||type==voice.value
+					||type==file.value
+					||type==notify.value
+					){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
+		public static MessageType getMessageType(int type){
 			MessageType[] types = MessageType.values();
 			for(MessageType t:types){
-				if(t.getValue()==value){
+				if(t.getValue()==type){
 					return t;
 				}
 			}
-			throw new IllegalArgumentException("value:"+value);
+			throw new IllegalArgumentException("value:"+type);
 		}
 	}
 }
