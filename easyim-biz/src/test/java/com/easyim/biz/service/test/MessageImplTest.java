@@ -20,22 +20,22 @@ public class MessageImplTest extends LaunchTest{
 	@Resource
 	private IMessageService msgService;
 	
-	@Test
-	public void sendMsgList() throws InterruptedException{
-		SendMsgDto message = new SendMsgDto();
-		message.setContent("aaaaa");
-		message.setFromId("555");
-		message.setToId("666");
-		message.setSubType("11122");
-		message.setTenementId(1001);
-		message.setType(MessageType.text);
-		
-		List<String> list = new ArrayList<String>();
-		list.add("29aafb35-25ec-418d-8309-fa232f0d7eb0_1176");
-		
-		msgService.sendMsg(message,list);
-		Thread.sleep(5000000);
-	}
+//	@Test
+//	public void sendMsgList() throws InterruptedException{
+//		SendMsgDto message = new SendMsgDto();
+//		message.setContent("aaaaa");
+//		message.setFromId("555");
+//		message.setToId("666");
+//		message.setSubType("11122");
+//		message.setTenementId(1001);
+//		message.setType(MessageType.text);
+//		
+//		List<String> list = new ArrayList<String>();
+//		list.add("29aafb35-25ec-418d-8309-fa232f0d7eb0_1176");
+//		
+//		msgService.sendMsg(message,list);
+//		Thread.sleep(5000000);
+//	}
 	
 	
 //	@Test
@@ -55,8 +55,8 @@ public class MessageImplTest extends LaunchTest{
 	public void pullOfflineMsg(){
 		OfflineMsgDto olDto= new OfflineMsgDto();
 		olDto.setLastMsgId(0);
-		olDto.setTenementId(1001);
-		olDto.setUserId("29aafb35-25ec-418d-8309-fa232f0d7eb0_1176");
+		olDto.setTenementId(1002);
+		olDto.setUserId("0001_e97a4dbc9a6c4343951b40f7bc992dd1");
 		
 		List<C2sProtocol> list = msgService.pullOfflineMsg(olDto);
 		

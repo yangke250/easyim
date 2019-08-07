@@ -231,7 +231,7 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 
 		boolean result = Launch.doValidator(messageDto);
 		if (tenement == null || !result) {
-			log.warn("sendMsg error:{},{}",messageDto.getToId(),JSON.toJSONString(messageDto));
+			log.warn("sendMsg doValidator error:{},{}",messageDto.getToId(),JSON.toJSONString(messageDto));
 			dto.setResult(Result.inputError);
 			return dto;
 		}
@@ -301,10 +301,8 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 	private long getId() {
 		return redisTemplate.incr(Constant.ID_KEY);
 	}
-
-	private List<C2sProtocol> pullOfflineMsg(String key, long lastMsgId)  {
-
-
+	
+	private byte[][] getOfflineMsgKeys(String key, long lastMsgId){
 		Set<Tuple> sets = null;
 		if (lastMsgId <= 0) {
 			//查询最近的
@@ -313,23 +311,42 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 			sets = redisTemplate.zrangeByScoreWithScores(key,Double.parseDouble(String.valueOf(lastMsgId+1)), Double.MAX_VALUE, 0, MAX_GET_OFFLINE_NUM);
 		}
 
+		if(sets.size()<=0){
+			return null;
+		}
 		
-		List<byte[]> idsKey = new ArrayList<byte[]>();
-		for (Tuple set : sets) {
+		byte[][] bytes =new byte[sets.size()][];
+		int i = 0;
+		for (Tuple set:sets) {
 				String offlineKey = this.getOfflineMsgKey(Long.parseLong(set.getElement()));
 				try {
-					idsKey.add(offlineKey.getBytes(CHARSET));
+					bytes[i]=(offlineKey.getBytes(CHARSET));
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 					throw new RuntimeException(e);
 				}
+				i++;
 		}
-
-		byte[][] bytes = idsKey.toArray(new byte[][]{});
-		List<byte[]> c2sBytes = this.redisTemplate.mget(bytes);
 		
+		return bytes;
+	}
+
+	private List<C2sProtocol> pullOfflineMsg(String key, long lastMsgId)  {
 		
 		List<C2sProtocol> list = new ArrayList<C2sProtocol>();
+		
+		byte[][] offlineKeys = getOfflineMsgKeys(key,lastMsgId);
+		if(offlineKeys==null){
+			return list;
+		}
+		
+		
+		List<byte[]> c2sBytes = this.redisTemplate.mget(offlineKeys);
+		
+		if(c2sBytes==null){
+			return list;
+		}
+		
 		for(byte[] b:c2sBytes){
 			C2sProtocol newStt = null;
 			try {
