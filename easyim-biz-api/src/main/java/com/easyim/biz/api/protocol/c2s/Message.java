@@ -6,11 +6,8 @@ import lombok.Data;
 
 @Data
 public class Message extends AbstractProtocol{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
-	private long tenementId;
 	private long cid;
 	private long proxyCid;
 	
