@@ -38,9 +38,7 @@ import com.easyim.biz.api.dto.message.SendMsgDto;
 import com.easyim.biz.api.dto.message.SendMsgDto.MessageType;
 import com.easyim.biz.api.dto.message.SendMsgResultDto;
 import com.easyim.biz.api.dto.protocol.C2sProtocol;
-import com.easyim.biz.api.listener.SendMsgListener;
 import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
-import com.easyim.biz.api.protocol.enums.c2s.EnventType;
 import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 import com.easyim.biz.api.protocol.enums.c2s.Result;
 import com.easyim.biz.api.protocol.c2s.MessagePush;
@@ -53,7 +51,7 @@ import com.easyim.biz.domain.ConversationDo;
 import com.easyim.biz.domain.MessageDo;
 import com.easyim.biz.domain.ProxyConversationDo;
 import com.easyim.biz.domain.TenementDo;
-import com.easyim.biz.listener.EnventListenerMap;
+import com.easyim.biz.listeners.EnventListenerMap;
 import com.easyim.biz.mapper.conversation.IConversationMapper;
 import com.easyim.biz.mapper.conversation.IProxyConversationMapper;
 import com.easyim.biz.mapper.message.IMessageMapper;
@@ -74,7 +72,7 @@ import redis.clients.util.SafeEncoder;
 
 @Slf4j
 @Service(interfaceClass = IMessageService.class)
-public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
+public class MessageServiceImpl implements IMessageService {
 
 	public final static long MAX_OFFLINE_NUM = 50;
 
@@ -291,11 +289,7 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 
 		log.info("sendMsg msg:{},{} route succ",msgId,messageDto.getToId());
 
-		SendMsgResultDto sendMsgResultDto = new SendMsgResultDto();
-		sendMsgResultDto.setMessagePush(messagePush);
-		
-		EnventListenerMap.callBack(EnventType.sendMsg,messagePush);
-		return sendMsgResultDto;
+		return new SendMsgResultDto();
 	}
 
 	private long getId() {
@@ -387,23 +381,12 @@ public class MessageServiceImpl implements IMessageService,BeanFactoryAware {
 
 	@Override
 	public void sendMsg(SendMsgDto message, List<String> userIds) {
-		sendMsg(message,userIds,null);
+		for(String userId:userIds){
+			SendMsgDto dto = mapper.map(message,SendMsgDto.class);
+			dto.setToId(userId);
+			
+			SynMessageTask.addTask(dto);
+		}
 	}
 	
-	@Override
-	public void sendMsg(SendMsgDto message, List<String> userIds,SendMsgListener sendMsgListener) {
-			for(String userId:userIds){
-					SendMsgDto dto = mapper.map(message,SendMsgDto.class);
-					dto.setToId(userId);
-					
-					SynMessageTask.addTask(dto);
-			}
-	}
-	
-
-	@Override
-	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-		// TODO Auto-generated method stub
-		
-	}
 }
