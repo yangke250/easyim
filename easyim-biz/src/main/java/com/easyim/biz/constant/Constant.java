@@ -6,6 +6,8 @@ public abstract class Constant {
 	
 	public static final String OFFLINE_MSG_SET_KEY = "easyim_msg_ids_offline_";
 
+	public static final String UNREAD_MSG_KEY = "easyim_unread_";
+	
 	public static final String OFFLINE_MSG_KEY = "easyim_msg_offline_";
 
 	

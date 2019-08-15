@@ -9,14 +9,16 @@ import com.easyim.biz.api.dto.protocol.C2sProtocol;
 import com.easyim.biz.api.dto.protocol.S2sProtocol;
 import com.easyim.biz.api.dto.user.UserSessionDto;
 import com.easyim.biz.api.protocol.c2s.AbstractProtocol;
+import com.easyim.biz.api.protocol.c2s.AbstractResultProtocol;
 import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.listeners.ProtocolListenerMap;
 
 /**
  * 协议处理相关类
  * @author wl
  *
  */
-public interface IC2SProtocolService<I,O> {
+public interface IC2SProtocolService<I extends AbstractProtocol,O extends AbstractResultProtocol> {
 	
 	/**
 	 * 值高的覆盖值的服务
@@ -33,7 +35,7 @@ public interface IC2SProtocolService<I,O> {
 	public C2sCommandType getC2sCommandType();
 	
 	/**
-	 * 返回相关body
+	 * 协议的通用处理
 	 * @param uuid
 	 * @param body
 	 * @param version
@@ -51,8 +53,10 @@ public interface IC2SProtocolService<I,O> {
 			throw new RuntimeException(e);
 		}
 		
+		//得到协议输入
 		I input =JSON.parseObject(c2sProtocol.getBody(),classInput);
 		
+		//业务处理，协议输出
 		O outputBody = handleProtocolBody(userSessionDto,
 				input,extendsMap);
 		
@@ -60,6 +64,7 @@ public interface IC2SProtocolService<I,O> {
 				JSON.toJSONString(outputBody));
 		c2sProtocolAck.setUuid(c2sProtocol.getUuid());
 		
+		ProtocolListenerMap.getProtocolListener(getC2sCommandType());
 		return c2sProtocolAck;
 	}
 	

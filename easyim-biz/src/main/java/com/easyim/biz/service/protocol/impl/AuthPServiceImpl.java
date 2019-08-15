@@ -19,7 +19,7 @@ import com.easyim.biz.api.protocol.c2s.AuthAck;
 import com.easyim.biz.api.protocol.c2s.Auth.AuthType;
 import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
 import com.easyim.biz.api.protocol.enums.c2s.Result;
-import com.easyim.biz.api.service.user.IUserService;
+import com.easyim.biz.api.service.user.IUserAuthService;
 import com.easyim.biz.service.protocol.IC2SProtocolService;
 import com.easyim.route.service.IUserRouteService;
 
@@ -27,7 +27,7 @@ import com.easyim.route.service.IUserRouteService;
 public class AuthPServiceImpl implements IC2SProtocolService<Auth,AuthAck>{
 
 	@Resource
-	private IUserService userService;
+	private IUserAuthService userService;
 	
 	@Resource
 	private IUserRouteService userRouteService;

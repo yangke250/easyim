@@ -17,4 +17,17 @@ public interface IConversationService {
 	 */
 	public long getCid(long tenementId,String fromId,String toId,long proxyCid);
 	
+	/**
+	 * 增加未读消息数
+	 * @param tenementId
+	 * @param cid
+	 */
+	public void increaseUnread(long cid);
+	
+	/**
+	 * 清空未读消息数
+	 * @param tenementId
+	 * @param cid
+	 */
+	public void cleanUnread(long cid);
 }

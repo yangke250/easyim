@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import com.easyim.biz.api.dto.user.UserAuthDto;
 import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
-import com.easyim.biz.api.service.user.IUserService;
+import com.easyim.biz.api.service.user.IUserAuthService;
 import com.easyim.biz.test.LaunchTest;
 
 import io.jsonwebtoken.Claims;
@@ -28,7 +28,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class UserServiceImplTest extends LaunchTest{
 
 	@Resource
-	private IUserService userService;
+	private IUserAuthService userService;
 	
 	@Test
 	public void testUserToken(){

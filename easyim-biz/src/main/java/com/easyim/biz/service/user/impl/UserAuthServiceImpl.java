@@ -13,7 +13,7 @@ import com.easyim.biz.Launch;
 import com.easyim.biz.api.dto.user.UserAuthDto;
 import com.easyim.biz.api.dto.user.UserConnectDto;
 import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
-import com.easyim.biz.api.service.user.IUserService;
+import com.easyim.biz.api.service.user.IUserAuthService;
 import com.easyim.route.server.ServerDiscover;
 import com.easyim.route.service.IUserRouteService;
 
@@ -27,8 +27,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
  * @author wl
  *
  */
-@Service(interfaceClass=IUserService.class)
-public class UserServiceImpl implements IUserService{
+@Service(interfaceClass=IUserAuthService.class)
+public class UserAuthServiceImpl implements IUserAuthService{
 
 	public static final String PASSWORD="yangke250";
 

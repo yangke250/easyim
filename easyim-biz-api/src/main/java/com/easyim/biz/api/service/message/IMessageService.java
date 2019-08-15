@@ -5,6 +5,7 @@ import com.easyim.biz.api.dto.message.OfflineMsgDto;
 import com.easyim.biz.api.dto.message.SendMsgDto;
 import com.easyim.biz.api.dto.message.SendMsgResultDto;
 import com.easyim.biz.api.dto.protocol.C2sProtocol;
+import com.easyim.biz.api.protocol.c2s.MessagePush;
 
 import java.util.List;
 
@@ -22,6 +23,16 @@ public interface IMessageService {
 	 */
 	public SendMsgResultDto sendMsg(SendMsgDto message);
 	
+	
+	/**
+	 * 消息通知
+	 * @param tenementId
+	 * @param userIds
+	 * @param messagePush
+	 */
+	public void notifyMsg(long tenementId, List<String> userIds,long proxyCid,MessagePush messagePush);
+	
+	
 	/**
 	 * 给多个用户发送消息
 	 * @param message
@@ -36,8 +47,5 @@ public interface IMessageService {
 	 */
 	public List<C2sProtocol> pullOfflineMsg(OfflineMsgDto offlineMsgDto);
 	
-	/**
-	 * 消息转发
-	 */
-	public void forwardMsg(ForwardMsgDto forwardMsgDto);
+
 }
