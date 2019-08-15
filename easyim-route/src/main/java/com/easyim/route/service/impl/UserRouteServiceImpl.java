@@ -1,10 +1,14 @@
 package com.easyim.route.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.alibaba.fastjson.JSON;
 //import com.easy.springboot.redis.template.RedisTemplate;
 import com.easyim.biz.api.dto.user.UserSessionDto;
 import com.easyim.route.constant.Constant;
@@ -39,11 +43,13 @@ public class UserRouteServiceImpl implements IUserRouteService {
 		
 		
 		//设置用户路由地址
-		long result = redisTemplate.setnx(strKey,routeDto.getConnectServer());
+		long result = redisTemplate.setnx(strKey,JSON.toJSONString(routeDto));
 		if(result==0){
 			//服务设置不一致的时候
 			String  value = redisTemplate.get(strKey);
-			if(!routeDto.getConnectServer().equals(value)){
+			UserSessionDto redisSession = JSON.parseObject(value,UserSessionDto.class);
+			
+			if(!routeDto.getConnectServer().equals(redisSession.getConnectServer())){
 				return false;
 			}
 			
@@ -135,5 +141,23 @@ public class UserRouteServiceImpl implements IUserRouteService {
 	}
 
 	
+
+	@Override
+	public List<String> getOnlineUsers(long tenementId,List<String> userIds){
+		List<String> uids = new ArrayList<String>();
+		
+		for(String userId:userIds){
+			uids.add(Constant.getUid(tenementId,userId));
+		}
+		
+		List<String> onlineUsers = new ArrayList<String>();
+		List<String> strs = redisTemplate.mget(uids.toArray(new String[]{}));
+		for(String str:strs){
+			UserSessionDto session = JSON.parseObject(str,UserSessionDto.class);
+			onlineUsers.add(session.getUserId());
+		}
+		
+		return onlineUsers;
+	}
 
 }

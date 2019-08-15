@@ -1,5 +1,7 @@
 package com.easyim.route.service;
 
+import java.util.List;
+
 import com.easyim.biz.api.dto.user.UserSessionDto;
 import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 
@@ -9,6 +11,15 @@ import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
  *
  */
 public interface IUserRouteService {
+	
+
+	/**
+	 * 得到在线的用户列表
+	 * @param tenementId
+	 * @param userIds
+	 * @return
+	 */
+	public List<String> getOnlineUsers(long tenementId,List<String> userIds);
 	
 	/**
 	 * 用户是否在线
