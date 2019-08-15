@@ -1,38 +1,19 @@
 package com.easyim.biz.api.service.user;
 
-import com.easyim.biz.api.dto.user.UserAuthDto;
-import com.easyim.biz.api.dto.user.UserConnectDto;
-import com.easyim.biz.api.dto.user.UserSessionDto;
-import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
+import java.util.List;
+
 
 /**
- * 用户相关接口
+ * 用户在线状态查询
  * @author wl
  *
  */
 public interface IUserService {
-	
 	/**
-	 * 得到连接相关信息
+	 * 查询用户在线状态
 	 * @param tenementId
-	 * @param userId
-	 * @param resoureType
-	 */
-	public UserConnectDto getConnectInfo(UserAuthDto userAuthDto);
-	
-	/**
-	 * 得到im的token
-	 * @param tenementId
-	 * @param userId
-	 * @param resoureType
+	 * @param userIds
 	 * @return
 	 */
-	public String authEncode(UserAuthDto userAuthDto);
-	
-	/**
-	 * 解码jwt code
-	 * @param jwt
-	 * @return
-	 */
-	public UserAuthDto authDecode(String jwt);
+	List<String> selectUserOnline(long tenementId,List<String> userIds);
 }

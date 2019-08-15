@@ -46,7 +46,7 @@ public class SendMsgDto {
 		voice(2),//声音
 		notify(3),//系统通知,不落库,只走离线消息
 		file(4),//文件
-		onlyPushOnline(5)//系统通知,不落库,不走离线消息,只推在线
+		notifyOnline(5)//系统通知,不落库,不走离线消息,只推在线
 		;//文件
 		
 		MessageType(int value){
