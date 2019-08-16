@@ -2,7 +2,18 @@ package com.easyim.biz.api.protocol.enums.c2s;
 
 
 public enum C2sCommandType {
-	
+	readMessage {
+		@Override
+		public	C2sCommandType getAckCommand() {
+			return groupMessageAck;
+		}
+	},//发送消息
+	readMessageAck {
+		@Override
+		public	C2sCommandType getAckCommand() {
+			return null;
+		}
+	},
 	groupMessage {
 		@Override
 		public	C2sCommandType getAckCommand() {

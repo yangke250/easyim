@@ -10,6 +10,7 @@ public abstract class AbstractResultProtocol extends AbstractProtocol{
 	private int code      = Result.success.getCode();
 	private String msg = null;
 	
+	
 	public Result getResult() {
 		return result;
 	}

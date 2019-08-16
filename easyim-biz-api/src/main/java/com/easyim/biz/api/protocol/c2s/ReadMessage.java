@@ -1,6 +1,8 @@
 package com.easyim.biz.api.protocol.c2s;
 
-public class ReadMessage {
+import lombok.Data;
+
+@Data
+public class ReadMessage  extends AbstractProtocol{
 	private long cid;
-	private 
 }
