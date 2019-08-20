@@ -417,9 +417,10 @@ public class MessageServiceImpl implements IMessageService {
 	}
 
 	@Override
-	public void notifyMsg(long tenementId, List<String> userIds,long proxyCid,MessagePush messagePush) {
-		
+	public void notifyMsg(MessagePush messagePush,List<String> userIds) {
+		long   tenementId = messagePush.getTenementId();
 		String fromId = messagePush.getFromId();
+		long proxyCid = messagePush.getProxyCid();
 		
 		for(String userId:userIds){
 

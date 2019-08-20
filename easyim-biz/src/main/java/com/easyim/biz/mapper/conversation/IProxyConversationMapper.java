@@ -22,4 +22,16 @@ public interface IProxyConversationMapper {
 	@Insert("insert into t_proxy_conversation (tenement_id,proxy_small_id,proxy_big_id) values (#{proxy.tenementId},#{proxy.proxySmallId},#{proxy.proxyBigId})")
 	@Options(useGeneratedKeys = true,keyProperty="id",keyColumn="id") // Adding this line instread of @SelectKey 
 	public long insertProxyConversationDo(@Param("proxy")ProxyConversationDo cDo);
+
+
+	@Select( " select count(*) from ((select c.* from t_conversation c "
+			+" inner join t_proxy_conversation p_c on c.proxy_cid=p_c.id "
+			+" where c.tenement_id=#{tenementId} and c.small_id=#{userId} limit 1) "
+			+" union all "
+			+" (select c.* from t_conversation c "
+			+" inner join t_proxy_conversation p_c on c.proxy_cid=p_c.id "
+			+" where c.tenement_id=#{tenementId} and c.big_id=#{userId} limit 1)) as temp ")
+	public long selectConversationCount(
+			@Param("tenementId") long tenementId,
+			@Param("userId") String userId);
 }

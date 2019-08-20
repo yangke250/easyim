@@ -11,37 +11,24 @@ import com.easyim.biz.api.protocol.c2s.MessagePush;
  *
  */
 public interface IMessageSearchService {
-	/**
-	 * 逆向查询消息历史
-	 * @param cid
-	 * @param minMsgId
-	 * @return
-	 */
-	public List<MessagePush> selectReverseMsg(SearchMsgCidDto searchMsgCidDto);
 
 	/**
-	 * 逆向查询消息历史
+	 * 查询消息历史
 	 * @param cid
 	 * @param minMsgId
 	 * @return
 	 */
-	public List<MessagePush> selectReverseMsgByProxyCid(long proxyCid,String userId,long minMsgId);
+	public List<MessagePush> selectMsgHistory(long tenementId,long proxyCid,long minMsgId);
 	
 	/**
-	 * 逆向查询消息历史
+	 * 查询消息历史,只显示自己的对话
 	 * @param cid
 	 * @param minMsgId
 	 * @return
 	 */
-	public List<MessagePush> selectReverseMsgByFromToId(long proxyCid,long minMsgId);
+	public List<MessagePush> selectMsgHistoryBySelf(long tenementId,long proxyCid,long cid,long minMsgId);
 	
 	
-	/**
-	 * 根据biz id查询消息
-	 * @param bizUuid
-	 * @return
-	 */
-	public MessagePush getMsgByBizId(String bizUuid);
 
 	
 }

@@ -1,6 +1,5 @@
 package com.easyim.biz.api.service.message;
 
-import com.easyim.biz.api.dto.message.ForwardMsgDto;
 import com.easyim.biz.api.dto.message.OfflineMsgDto;
 import com.easyim.biz.api.dto.message.SendMsgDto;
 import com.easyim.biz.api.dto.message.SendMsgResultDto;
@@ -30,7 +29,7 @@ public interface IMessageService {
 	 * @param userIds
 	 * @param messagePush
 	 */
-	public void notifyMsg(long tenementId, List<String> userIds,long proxyCid,MessagePush messagePush);
+	public void notifyMsg(MessagePush messagePush, List<String> userIds);
 	
 	
 	/**
