@@ -39,7 +39,7 @@ import com.easyim.biz.api.dto.message.SendMsgDto;
 import com.easyim.biz.api.dto.message.SendMsgDto.MessageType;
 import com.easyim.biz.api.dto.message.SendMsgResultDto;
 import com.easyim.biz.api.dto.protocol.C2sProtocol;
-import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
 import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 import com.easyim.biz.api.protocol.enums.c2s.Result;
 import com.easyim.biz.api.protocol.c2s.MessagePush;
@@ -181,7 +181,7 @@ public class MessageServiceImpl implements IMessageService {
 	private C2sProtocol saveOfflineMsg(MessagePush messagePush,String toId) {
 		C2sProtocol c2sProtocol = new C2sProtocol();
 
-		c2sProtocol.setType(C2sCommandType.messagePush);
+		c2sProtocol.setType(EasyImC2sType.messagePush);
 		c2sProtocol.setBody(JSON.toJSONString(messagePush));
 
 		if(MessageType.isSaveOffline(messagePush.getType())){

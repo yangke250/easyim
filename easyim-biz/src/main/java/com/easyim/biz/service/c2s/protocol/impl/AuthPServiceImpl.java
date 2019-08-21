@@ -1,4 +1,4 @@
-package com.easyim.biz.service.protocol.impl;
+package com.easyim.biz.service.c2s.protocol.impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -17,10 +17,10 @@ import com.easyim.biz.api.dto.user.UserSessionDto;
 import com.easyim.biz.api.protocol.c2s.Auth;
 import com.easyim.biz.api.protocol.c2s.AuthAck;
 import com.easyim.biz.api.protocol.c2s.Auth.AuthType;
-import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
 import com.easyim.biz.api.protocol.enums.c2s.Result;
 import com.easyim.biz.api.service.user.IUserAuthService;
-import com.easyim.biz.service.protocol.IC2SProtocolService;
+import com.easyim.biz.service.c2s.protocol.IC2SProtocolService;
 import com.easyim.route.service.IUserRouteService;
 
 @Service("authPService")
@@ -39,8 +39,8 @@ public class AuthPServiceImpl implements IC2SProtocolService<Auth,AuthAck>{
 	
 	
 	@Override
-	public C2sCommandType getC2sCommandType() {
-		return C2sCommandType.auth;
+	public EasyImC2sType getType() {
+		return EasyImC2sType.auth;
 	}
 	
 	

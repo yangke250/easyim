@@ -1,4 +1,4 @@
-package com.easyim.biz.service.protocol.impl;
+package com.easyim.biz.service.c2s.protocol.impl;
 
 import java.util.Map;
 
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import com.easyim.biz.api.dto.user.UserSessionDto;
 import com.easyim.biz.api.protocol.c2s.CloseSession;
 import com.easyim.biz.api.protocol.c2s.CloseSessionAck;
-import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
 import com.easyim.biz.api.protocol.enums.c2s.Result;
-import com.easyim.biz.service.protocol.IC2SProtocolService;
+import com.easyim.biz.service.c2s.protocol.IC2SProtocolService;
 import com.easyim.route.service.IUserRouteService;
 
 @Service("closeSessionPService")
@@ -22,8 +22,8 @@ public class CloseSessionPServiceImpl implements IC2SProtocolService<CloseSessio
 
 	
 	@Override
-	public C2sCommandType getC2sCommandType() {
-		return C2sCommandType.closeSession;
+	public EasyImC2sType getType() {
+		return EasyImC2sType.closeSession;
 	}
 
 	@Override

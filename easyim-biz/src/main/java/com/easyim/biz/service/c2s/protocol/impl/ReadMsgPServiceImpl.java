@@ -1,4 +1,4 @@
-package com.easyim.biz.service.protocol.impl;
+package com.easyim.biz.service.c2s.protocol.impl;
 
 import java.util.Map;
 
@@ -13,9 +13,9 @@ import com.easyim.biz.api.protocol.c2s.ReadMessage;
 import com.easyim.biz.api.protocol.c2s.ReadMessageAck;
 import com.easyim.biz.api.protocol.c2s.ReadMessagePush;
 import com.easyim.biz.api.protocol.c2s.ReadMessagePushAck;
-import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
 import com.easyim.biz.api.service.conversation.IConversationService;
-import com.easyim.biz.service.protocol.IC2SProtocolService;
+import com.easyim.biz.service.c2s.protocol.IC2SProtocolService;
 
 
 @Service("readMsgPService")
@@ -25,8 +25,8 @@ public class ReadMsgPServiceImpl implements IC2SProtocolService<ReadMessage,Read
 	private IConversationService conversationService;
 	
 	@Override
-	public C2sCommandType getC2sCommandType() {
-		return C2sCommandType.readMessage;
+	public EasyImC2sType getType() {
+		return EasyImC2sType.readMessage;
 	}
 
 	@Override

@@ -5,7 +5,8 @@ import java.util.UUID;
 
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.easyim.biz.api.protocol.c2s.AbstractProtocol;
-import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
+import com.easyim.biz.api.protocol.enums.c2s.C2sType;
 
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class C2sProtocol implements Serializable{
 	private  String uuid = UUID.randomUUID().toString();
 	private  String version = "1.0";
 	@Protobuf
-	private  C2sCommandType type;
+	private  C2sType type;
 	@Protobuf
 	private  String body;
 	
@@ -29,11 +30,11 @@ public class C2sProtocol implements Serializable{
 		
 	}
 	
-	public C2sProtocol(C2sCommandType type){
+	public C2sProtocol(C2sType type){
 		this.type = type;
 	}
 	
-	public C2sProtocol(C2sCommandType type,String body){
+	public C2sProtocol(C2sType type,String body){
 		this.type = type;
 		this.body = body;
 	}

@@ -1,4 +1,4 @@
-package com.easyim.biz.service.protocol.impl;
+package com.easyim.biz.service.c2s.protocol.impl;
 
 import java.util.Map;
 
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import com.easyim.biz.api.dto.user.UserSessionDto;
 import com.easyim.biz.api.protocol.c2s.Ping;
 import com.easyim.biz.api.protocol.c2s.PingAck;
-import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
 import com.easyim.biz.api.protocol.enums.c2s.Result;
-import com.easyim.biz.service.protocol.IC2SProtocolService;
+import com.easyim.biz.service.c2s.protocol.IC2SProtocolService;
 import com.easyim.route.service.IUserRouteService;
 
 @Service("messagePushPService")
@@ -21,9 +21,9 @@ public class PingPServiceImpl implements IC2SProtocolService<Ping, PingAck> {
 	private IUserRouteService userRouteService;
 
 	@Override
-	public C2sCommandType getC2sCommandType() {
+	public EasyImC2sType getType() {
 
-		return C2sCommandType.ping;
+		return EasyImC2sType.ping;
 	}
 
 	@Override

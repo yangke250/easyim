@@ -1,4 +1,4 @@
-package com.easyim.biz.service.protocol.impl;
+package com.easyim.biz.service.c2s.protocol.impl;
 
 import java.util.Map;
 
@@ -12,9 +12,9 @@ import com.easyim.biz.api.dto.message.SendMsgResultDto;
 import com.easyim.biz.api.dto.user.UserSessionDto;
 import com.easyim.biz.api.protocol.c2s.Message;
 import com.easyim.biz.api.protocol.c2s.MessageAck;
-import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
 import com.easyim.biz.api.service.message.IMessageService;
-import com.easyim.biz.service.protocol.IC2SProtocolService;
+import com.easyim.biz.service.c2s.protocol.IC2SProtocolService;
 
 @Service("messagePService")
 public class MessagePServiceImpl implements IC2SProtocolService<Message,MessageAck>{
@@ -27,8 +27,8 @@ public class MessagePServiceImpl implements IC2SProtocolService<Message,MessageA
 	private Mapper mapper;
 	
 	@Override
-	public C2sCommandType getC2sCommandType() {
-		return C2sCommandType.message;
+	public EasyImC2sType getType() {
+		return EasyImC2sType.message;
 	}
 
 	@Override

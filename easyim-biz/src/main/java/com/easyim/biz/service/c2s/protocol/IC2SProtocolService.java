@@ -1,4 +1,4 @@
-package com.easyim.biz.service.protocol;
+package com.easyim.biz.service.c2s.protocol;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -10,7 +10,8 @@ import com.easyim.biz.api.dto.protocol.S2sProtocol;
 import com.easyim.biz.api.dto.user.UserSessionDto;
 import com.easyim.biz.api.protocol.c2s.AbstractProtocol;
 import com.easyim.biz.api.protocol.c2s.AbstractResultProtocol;
-import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
+import com.easyim.biz.api.protocol.enums.c2s.C2sType;
 import com.easyim.biz.listeners.ProtocolListenerMap;
 
 /**
@@ -32,7 +33,7 @@ public interface IC2SProtocolService<I extends AbstractProtocol,O extends Abstra
 	 * 协议类型
 	 * @return
 	 */
-	public C2sCommandType getC2sCommandType();
+	public C2sType getType();
 	
 	/**
 	 * 协议的通用处理
@@ -60,11 +61,10 @@ public interface IC2SProtocolService<I extends AbstractProtocol,O extends Abstra
 		O outputBody = handleProtocolBody(userSessionDto,
 				input,extendsMap);
 		
-		C2sProtocol c2sProtocolAck = new C2sProtocol(getC2sCommandType().getAckCommand(),
+		C2sProtocol c2sProtocolAck = new C2sProtocol(this.getType().getAck(),
 				JSON.toJSONString(outputBody));
 		c2sProtocolAck.setUuid(c2sProtocol.getUuid());
 		
-		ProtocolListenerMap.getProtocolListener(getC2sCommandType());
 		return c2sProtocolAck;
 	}
 	

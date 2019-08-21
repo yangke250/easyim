@@ -1,6 +1,6 @@
 package com.easyim.biz.api.listeners;
 
-import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
 
 /**
  * im相关的协议处理完以后回调通知
@@ -20,5 +20,5 @@ public interface IProtocolListeners<AbstractProtocol,AbstractResultProtocol> {
 	 * 事件回调的消息类型
 	 * @return
 	 */
-	public C2sCommandType type();
+	public EasyImC2sType type();
 }

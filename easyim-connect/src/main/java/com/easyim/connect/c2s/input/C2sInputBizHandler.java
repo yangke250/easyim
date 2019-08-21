@@ -16,9 +16,10 @@ import com.easyim.biz.api.dto.user.UserSessionDto;
 import com.easyim.biz.api.protocol.c2s.Auth;
 import com.easyim.biz.api.protocol.c2s.AuthAck;
 import com.easyim.biz.api.protocol.c2s.PingAck;
-import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.C2sType;
+import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
 import com.easyim.biz.api.protocol.enums.c2s.Result;
-import com.easyim.biz.api.service.protocol.IC2sHandleService;
+import com.easyim.biz.api.service.c2s.handle.IC2sHandleService;
 import com.easyim.connect.c2s.server.WebsocketC2sServer;
 import com.easyim.connect.session.Session;
 import com.easyim.connect.session.SessionManager;
@@ -48,7 +49,7 @@ public class C2sInputBizHandler extends AbstractC2sInputHandler {
 	@Reference(lazy=true,check = false,retries=1)
 	private IC2sHandleService c2sHandleService;
 
-	private static C2sProtocol authError = new C2sProtocol(C2sCommandType.kickOff);
+	private static C2sProtocol authError = new C2sProtocol(EasyImC2sType.kickOff);
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -64,10 +65,10 @@ public class C2sInputBizHandler extends AbstractC2sInputHandler {
 	
 	private void doProtocol(ChannelHandlerContext ctx,String str){
 		C2sProtocol c2sProtocol = JSON.parseObject(str, C2sProtocol.class);
-		C2sCommandType type = c2sProtocol.getType();
+		C2sType type = c2sProtocol.getType();
 
 		Session session = SessionManager.getSession(ctx);
-		if (session==null && C2sCommandType.auth != type) {
+		if (session==null && EasyImC2sType.auth != type) {
 
 			SessionManager.removeSession(ctx, authError);
 			return;
@@ -75,10 +76,10 @@ public class C2sInputBizHandler extends AbstractC2sInputHandler {
 
 		C2sProtocol ackProtocol = c2sHandleService.handleProtocol(SessionManager.getUserDto(ctx), c2sProtocol,
 				new HashMap<String, String>());
-		C2sCommandType ackType = ackProtocol.getType();
+		C2sType ackType = ackProtocol.getType();
 
-		switch (ackType) {
-		case pingAck:
+		switch (ackType.getValue()) {
+		case "pingAck":
 			PingAck pingAck = JSON.parseObject(ackProtocol.getBody(),PingAck.class);
 			
 			ctx.channel().writeAndFlush(JSON.toJSONString(ackProtocol));
@@ -87,7 +88,7 @@ public class C2sInputBizHandler extends AbstractC2sInputHandler {
 				SessionManager.removeSession(ctx, ackProtocol);
 			}
 			return;
-		case authAck:
+		case "authAck":
 			Auth auth = JSON.parseObject(c2sProtocol.getBody(),Auth.class);
 			
 			AuthAck authAck = JSON.parseObject(ackProtocol.getBody(),AuthAck.class);

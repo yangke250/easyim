@@ -17,10 +17,10 @@ import com.easyim.biz.api.dto.protocol.C2sProtocol;
 import com.easyim.biz.api.dto.user.UserSessionDto;
 import com.easyim.biz.api.protocol.c2s.AuthAck;
 import com.easyim.biz.api.protocol.c2s.CloseSession;
-import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
 import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 import com.easyim.biz.api.protocol.enums.c2s.Result;
-import com.easyim.biz.api.service.protocol.IC2sHandleService;
+import com.easyim.biz.api.service.c2s.handle.IC2sHandleService;
 import com.easyim.connect.session.Session.SessionStatus;
 
 import io.netty.channel.ChannelHandlerContext;
@@ -48,7 +48,7 @@ public class SessionManager {
 	public static final C2sProtocol TIMEOUT = new C2sProtocol();
 
 	static{
-		TIMEOUT.setType(C2sCommandType.closeSession);
+		TIMEOUT.setType(EasyImC2sType.closeSession);
 		
 		CloseSession cs = new CloseSession();
 		cs.setResult(Result.timeOut);

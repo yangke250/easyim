@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.easyim.biz.api.listeners.IProtocolListeners;
 import com.easyim.biz.api.protocol.c2s.AbstractProtocol;
-import com.easyim.biz.api.protocol.enums.c2s.C2sCommandType;
+import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,11 +20,11 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 @Slf4j
 @Component
 public class ProtocolListenerMap implements BeanPostProcessor{
-	private static Map<C2sCommandType,List<IProtocolListeners>> map = 
-			new ConcurrentHashMap<C2sCommandType,List<IProtocolListeners>>();
+	private static Map<EasyImC2sType,List<IProtocolListeners>> map = 
+			new ConcurrentHashMap<EasyImC2sType,List<IProtocolListeners>>();
 
 	
-	public static List<IProtocolListeners> getProtocolListener(C2sCommandType c2sCommandType){
+	public static List<IProtocolListeners> getProtocolListener(EasyImC2sType c2sCommandType){
 		return map.get(c2sCommandType);
 	}
 

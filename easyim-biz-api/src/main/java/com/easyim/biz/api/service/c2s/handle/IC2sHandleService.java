@@ -1,4 +1,4 @@
-package com.easyim.biz.api.service.protocol;
+package com.easyim.biz.api.service.c2s.handle;
 
 import java.util.Map;
 
