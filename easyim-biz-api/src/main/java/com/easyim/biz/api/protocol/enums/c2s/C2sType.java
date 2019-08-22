@@ -18,5 +18,5 @@ public interface C2sType {
 	 * 得到对应的协议回复
 	 * @return
 	 */
-	public C2sType getAck();
+	public  C2sType getAck();
 }

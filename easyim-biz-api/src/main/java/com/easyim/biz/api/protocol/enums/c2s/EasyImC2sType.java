@@ -4,7 +4,7 @@ package com.easyim.biz.api.protocol.enums.c2s;
 public enum EasyImC2sType implements C2sType{
 	readMessage {
 		@Override
-		public C2sType getAck() {
+		public EasyImC2sType getAck() {
 			return groupMessageAck;
 		}
 	},//发送消息

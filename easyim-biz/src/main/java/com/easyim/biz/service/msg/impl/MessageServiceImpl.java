@@ -74,17 +74,9 @@ import redis.clients.util.SafeEncoder;
 @Slf4j
 @Service(interfaceClass = IMessageService.class)
 public class MessageServiceImpl implements IMessageService {
-
-	public final static long MAX_OFFLINE_NUM = 50;
-
 	@Value("${offline.msg.nums}")
-	private int MAX_GET_OFFLINE_NUM = 50;
+	private long MAX_OFFLINE_NUM = 50;
 
-	public final static int OFFLINE_TIME = 15 * 24 * 60 * 60;// 离线消息，最多15天
-	
-	public final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-
-	public final static String CHARSET = "UTF-8";
 	
 	
 	@Resource
@@ -129,7 +121,7 @@ public class MessageServiceImpl implements IMessageService {
 		//保存离线消息id list
 		redisTemplate.zadd(key, Double.parseDouble(String.valueOf(msgId)),JSON.toJSONString(msgId));
 		
-		redisTemplate.setex(offlineMsgKey.getBytes(CHARSET),OFFLINE_TIME,msg);
+		redisTemplate.setex(offlineMsgKey.getBytes(Constant.CHARSET),Constant.OFFLINE_TIME,msg);
 		
 		long count = redisTemplate.zcard(key);
 		if (count > MAX_OFFLINE_NUM) {// 离线消息超过最大数
@@ -138,7 +130,7 @@ public class MessageServiceImpl implements IMessageService {
 			Set<String> ids = redisTemplate.zrange(key, 0, end);
 			for(String id:ids){
 				String outSizeMsgKey = getOfflineMsgKey(Long.parseLong(id));
-				redisTemplate.del(outSizeMsgKey.getBytes(CHARSET));
+				redisTemplate.del(outSizeMsgKey.getBytes(Constant.CHARSET));
 			}
 			
 			redisTemplate.zremrangeByRank(key, 0, Integer.parseInt((count - MAX_OFFLINE_NUM) + ""));
@@ -169,6 +161,8 @@ public class MessageServiceImpl implements IMessageService {
 		String key = Constant.OFFLINE_MSG_SET_KEY + tenementId + "_" + toId;
 		return key;
 	}
+
+	
 
 	/**
 	 * 保存离线消息
@@ -211,16 +205,7 @@ public class MessageServiceImpl implements IMessageService {
 	}
 		
 	
-	/**
-	 * 增加未读消息数
-	 * @param tenementId
-	 * @param cid
-	 */
-	private void increaseUnreadMsg(long tenementId,long cid) {
-		String key = getUnreadKey(tenementId,cid);
-		
-		this.redisTemplate.incr(key);
-	}
+	
 
 	/**
 	 * 保存消息
@@ -300,6 +285,7 @@ public class MessageServiceImpl implements IMessageService {
 		
 		// 保存db消息
 		MessageDo messageDo = saveMsg(messagePush, proxyFromId, proxyToId);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 		messagePush.setTime(sdf.format(messageDo.getGmtCreate()));
 		
 		log.info("messagePush:{},{}",msgId,messageDto.getToId());
@@ -309,7 +295,9 @@ public class MessageServiceImpl implements IMessageService {
 		log.info("sendMsg msg:{},{} offline succ",msgId,messageDto.getToId());
 
 		//增加会话未读消息数
-		increaseUnreadMsg(tenementId,cid);
+		this.conversationService.increaseUnread(messagePush.getType(),cid);
+		//增加最近聊天的会话
+		this.conversationService.addRecentlyConversation(messagePush);
 		
 		//路由协议
 		this.protocolRouteService.route(tenementId, toId, JSON.toJSONString(c2sProtocol));
@@ -318,6 +306,8 @@ public class MessageServiceImpl implements IMessageService {
 
 		return new SendMsgResultDto();
 	}
+	
+
 
 	private long getId() {
 		return redisTemplate.incr(Constant.ID_KEY);
@@ -327,9 +317,10 @@ public class MessageServiceImpl implements IMessageService {
 		Set<Tuple> sets = null;
 		if (lastMsgId <= 0) {
 			//查询最近的
-			sets = redisTemplate.zrangeWithScores(key, 0, MAX_GET_OFFLINE_NUM);
+			sets = redisTemplate.zrangeWithScores(key, 0, Constant.MAX_GET_OFFLINE_NUM);
 		} else {//最小id，为lastMsgId+1
-			sets = redisTemplate.zrangeByScoreWithScores(key,Double.parseDouble(String.valueOf(lastMsgId+1)), Double.MAX_VALUE, 0, MAX_GET_OFFLINE_NUM);
+			sets = redisTemplate.zrangeByScoreWithScores(key,Double.parseDouble(String.valueOf(lastMsgId+1)), 
+					Double.MAX_VALUE, 0, Constant.MAX_GET_OFFLINE_NUM);
 		}
 
 		if(sets.size()<=0){
@@ -341,7 +332,7 @@ public class MessageServiceImpl implements IMessageService {
 		for (Tuple set:sets) {
 				String offlineKey = this.getOfflineMsgKey(Long.parseLong(set.getElement()));
 				try {
-					bytes[i]=(offlineKey.getBytes(CHARSET));
+					bytes[i]=(offlineKey.getBytes(Constant.CHARSET));
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 					throw new RuntimeException(e);
@@ -430,7 +421,7 @@ public class MessageServiceImpl implements IMessageService {
 			
 
 			//增加会话未读消息数
-			increaseUnreadMsg(tenementId,cid);
+			this.conversationService.increaseUnread(messagePush.getType(),cid);
 			
 			//路由协议
 			this.protocolRouteService.route(tenementId, userId,JSON.toJSONString(c2sProtocol));

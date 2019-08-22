@@ -60,6 +60,17 @@ public class SendMsgDto {
 			this.value = value;
 		}
 		
+		public static boolean isIncrementUnread(int type){
+			if(type==text.value
+					||type==pic.value
+					||type==voice.value
+					||type==file.value
+					){
+				return true;
+			}else{
+				return false;
+			}
+		}
 		
 		public static boolean isSaveDb(int type){
 			if(type==text.value
