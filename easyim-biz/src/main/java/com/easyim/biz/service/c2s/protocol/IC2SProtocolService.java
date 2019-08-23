@@ -12,7 +12,7 @@ import com.easyim.biz.api.protocol.c2s.AbstractProtocol;
 import com.easyim.biz.api.protocol.c2s.AbstractResultProtocol;
 import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
 import com.easyim.biz.api.protocol.enums.c2s.C2sType;
-import com.easyim.biz.listeners.ProtocolListenerMap;
+import com.easyim.biz.listeners.ProtocolListenerFactory;
 
 /**
  * 协议处理相关类

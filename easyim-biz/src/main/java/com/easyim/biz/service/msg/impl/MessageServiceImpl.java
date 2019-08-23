@@ -52,7 +52,7 @@ import com.easyim.biz.domain.ConversationDo;
 import com.easyim.biz.domain.MessageDo;
 import com.easyim.biz.domain.ProxyConversationDo;
 import com.easyim.biz.domain.TenementDo;
-import com.easyim.biz.listeners.ProtocolListenerMap;
+import com.easyim.biz.listeners.ProtocolListenerFactory;
 import com.easyim.biz.mapper.conversation.IConversationMapper;
 import com.easyim.biz.mapper.conversation.IProxyConversationMapper;
 import com.easyim.biz.mapper.message.IMessageMapper;
