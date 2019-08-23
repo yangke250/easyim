@@ -17,6 +17,8 @@ import com.easyim.biz.constant.Constant;
 import com.easyim.biz.domain.ConversationDo;
 import com.easyim.biz.domain.ProxyConversationDo;
 import com.easyim.biz.mapper.conversation.IConversationMapper;
+import com.easyim.route.service.IProtocolRouteService;
+import com.easyim.route.service.IUserRouteService;
 
 import cn.linkedcare.springboot.redis.template.RedisTemplate;
 
@@ -25,7 +27,13 @@ public class ConversationServiceImpl implements IConversationService{
 
 	@Resource
 	private IConversationMapper conversationMapper;
+	
+	@Resource
+	private IUserRouteService userRouteService;
 
+	@Resource
+	private IProtocolRouteService protocolRouteService;
+	
 	@Resource
 	private RedisTemplate redisTemplate;
 	
@@ -64,29 +72,30 @@ public class ConversationServiceImpl implements IConversationService{
 	 * @param userId
 	 * @return
 	 */
-	public String getUnreadKey(long cid){
-		String key = Constant.UNREAD_MSG_KEY  + "_" + cid;
+	public String getUnreadKey(String userId,long cid){
+		String key = Constant.UNREAD_MSG_KEY+userId+"_"+cid;
 		return key;
 	}
 		
 
 
 	@Override
-	public void increaseUnread(int msgType,long cid) {
+	public void increaseUnread(int msgType,String userId,long cid) {
 		if(!MessageType.isIncrementUnread(msgType)){
 			return;
 		}
 		
-		String key = getUnreadKey(cid);
+		String key = getUnreadKey(userId,cid);
 		
 		this.redisTemplate.incr(key);
 	}
 
 	@Override
-	public void cleanUnread(long cid) {
-		String key = getUnreadKey(cid);
+	public void cleanUnread(String userId,long cid) {
+		String key = getUnreadKey(userId,cid);
 		
 		this.redisTemplate.del(key);
+		
 	}
 
 	/**

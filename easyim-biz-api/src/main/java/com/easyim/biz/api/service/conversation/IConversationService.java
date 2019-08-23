@@ -26,14 +26,14 @@ public interface IConversationService {
 	 * @param tenementId
 	 * @param cid
 	 */
-	public void increaseUnread(int msgType,long cid);
+	public void increaseUnread(int msgType,String userId,long cid);
 	
 	/**
 	 * 清空未读消息数
 	 * @param tenementId
 	 * @param cid
 	 */
-	public void cleanUnread(long cid);
+	public void cleanUnread(String userId,long cid);
 	
 	/**
 	 * 添加最近的聊天会话

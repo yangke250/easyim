@@ -22,18 +22,19 @@ public interface IMessageMapper {
 	@Options(useGeneratedKeys = true,keyProperty="id",keyColumn="id")  
 	public long insertMessage(@Param("m")MessageDo mDo);
 	
- 
+
+
 	@Select(
-			" <script> "
-			+ "select * from t_message where tenement_id=#{tenementId} and proxy_cid=#{proxyCid} "
-    		+ "<if test=\"minMsgId>0\">"
-			+ " and id < #{minMsgId} "
+			"<script>" +
+			"select * from t_message where tenement_id=#{tenementId} and proxy_cid=#{proxyCid} "
+    		+ "<if test=\"minMsgId > 0 \">"
+			+ " <![CDATA[ and id < #{minMsgId} ]]> "
 			+ "</if>"
-			+ "<if test=\"cid>0\">"
+			+ "<if test=\"cid > 0\">"
 			+ " and cid=#{cid} "
 			+ "</if>"
 			+ "order by id desc limit 10"
-			+" </script> "
+			+"</script>"
 			)
 	@Results(
     		id="msg",

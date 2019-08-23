@@ -24,12 +24,24 @@ public interface IMessageService {
 	
 	
 	/**
-	 * 消息通知
+	 * 推送消息
+	 * 1.保持离线消息
+	 * 2.计算未读
+	 * 3.推送消息
 	 * @param tenementId
 	 * @param userIds
 	 * @param messagePush
 	 */
-	public void notifyMsg(MessagePush messagePush, List<String> userIds);
+	public void pushMsg(MessagePush messagePush, List<String> userIds);
+	
+	/**
+	 * 推送消息
+	 * 1.保持离线
+	 * 2.推送消息
+	 * @param c2sProtocol
+	 * @param userId
+	 */
+	public void pushOfflineMsg(long tenementId,String userId,C2sProtocol  c2sProtocol);
 	
 	
 	/**
@@ -46,5 +58,5 @@ public interface IMessageService {
 	 */
 	public List<C2sProtocol> pullOfflineMsg(OfflineMsgDto offlineMsgDto);
 	
-
+	
 }
