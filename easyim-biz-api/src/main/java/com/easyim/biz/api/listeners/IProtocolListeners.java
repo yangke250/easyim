@@ -1,5 +1,6 @@
 package com.easyim.biz.api.listeners;
 
+import com.easyim.biz.api.protocol.enums.c2s.C2sType;
 import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
 
 /**
