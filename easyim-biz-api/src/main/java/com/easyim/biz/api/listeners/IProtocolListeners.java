@@ -20,5 +20,5 @@ public interface IProtocolListeners<AbstractProtocol,AbstractResultProtocol> {
 	 * 事件回调的消息类型
 	 * @return
 	 */
-	public EasyImC2sType type();
+	public C2sType type();
 }
