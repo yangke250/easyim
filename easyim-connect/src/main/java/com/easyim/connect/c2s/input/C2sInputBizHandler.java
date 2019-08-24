@@ -117,37 +117,7 @@ public class C2sInputBizHandler extends AbstractC2sInputHandler {
 
 		String str = (String) msg;
 
-		Flowable<String> upstream = Flowable.create(new FlowableOnSubscribe<String>() {
-			@Override
-			public void subscribe(FlowableEmitter<String> emitter) throws Exception {
-				emitter.onNext(str);
-				emitter.onComplete();
-			}
-		}, BackpressureStrategy.ERROR); 
-		
-		Subscriber<String> subscriber = new Subscriber<String>() {
-			@Override
-			public void onSubscribe(Subscription s) {
-				s.request(Long.MAX_VALUE);
-			}
-
-			@Override
-			public void onNext(String str) {
-				doProtocol(ctx,str);
-			}
-
-			@Override
-			public void onError(Throwable t) {
-			}
-
-			@Override
-			public void onComplete() {
-			}
-		};
-		upstream.subscribeOn(Schedulers.io(), true).observeOn(Schedulers.computation()).subscribe(subscriber);
-		
-		
-		
+		doProtocol(ctx,str);
 	}
 
 	@Override

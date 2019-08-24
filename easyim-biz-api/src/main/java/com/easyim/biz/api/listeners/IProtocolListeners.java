@@ -1,5 +1,6 @@
 package com.easyim.biz.api.listeners;
 
+import com.easyim.biz.api.dto.user.UserSessionDto;
 import com.easyim.biz.api.protocol.enums.c2s.C2sType;
 
 
@@ -15,7 +16,7 @@ public interface IProtocolListeners<AbstractProtocol,AbstractResultProtocol> {
 	 * 事件回调
 	 * @param i
 	 */
-	public void callback(AbstractProtocol input,AbstractResultProtocol output);
+	public void callback(UserSessionDto userSessionDto,C2sType c2sType,AbstractProtocol input,AbstractResultProtocol output);
 	
 	/**
 	 * 事件回调的消息类型

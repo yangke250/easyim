@@ -14,6 +14,8 @@ import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
 import com.easyim.biz.api.protocol.enums.c2s.C2sType;
 import com.easyim.biz.api.service.c2s.handle.IC2sHandleService;
 import com.easyim.biz.api.service.message.IMessageService;
+import com.easyim.biz.listeners.ProtocolListenerFactory;
+import com.easyim.biz.listeners.dto.ProtocolListenerDto;
 import com.easyim.biz.service.c2s.protocol.IC2SProtocolService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +44,13 @@ public class C2sHandleServiceImpl implements IC2sHandleService,BeanPostProcessor
 		}
 		
 		
-		return  service.handleProtocol(userSessionDto,c2sProtocol,extendsMap);
+		C2sProtocol c2sProtocolAck = service.handleProtocol(userSessionDto,c2sProtocol,extendsMap);
+	
+		ProtocolListenerDto dto = ProtocolListenerDto.builder()
+		.c2sType(c2sCommandType).userSessionDto(userSessionDto).input(c2sProtocol).output(c2sProtocolAck).build();
+		
+		ProtocolListenerFactory.addProtocolCallback(dto);
+		return c2sProtocolAck;
 	}
 	
 	@Override
