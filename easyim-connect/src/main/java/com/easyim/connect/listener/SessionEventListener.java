@@ -1,10 +1,12 @@
 package com.easyim.connect.listener;
 
 /**
- * evenet
+ * session事件回调方法
  * @author wl
  *
  */
-public class SessionEventListener {
-
+public interface SessionEventListener {
+	
+	
+	public void callback(SessionEventDto sessionEventDto);
 }
