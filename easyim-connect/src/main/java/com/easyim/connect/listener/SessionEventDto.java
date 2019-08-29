@@ -9,8 +9,7 @@ import lombok.Data;
 @Builder
 public class SessionEventDto {
 	public static enum SessionEvent{
-		anonymousLogin,//匿名
-		authLogin,//认证登录
+		login,//认证登录
 		logout;//已登录
 	}
 	

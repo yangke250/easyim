@@ -13,6 +13,14 @@ import com.easyim.biz.api.protocol.enums.c2s.C2sType;
 public interface IProtocolListeners<AbstractProtocol,AbstractResultProtocol> {
 	
 	/**
+	 * 是否同步调用
+	 * @return
+	 */
+	public default boolean isSyn(){
+		return false;
+	}
+	
+	/**
 	 * 事件回调
 	 * @param i
 	 */

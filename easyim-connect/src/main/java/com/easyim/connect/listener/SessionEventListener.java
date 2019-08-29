@@ -7,6 +7,17 @@ package com.easyim.connect.listener;
  */
 public interface SessionEventListener {
 	
+	/**
+	 * 是否同步回调
+	 * @return
+	 */
+	public default boolean isSyn(){
+		return false;
+	}
 	
+	/**
+	 * session时间回调
+	 * @param sessionEventDto
+	 */
 	public void callback(SessionEventDto sessionEventDto);
 }
