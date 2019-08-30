@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.easyim</groupId>
 	<artifactId>easyim</artifactId>
-	<version>0.0.2</version>
+	<version>0.2.33</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>easyim-connect</module>

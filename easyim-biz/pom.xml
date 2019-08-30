@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.easyim</groupId>
 		<artifactId>easyim</artifactId>
-		<version>0.0.2</version>
+		<version>0.2.33</version>
 	</parent>
 	<artifactId>easyim-biz</artifactId>
 	<dependencies>
@@ -112,12 +112,12 @@
 		<dependency>
 			<groupId>com.easyim</groupId>
 			<artifactId>easyim-biz-api</artifactId>
-			<version>0.0.2</version>
+			<version>0.2.33</version>
 		</dependency>
 		<dependency>
 			<groupId>com.easyim</groupId>
 			<artifactId>easyim-route</artifactId>
-			<version>0.0.2</version>
+			<version>0.2.33</version>
 		</dependency>
 
 

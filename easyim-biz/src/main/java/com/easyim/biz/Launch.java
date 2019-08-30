@@ -19,9 +19,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 import com.alibaba.fastjson.JSON;
+
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,6 +52,7 @@ public class Launch {
 			Thread.sleep(Long.MAX_VALUE);
 		}
 	}
+
 	
 	@Bean
 	public Mapper getMapper(){
