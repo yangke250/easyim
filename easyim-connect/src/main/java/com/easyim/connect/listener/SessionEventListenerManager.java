@@ -34,17 +34,19 @@ public class SessionEventListenerManager implements BeanPostProcessor{
 	
 	@PostConstruct
 	public void init(){
-		while(true){
-			try{
-				SessionEventDto sessionEventDto = queue.poll(1, TimeUnit.MINUTES);
-				for(SessionEventListener l:listeners){
-					l.callback(sessionEventDto);
+		new Thread(()->{
+			while(true){
+				try{
+					SessionEventDto sessionEventDto = queue.poll(1, TimeUnit.MINUTES);
+					for(SessionEventListener l:listeners){
+						l.callback(sessionEventDto);
+					}
+				}catch(Exception e){
+					e.printStackTrace();
+					log.error("exception:{}",e);
 				}
-			}catch(Exception e){
-				e.printStackTrace();
-				log.error("exception:{}",e);
 			}
-		}
+		}).start();
 	}
 	
 	@Override

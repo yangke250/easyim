@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -28,11 +26,6 @@ import com.easyim.connect.session.Session.SessionStatus;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.netty.handler.timeout.ReadTimeoutHandler;
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
-import io.reactivex.FlowableOnSubscribe;
-import io.reactivex.schedulers.Schedulers;
 import io.netty.channel.ChannelHandler.Sharable;
 import lombok.extern.slf4j.Slf4j;
 

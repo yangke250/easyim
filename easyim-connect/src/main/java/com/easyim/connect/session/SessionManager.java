@@ -21,6 +21,9 @@ import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
 import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 import com.easyim.biz.api.protocol.enums.c2s.Result;
 import com.easyim.biz.api.service.c2s.handle.IC2sHandleService;
+import com.easyim.connect.listener.SessionEventDto;
+import com.easyim.connect.listener.SessionEventListenerManager;
+import com.easyim.connect.listener.SessionEventDto.SessionEvent;
 import com.easyim.connect.session.Session.SessionStatus;
 
 import io.netty.channel.ChannelHandlerContext;
@@ -121,6 +124,22 @@ public class SessionManager {
 		}
 		
 		chc.close();
+		
+		sessionCallback(session,SessionEvent.logout);
+	}
+	
+	/**
+	 * session事件回调
+	 * @param session
+	 * @param sessionEvent
+	 */
+	private static void sessionCallback(Session session,SessionEvent sessionEvent){
+		//钩子事件回调
+		SessionEventDto sessionEventDto = SessionEventDto.builder().resource(session.getResource()).sessionEvent(sessionEvent)
+		.tenementId(session.getTenementId()).userId(session.getUserId()).build();
+		
+		SessionEventListenerManager.addSessionEventDto(sessionEventDto);
+	
 	}
 
 	/**
@@ -157,6 +176,8 @@ public class SessionManager {
 		
 		sessionIdMap.put(Session.getSessionId(chc),session);
 		
+		sessionCallback(session,SessionEvent.login);
+
 		return true;
 	}
 	

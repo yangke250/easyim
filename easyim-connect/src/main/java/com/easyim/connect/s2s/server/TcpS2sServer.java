@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.easyim.connect.s2s.input.S2sInputHandle;
@@ -25,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
+@Order
 public class TcpS2sServer {
 
 
