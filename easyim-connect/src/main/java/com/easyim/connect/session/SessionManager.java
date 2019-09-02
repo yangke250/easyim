@@ -51,7 +51,7 @@ public class SessionManager {
 	public static final C2sProtocol TIMEOUT = new C2sProtocol();
 
 	static{
-		TIMEOUT.setType(EasyImC2sType.closeSession);
+		TIMEOUT.setType(EasyImC2sType.closeSession.getValue());
 		
 		CloseSession cs = new CloseSession();
 		cs.setResult(Result.timeOut);
@@ -134,6 +134,10 @@ public class SessionManager {
 	 * @param sessionEvent
 	 */
 	private static void sessionCallback(Session session,SessionEvent sessionEvent){
+		if(session==null){
+			return;
+		}
+		
 		//钩子事件回调
 		SessionEventDto sessionEventDto = SessionEventDto.builder().resource(session.getResource()).sessionEvent(sessionEvent)
 		.tenementId(session.getTenementId()).userId(session.getUserId()).build();

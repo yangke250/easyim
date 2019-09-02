@@ -63,7 +63,6 @@ public class WebSocketHandler  extends SimpleChannelInboundHandler<Object>{
             }else if (frame instanceof TextWebSocketFrame){
                 // 返回应答消息
                 String request = ((TextWebSocketFrame) frame).text();
-                //logger.info("服务端收到：" + request);
                 
                 ctx.fireChannelRead(request);
              }else if (frame instanceof CloseWebSocketFrame){

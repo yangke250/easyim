@@ -25,13 +25,13 @@ import lombok.extern.slf4j.Slf4j;
 @Service(interfaceClass=IC2sHandleService.class)
 public class C2sHandleServiceImpl implements IC2sHandleService,BeanPostProcessor{
 
-	private Map<C2sType,IC2SProtocolService> map = new HashMap<C2sType,IC2SProtocolService>();
+	private Map<String,IC2SProtocolService> map = new HashMap<String,IC2SProtocolService>();
 	
 	 
 	
 	@Override
 	public C2sProtocol handleProtocol(UserSessionDto userSessionDto,C2sProtocol c2sProtocol,Map<String,String> extendsMap){
-		C2sType c2sCommandType = c2sProtocol.getType();
+		String c2sCommandType = c2sProtocol.getType();
 		
 		IC2SProtocolService service = map.get(c2sCommandType);
 		if(service==null){
@@ -39,8 +39,8 @@ public class C2sHandleServiceImpl implements IC2sHandleService,BeanPostProcessor
 			return null;
 		}
 		
-		if(EasyImC2sType.ping!=c2sCommandType){
-			log.info("handleProtocol:{}",JSON.toJSONString(c2sProtocol));
+		if(!EasyImC2sType.ping.getValue().equals(c2sCommandType)){
+			log.info("handleProtocol:{},{}",JSON.toJSONString(userSessionDto),JSON.toJSONString(c2sProtocol));
 		}
 		
 		
@@ -57,7 +57,7 @@ public class C2sHandleServiceImpl implements IC2sHandleService,BeanPostProcessor
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		if(bean instanceof IC2SProtocolService){
 			IC2SProtocolService service = (IC2SProtocolService)bean;
-			C2sType type = service.getType();
+			String type = service.getType().getValue();
 			
 			IC2SProtocolService oldService = map.get(type);
 			

@@ -20,7 +20,7 @@ public class C2sProtocol implements Serializable{
 	private  String uuid = UUID.randomUUID().toString();
 	private  String version = "1.0";
 	@Protobuf
-	private  C2sType type;
+	private  String type;
 	@Protobuf
 	private  String body;
 	
@@ -31,11 +31,11 @@ public class C2sProtocol implements Serializable{
 	}
 	
 	public C2sProtocol(C2sType type){
-		this.type = type;
+		this.type = type.getValue();
 	}
 	
 	public C2sProtocol(C2sType type,String body){
-		this.type = type;
+		this.type = type.getValue();
 		this.body = body;
 	}
 }

@@ -49,7 +49,7 @@ public class ReadMsgPServiceImpl implements IC2SProtocolService<ReadMessage,Read
 	
 		C2sProtocol c2sProtocol = new C2sProtocol();
 		
-		c2sProtocol.setType(EasyImC2sType.readMessage);
+		c2sProtocol.setType(EasyImC2sType.readMessage.getValue());
 		c2sProtocol.setBody(JSON.toJSONString(c2sProtocol));
 		
 		

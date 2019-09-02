@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ProtocolListenerDto {
-	private C2sType c2sType;
+	private String c2sType;
 	private C2sProtocol input;
 	private C2sProtocol output;
 	private UserSessionDto userSessionDto;

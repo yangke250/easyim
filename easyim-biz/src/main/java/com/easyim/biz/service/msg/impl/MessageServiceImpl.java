@@ -171,7 +171,7 @@ public class MessageServiceImpl implements IMessageService {
 	private C2sProtocol saveOfflineMsg(MessagePush messagePush, String toId) {
 		C2sProtocol c2sProtocol = new C2sProtocol();
 
-		c2sProtocol.setType(EasyImC2sType.messagePush);
+		c2sProtocol.setType(EasyImC2sType.messagePush.getValue());
 		c2sProtocol.setBody(JSON.toJSONString(messagePush));
 
 		if (MessageType.isSaveOffline(messagePush.getType())) {

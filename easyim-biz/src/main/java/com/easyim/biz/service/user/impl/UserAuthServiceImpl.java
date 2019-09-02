@@ -12,6 +12,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.easyim.biz.Launch;
 import com.easyim.biz.api.dto.user.UserAuthDto;
 import com.easyim.biz.api.dto.user.UserConnectDto;
+import com.easyim.biz.api.dto.user.UserSessionDto;
 import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 import com.easyim.biz.api.service.user.IUserAuthService;
 import com.easyim.route.server.ServerDiscover;
@@ -21,12 +22,14 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 用户服务
  * @author wl
  *
  */
+@Slf4j
 @Service(interfaceClass=IUserAuthService.class)
 public class UserAuthServiceImpl implements IUserAuthService{
 
@@ -43,10 +46,18 @@ public class UserAuthServiceImpl implements IUserAuthService{
 		long tenementId  = userAuthDto.getTenementId();
 		String userId    = userAuthDto.getUserId();
 		
-		String connectServer = userRouteService.getUserRoute(tenementId, userId);
-		if(StringUtils.isEmpty(connectServer)){
+		UserSessionDto userSessionDto = userRouteService.getUserRoute(tenementId, userId);
+		
+		String connectServer = null;
+		
+		if(userSessionDto==null){//用户未建立连接，轮询
 			connectServer =  ServerDiscover.pollingConnectServer();
+		}else{//用户建立连接，复用连接层
+			connectServer = userSessionDto.getConnectServer();
 		}
+		
+		
+		log.info("getConnectInfo UserConnectDto:{},{},{}",tenementId,userId,connectServer);
 		UserConnectDto userConnectDto = new UserConnectDto();
 		userConnectDto.setToken(auth);
 		userConnectDto.setConnectServer(connectServer.split(":")[0]);

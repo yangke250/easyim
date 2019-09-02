@@ -38,6 +38,10 @@ public class SessionEventListenerManager implements BeanPostProcessor{
 			while(true){
 				try{
 					SessionEventDto sessionEventDto = queue.poll(1, TimeUnit.MINUTES);
+					if(sessionEventDto==null){
+						continue;
+					}
+					
 					for(SessionEventListener l:listeners){
 						l.callback(sessionEventDto);
 					}
