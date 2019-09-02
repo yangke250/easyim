@@ -124,17 +124,21 @@ public class UserRouteServiceImpl implements IUserRouteService {
 	}
 
 	@Override
-	public String getUserRoute(long tenementId, String userId) {
+	public UserSessionDto getUserRoute(long tenementId, String userId) {
 		String uid       =  Constant.getUid(tenementId,userId);
 		String strKey  =  Constant.getRouteString(uid);
+		String str =  redisTemplate.get(strKey);
+		if(str==null){
+			return null;
+		}
 		
-		return redisTemplate.get(strKey);
+		return JSON.parseObject(str,UserSessionDto.class);
 	}
 
 	@Override
 	public boolean isOnline(long tenementId, String userId) {
-		String route = getUserRoute(tenementId,userId);
-		if(StringUtils.isEmpty(route)){
+		UserSessionDto route = getUserRoute(tenementId,userId);
+		if(route==null){
 			return false;
 		}
 		return true;

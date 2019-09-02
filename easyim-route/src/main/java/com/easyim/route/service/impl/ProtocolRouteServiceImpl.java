@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.easyim.biz.api.dto.protocol.C2sProtocol;
 import com.easyim.biz.api.dto.protocol.S2sProtocol;
+import com.easyim.biz.api.dto.user.UserSessionDto;
 import com.easyim.biz.api.protocol.enums.s2s.S2sCommandType;
 import com.easyim.biz.api.protocol.s2s.S2sMessagePush;
 import com.easyim.route.server.ServerDiscover;
@@ -46,7 +47,7 @@ public class ProtocolRouteServiceImpl implements IProtocolRouteService{
 	
 	private final static long TIME_OUT  = 2000l;//写入2秒没有应答，代表处理失败
 
-
+	private ExecutorService eService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 	
 	@Resource
 	private IUserRouteService userRouteService;
@@ -72,8 +73,9 @@ public class ProtocolRouteServiceImpl implements IProtocolRouteService{
 	
 	@Override
 	public boolean route(long tenementId, String userId, String body) {
-		String routeInfo = this.userRouteService.getUserRoute(tenementId, userId);
+		UserSessionDto userSessionDto = this.userRouteService.getUserRoute(tenementId, userId);
 		
+		String routeInfo =userSessionDto.getConnectServer();
 		log.info("route info:{},{}",userId,routeInfo);
 		
 		if(StringUtils.isEmpty(routeInfo)){
@@ -94,7 +96,8 @@ public class ProtocolRouteServiceImpl implements IProtocolRouteService{
 	
 	@Override
 	public boolean routeAsyn(long tenementId, String userId, String body) {
-		String routeInfo = this.userRouteService.getUserRoute(tenementId, userId);
+		UserSessionDto userSessionDto = this.userRouteService.getUserRoute(tenementId, userId);
+		String routeInfo =userSessionDto.getConnectServer();
 		if(StringUtils.isEmpty(routeInfo)){
 			return false;
 		}
