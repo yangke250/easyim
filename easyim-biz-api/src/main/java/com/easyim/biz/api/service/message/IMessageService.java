@@ -42,7 +42,7 @@ public interface IMessageService {
 	public void pushMsg(MessagePush messagePush, List<String> userIds);
 	
 	/**
-	 * 推送消息
+	 * 推送未同步消息
 	 * 1.保持离线
 	 * 2.推送消息
 	 * @param c2sProtocol
