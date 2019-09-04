@@ -33,7 +33,7 @@ public class SynMessageTask {
 					while(true){
 						try {
 							SendMsgDto dto = SYN_QUEUE.take();
-							service.sendMsg(dto);
+							service.sendMsg(dto,null);
 						} catch (Exception e) {
 							e.printStackTrace();
 							log.error("exception:{}",e);

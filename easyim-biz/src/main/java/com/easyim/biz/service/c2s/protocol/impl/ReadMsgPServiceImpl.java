@@ -53,7 +53,7 @@ public class ReadMsgPServiceImpl implements IC2SProtocolService<ReadMessage,Read
 		c2sProtocol.setBody(JSON.toJSONString(c2sProtocol));
 		
 		
-		this.routeService.route(tenementId, userId,JSON.toJSONString(c2sProtocol));
+		this.routeService.route(tenementId,userId,JSON.toJSONString(c2sProtocol),null);
 		
 		return new ReadMessageAck();
 	}

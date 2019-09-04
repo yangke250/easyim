@@ -35,9 +35,11 @@ public class MessagePServiceImpl implements IC2SProtocolService<Message,MessageA
 	public MessageAck handleProtocolBody(UserSessionDto userSessionDto,Message message,
 			Map<String, String> extendsMap) {
 		
+		String sessionId = userSessionDto.getSessionId();
+		
 		SendMsgDto sendMsgDto = mapper.map(message, SendMsgDto.class);
 		
-		SendMsgResultDto  result = messageService.sendMsg(sendMsgDto);
+		SendMsgResultDto  result = messageService.sendMsg(sendMsgDto,sessionId);
 		
 		
 		MessageAck messageAck = new MessageAck();

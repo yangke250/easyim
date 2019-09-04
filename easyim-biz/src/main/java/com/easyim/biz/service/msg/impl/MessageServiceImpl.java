@@ -35,6 +35,7 @@ import com.baidu.bjf.remoting.protobuf.ProtobufProxy;
 import com.easyim.biz.Launch;
 import com.easyim.biz.api.dto.message.ForwardMsgDto;
 import com.easyim.biz.api.dto.message.OfflineMsgDto;
+import com.easyim.biz.api.dto.message.PullOfflineMsgResultDto;
 import com.easyim.biz.api.dto.message.SendMsgDto;
 import com.easyim.biz.api.dto.message.SendMsgDto.MessageType;
 import com.easyim.biz.api.dto.message.SendMsgResultDto;
@@ -52,6 +53,7 @@ import com.easyim.biz.domain.ConversationDo;
 import com.easyim.biz.domain.MessageDo;
 import com.easyim.biz.domain.ProxyConversationDo;
 import com.easyim.biz.domain.TenementDo;
+import com.easyim.biz.dto.PullOfflineMsgDto;
 import com.easyim.biz.listeners.ProtocolListenerFactory;
 import com.easyim.biz.mapper.conversation.IConversationMapper;
 import com.easyim.biz.mapper.conversation.IProxyConversationMapper;
@@ -71,6 +73,12 @@ import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Tuple;
 import redis.clients.util.SafeEncoder;
 
+
+/**
+ * 消息相关业务接口
+ * @author wl
+ *
+ */
 @Slf4j
 @Service(interfaceClass = IMessageService.class)
 public class MessageServiceImpl implements IMessageService {
@@ -220,7 +228,7 @@ public class MessageServiceImpl implements IMessageService {
 	}
 
 	@Override
-	public SendMsgResultDto sendMsg(SendMsgDto messageDto) {
+	public SendMsgResultDto sendMsg(SendMsgDto messageDto,String excludeSessionId) {
 		// 生产msgId
 		long msgId = getId();
 		log.info("sendMsg msg:{},{}", msgId, messageDto.getToId());
@@ -292,7 +300,7 @@ public class MessageServiceImpl implements IMessageService {
 		this.conversationService.addRecentlyConversation(messagePush);
 
 		// 路由协议
-		this.protocolRouteService.route(tenementId, toId, JSON.toJSONString(c2sProtocol));
+		this.protocolRouteService.route(tenementId, toId, JSON.toJSONString(c2sProtocol),excludeSessionId);
 
 		log.info("sendMsg msg:{},{} route succ", msgId, messageDto.getToId());
 
@@ -333,20 +341,23 @@ public class MessageServiceImpl implements IMessageService {
 		return bytes;
 	}
 
-	private List<C2sProtocol> pullOfflineMsg(String key, long lastMsgId) {
+	private PullOfflineMsgResultDto pullOfflineMsg(String key, long lastMsgId) {
 
-		List<C2sProtocol> list = new ArrayList<C2sProtocol>();
-
+		PullOfflineMsgResultDto dto = new PullOfflineMsgResultDto();
 		byte[][] offlineKeys = getOfflineMsgKeys(key, lastMsgId);
 		if (offlineKeys == null) {
-			return list;
+			return dto;
 		}
-
+		
+		//还需要拉取更多的消息，防止消息过期，还有部分消息没有同步
+		dto.setMore(true);
+		
 		List<byte[]> c2sBytes = this.redisTemplate.mget(offlineKeys);
-
 		if (c2sBytes == null) {
-			return list;
+			return dto;
 		}
+
+		List<C2sProtocol> list = new ArrayList<C2sProtocol>();
 
 		for (byte[] b : c2sBytes) {
 			C2sProtocol newStt = null;
@@ -360,34 +371,15 @@ public class MessageServiceImpl implements IMessageService {
 			list.add(newStt);
 		}
 
-		return list;
+		dto.setList(list);
+		
+		return dto;
 	}
 
-	@Override
-	public List<C2sProtocol> pullOfflineMsg(OfflineMsgDto offlineMsgDto) {
-
-		List<C2sProtocol> list = new ArrayList<C2sProtocol>();
-
-		boolean result = Launch.doValidator(offlineMsgDto);
-		if (!result) {
-			return list;
-		}
-
-		long tenementId = offlineMsgDto.getTenementId();
-		String userId = offlineMsgDto.getUserId();
-		TenementDo tenement = this.tenementMapper.getTenementById(offlineMsgDto.getTenementId());
-		if (tenement == null) {
-			return list;
-		}
-
-		String key = getOfflineSetKey(tenementId, userId);
-		long lastMsgId = offlineMsgDto.getLastMsgId();
-
-		return pullOfflineMsg(key, lastMsgId);
-	}
+	
 
 	@Override
-	public void sendMsg(SendMsgDto message, List<String> userIds) {
+	public void batchSendMsg(SendMsgDto message, List<String> userIds) {
 		for (String userId : userIds) {
 			SendMsgDto dto = mapper.map(message, SendMsgDto.class);
 			dto.setToId(userId);
@@ -412,7 +404,7 @@ public class MessageServiceImpl implements IMessageService {
 			this.conversationService.increaseUnread(messagePush.getType(), userId, cid);
 
 			// 路由协议
-			this.protocolRouteService.route(tenementId, userId, JSON.toJSONString(c2sProtocol));
+			this.protocolRouteService.route(tenementId,userId,JSON.toJSONString(c2sProtocol),null);
 		}
 	}
 
@@ -430,6 +422,36 @@ public class MessageServiceImpl implements IMessageService {
 		}
 
 		// 路由协议
-		this.protocolRouteService.route(tenementId, userId, JSON.toJSONString(c2sProtocol));
+		this.protocolRouteService.route(tenementId, userId, JSON.toJSONString(c2sProtocol),null);
+	}
+
+	@Override
+	public List<C2sProtocol> pullOfflineMsg(OfflineMsgDto offlineMsgDto) {
+
+		return pullOfflineMsgByOvertime(offlineMsgDto).getList();
+	}
+	
+	@Override
+	public PullOfflineMsgResultDto pullOfflineMsgByOvertime(OfflineMsgDto offlineMsgDto) {
+		
+		
+		PullOfflineMsgResultDto dto = new PullOfflineMsgResultDto(); 
+		//验证参数
+		boolean result = Launch.doValidator(offlineMsgDto);
+		if (!result) {
+			return dto;
+		}
+
+		long tenementId = offlineMsgDto.getTenementId();
+		String userId = offlineMsgDto.getUserId();
+		TenementDo tenement = this.tenementMapper.getTenementById(offlineMsgDto.getTenementId());
+		if (tenement == null) {
+			return dto;
+		}
+
+		String key = getOfflineSetKey(tenementId, userId);
+		long lastMsgId = offlineMsgDto.getLastMsgId();
+
+		return pullOfflineMsg(key, lastMsgId);
 	}
 }
