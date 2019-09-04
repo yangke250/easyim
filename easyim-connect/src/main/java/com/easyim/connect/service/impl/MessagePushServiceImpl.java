@@ -28,10 +28,16 @@ public class MessagePushServiceImpl implements IS2sProtocolService<S2sMessagePus
 		
 		String uid = SessionManager.getUid(messagePush.getTenementId(),messagePush.getToId());
 		
+		String excludeSessionId = messagePush.getExcludeSessionId();
+		
 		List<Session> sessions =  SessionManager.getSession(uid);
 		
 		for(Session s:sessions){
 			try{
+				//exclude session
+				if(excludeSessionId!=null&&s.getSessionId().equals(excludeSessionId)){
+					continue;
+				}
 				s.getChc().channel().writeAndFlush(messagePush.getBody());
 			}catch(Exception e){
 				log.error("exception:{}",e);

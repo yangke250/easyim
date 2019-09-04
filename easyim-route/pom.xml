@@ -33,13 +33,13 @@
 			<artifactId>fastjson</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.easyim</groupId>
-			<artifactId>easyim-biz-api</artifactId>
-			<version>0.0.2</version>
-		</dependency>
-		<dependency>
 			<groupId>com.easy-springboot</groupId>
 			<artifactId>c2s</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.easyim</groupId>
+			<artifactId>easyim-biz-api</artifactId>
+			<version>0.2.33</version>
 		</dependency>
 		<dependency>
 				<groupId>io.reactivex.rxjava2</groupId>

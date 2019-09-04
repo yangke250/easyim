@@ -1,6 +1,5 @@
 package com.easyim.connect.s2s.input;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,11 +13,10 @@ import com.easyim.biz.api.dto.protocol.S2sProtocol;
 import com.easyim.biz.api.protocol.enums.s2s.S2sCommandType;
 import com.easyim.connect.service.IS2sProtocolService;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import lombok.extern.slf4j.Slf4j;
 import io.netty.channel.ChannelHandler.Sharable;
+import lombok.extern.slf4j.Slf4j;
 
 
 /**

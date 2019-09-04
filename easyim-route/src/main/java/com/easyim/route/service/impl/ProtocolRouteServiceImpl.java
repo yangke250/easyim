@@ -71,13 +71,24 @@ public class ProtocolRouteServiceImpl implements IProtocolRouteService{
 		ServerDiscover.write(routeInfo, s2sProtocol);
 	}
 	
-	@Override
-	public boolean route(long tenementId, String userId, String body) {
+	/**
+	 * 得到路由的server
+	 * @param tenementId
+	 * @param userId
+	 * @return
+	 */
+	private String getRouteServer(long tenementId, String userId){
 		UserSessionDto userSessionDto = this.userRouteService.getUserRoute(tenementId, userId);
 		
-		String routeInfo =userSessionDto.getConnectServer();
+		String routeInfo = userSessionDto.getConnectServer();
 		log.info("route info:{},{}",userId,routeInfo);
 		
+		return routeInfo;
+	}
+	
+	@Override
+	public boolean route(long tenementId, String userId, String body,String excludeSessionId) {
+		String routeInfo = getRouteServer(tenementId,userId);
 		if(StringUtils.isEmpty(routeInfo)){
 			return false;
 		}
@@ -86,50 +97,18 @@ public class ProtocolRouteServiceImpl implements IProtocolRouteService{
 		s.setTenementId(tenementId);
 		s.setToId(userId);
 		s.setBody(body);
+		s.setExcludeSessionId(excludeSessionId);
 		
 		route(routeInfo,JSON.toJSONString(s));
-		
-		
 		return true;
 	}
 
 	
 	@Override
-	public boolean routeAsyn(long tenementId, String userId, String body) {
-		UserSessionDto userSessionDto = this.userRouteService.getUserRoute(tenementId, userId);
-		String routeInfo =userSessionDto.getConnectServer();
-		if(StringUtils.isEmpty(routeInfo)){
-			return false;
-		}
-		
-		Observable.create(new ObservableOnSubscribe<S2sProtocol>() {
-            @Override
-            public void subscribe(@NonNull ObservableEmitter<S2sProtocol> e) throws Exception {
-            	route(routeInfo,body);
-            	e.onComplete();
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
-		.subscribe(new Observer<S2sProtocol>(){
-			@Override
-			public void onSubscribe(Disposable d) {
-			}
-
-			@Override
-			public void onNext(S2sProtocol t) {
-			}
-
-			@Override
-			public void onError(Throwable e) {
-			}
-
-			@Override
-			public void onComplete() {
-			}
-
-			
+	public boolean routeAsyn(long tenementId, String userId, String body,String excludeSessionId) {
+		eService.execute(()->{
+        	route(tenementId,userId,body,excludeSessionId);
 		});
-		
-		
 		return true;
 	}
 
