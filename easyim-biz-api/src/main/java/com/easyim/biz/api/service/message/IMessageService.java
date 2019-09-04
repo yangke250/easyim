@@ -1,6 +1,7 @@
 package com.easyim.biz.api.service.message;
 
 import com.easyim.biz.api.dto.message.OfflineMsgDto;
+import com.easyim.biz.api.dto.message.PullOfflineMsgResultDto;
 import com.easyim.biz.api.dto.message.SendMsgDto;
 import com.easyim.biz.api.dto.message.SendMsgResultDto;
 import com.easyim.biz.api.dto.protocol.C2sProtocol;
@@ -20,8 +21,14 @@ public interface IMessageService {
 	 * @param message
 	 * @return
 	 */
-	public SendMsgResultDto sendMsg(SendMsgDto message);
-	
+	public SendMsgResultDto sendMsg(SendMsgDto message,String excludeSessionId);
+
+	/**
+	 * 给多个用户发送消息
+	 * @param message
+	 * @return
+	 */
+	public void batchSendMsg(SendMsgDto message,List<String> userIds);
 	
 	/**
 	 * 推送消息
@@ -44,19 +51,20 @@ public interface IMessageService {
 	public void pushOfflineMsg(long tenementId,String userId,C2sProtocol  c2sProtocol);
 	
 	
-	/**
-	 * 给多个用户发送消息
-	 * @param message
-	 * @return
-	 */
-	public void sendMsg(SendMsgDto message,List<String> userIds);
+
 	
 	
 	/**
-	 * 拉取离线消息
+	 * 拉取离线消息,消息过期没有做处理
 	 * @return
 	 */
+	@Deprecated
 	public List<C2sProtocol> pullOfflineMsg(OfflineMsgDto offlineMsgDto);
 	
-	
+	/**
+	 * 拉取离线消息,消息过期处理
+	 * @return
+	 */
+	public PullOfflineMsgResultDto pullOfflineMsgByOvertime(OfflineMsgDto offlineMsgDto);
+
 }

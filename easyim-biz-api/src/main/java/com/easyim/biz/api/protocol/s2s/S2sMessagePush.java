@@ -7,4 +7,5 @@ public class S2sMessagePush {
 	private long tenementId;
 	private String toId;
 	private String body;
+	private String excludeSessionId;
 }

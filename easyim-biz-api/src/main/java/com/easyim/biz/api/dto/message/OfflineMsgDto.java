@@ -8,6 +8,12 @@ import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
 
 import lombok.Data;
 
+
+/**
+ * 查询未同步消息
+ * @author wl
+ *
+ */
 @Data
 public class OfflineMsgDto {
 	@Min(value=1)
