@@ -79,7 +79,9 @@ public class ProtocolRouteServiceImpl implements IProtocolRouteService{
 	 */
 	private String getRouteServer(long tenementId, String userId){
 		UserSessionDto userSessionDto = this.userRouteService.getUserRoute(tenementId, userId);
-		
+		if(userSessionDto==null){
+			return null;
+		}
 		String routeInfo = userSessionDto.getConnectServer();
 		log.info("route info:{},{}",userId,routeInfo);
 		

@@ -10,7 +10,7 @@ public class Message extends AbstractProtocol{
 	private static final long serialVersionUID = 1L;
 	private long cid;
 	private long proxyCid;
-	
+	private long tenementId;
 	private String fromId;
 	private String fromProxyId;
 	private String toId;

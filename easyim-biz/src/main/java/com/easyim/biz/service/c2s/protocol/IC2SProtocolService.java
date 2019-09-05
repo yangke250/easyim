@@ -4,6 +4,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alibaba.fastjson.JSON;
 import com.easyim.biz.api.dto.protocol.C2sProtocol;
 import com.easyim.biz.api.dto.protocol.S2sProtocol;
@@ -14,12 +17,17 @@ import com.easyim.biz.api.protocol.enums.c2s.EasyImC2sType;
 import com.easyim.biz.api.protocol.enums.c2s.C2sType;
 import com.easyim.biz.listeners.ProtocolListenerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 协议处理相关类
  * @author wl
  *
  */
+
 public interface IC2SProtocolService<I extends AbstractProtocol,O extends AbstractResultProtocol> {
+
+	public static final Logger log = LoggerFactory.getLogger(IC2SProtocolService.class);
 	
 	/**
 	 * 值高的覆盖值的服务
@@ -54,6 +62,7 @@ public interface IC2SProtocolService<I extends AbstractProtocol,O extends Abstra
 			throw new RuntimeException(e);
 		}
 		
+		log.info("C2sProtocol handleProtocol:{},{}",c2sProtocol.getBody(),classInput);
 		//得到协议输入
 		I input =JSON.parseObject(c2sProtocol.getBody(),classInput);
 		
