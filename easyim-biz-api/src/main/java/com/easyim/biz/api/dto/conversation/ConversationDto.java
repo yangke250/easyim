@@ -19,4 +19,5 @@ public class ConversationDto implements Serializable{
 	private long proxyCid;
 	private String fromId;
 	private String toId;
+	
 }
