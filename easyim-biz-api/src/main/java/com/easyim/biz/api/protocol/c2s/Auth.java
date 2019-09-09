@@ -36,5 +36,6 @@ public class Auth extends AbstractProtocol{
 			this.timeoutCycle = MAX_CYCLE;
 		}
 	}
+
 		
 }

@@ -24,6 +24,7 @@ public class AuthAck extends AbstractResultProtocol{
 	public AuthAck(Result result) {
 		super.setResult(result);
 	}
+
 	
 	
 	

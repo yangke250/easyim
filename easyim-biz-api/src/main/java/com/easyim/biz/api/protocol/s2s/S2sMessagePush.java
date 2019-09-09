@@ -8,4 +8,5 @@ public class S2sMessagePush {
 	private String toId;
 	private String body;
 	private String excludeSessionId;
+	
 }
