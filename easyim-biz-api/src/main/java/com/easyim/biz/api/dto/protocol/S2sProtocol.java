@@ -17,4 +17,5 @@ public class S2sProtocol implements Serializable {
 
 	private  S2sCommandType type;
 	private  String body;
+	
 }

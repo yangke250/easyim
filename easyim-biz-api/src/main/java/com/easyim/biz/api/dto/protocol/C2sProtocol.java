@@ -38,4 +38,6 @@ public class C2sProtocol implements Serializable{
 		this.type = type.getValue();
 		this.body = body;
 	}
+
+	
 }

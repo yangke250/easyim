@@ -58,6 +58,7 @@ public class C2sInputBizHandler extends AbstractC2sInputHandler {
 	
 	private void doProtocol(ChannelHandlerContext ctx,String str){
 		log.info("doProtocol:{}",str);
+		
 		C2sProtocol c2sProtocol = JSON.parseObject(str, C2sProtocol.class);
 		String type = c2sProtocol.getType();
 

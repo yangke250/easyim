@@ -25,4 +25,5 @@ public class UserSessionDto implements Serializable {
 	private String connectServer;
 	private int  sessionTimeOut;
 	
+	
 }
