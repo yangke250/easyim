@@ -70,6 +70,10 @@ public class C2sInputBizHandler extends AbstractC2sInputHandler {
 
 		C2sProtocol ackProtocol = c2sHandleService.handleProtocol(SessionManager.getUserDto(ctx), c2sProtocol,
 				new HashMap<String, String>());
+		if(ackProtocol==null){
+			return;
+		}
+		
 		String ackType = ackProtocol.getType();
 
 		switch (ackType) {
@@ -110,8 +114,12 @@ public class C2sInputBizHandler extends AbstractC2sInputHandler {
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
 		String str = (String) msg;
-
-		doProtocol(ctx,str);
+		try{
+			doProtocol(ctx,str);
+		}catch(Exception e){
+			log.error("channelRead exception:"+str,e);
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override

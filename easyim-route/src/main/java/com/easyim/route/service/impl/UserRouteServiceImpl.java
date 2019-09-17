@@ -43,13 +43,12 @@ public class UserRouteServiceImpl implements IUserRouteService {
 		
 		
 		//设置用户路由地址
-		long result = redisTemplate.setnx(strKey,JSON.toJSONString(routeDto));
+		long result = redisTemplate.setnx(strKey,routeDto.getConnectServer());
 		if(result==0){
 			//服务设置不一致的时候
 			String  value = redisTemplate.get(strKey);
-			UserSessionDto redisSession = JSON.parseObject(value,UserSessionDto.class);
 			
-			if(!routeDto.getConnectServer().equals(redisSession.getConnectServer())){
+			if(!routeDto.getConnectServer().equals(value)){
 				return false;
 			}
 			
@@ -124,7 +123,7 @@ public class UserRouteServiceImpl implements IUserRouteService {
 	}
 
 	@Override
-	public UserSessionDto getUserRoute(long tenementId, String userId) {
+	public String getUserRoute(long tenementId, String userId) {
 		String uid       =  Constant.getUid(tenementId,userId);
 		String strKey  =  Constant.getRouteString(uid);
 		String str =  redisTemplate.get(strKey);
@@ -132,12 +131,12 @@ public class UserRouteServiceImpl implements IUserRouteService {
 			return null;
 		}
 		
-		return JSON.parseObject(str,UserSessionDto.class);
+		return str;
 	}
 
 	@Override
 	public boolean isOnline(long tenementId, String userId) {
-		UserSessionDto route = getUserRoute(tenementId,userId);
+		String route = getUserRoute(tenementId,userId);
 		if(route==null){
 			return false;
 		}
@@ -155,10 +154,12 @@ public class UserRouteServiceImpl implements IUserRouteService {
 		}
 		
 		List<String> onlineUsers = new ArrayList<String>();
-		List<String> strs = redisTemplate.mget(uids.toArray(new String[]{}));
-		for(String str:strs){
-			UserSessionDto session = JSON.parseObject(str,UserSessionDto.class);
-			onlineUsers.add(session.getUserId());
+		
+		List<String> results = redisTemplate.mget(uids.toArray(new String[]{}));
+		for(int i=0;i<userIds.size();i++){
+			if(results.get(i)!=null){//用户在线就添加
+				onlineUsers.add(userIds.get(i));
+			}
 		}
 		
 		return onlineUsers;

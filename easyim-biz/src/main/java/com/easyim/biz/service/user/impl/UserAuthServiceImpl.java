@@ -46,14 +46,11 @@ public class UserAuthServiceImpl implements IUserAuthService{
 		long tenementId  = userAuthDto.getTenementId();
 		String userId    = userAuthDto.getUserId();
 		
-		UserSessionDto userSessionDto = userRouteService.getUserRoute(tenementId, userId);
+		String connectServer  = userRouteService.getUserRoute(tenementId, userId);
 		
-		String connectServer = null;
 		
-		if(userSessionDto==null){//用户未建立连接，轮询
+		if(connectServer==null){//用户未建立连接，轮询
 			connectServer =  ServerDiscover.pollingConnectServer();
-		}else{//用户建立连接，复用连接层
-			connectServer = userSessionDto.getConnectServer();
 		}
 		
 		

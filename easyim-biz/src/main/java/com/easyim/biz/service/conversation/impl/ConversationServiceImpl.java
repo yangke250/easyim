@@ -10,6 +10,7 @@ import org.dozer.Mapper;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.easyim.biz.api.dto.conversation.ConversationDto;
+import com.easyim.biz.api.dto.conversation.UnreadDto;
 import com.easyim.biz.api.dto.message.SendMsgDto.MessageType;
 import com.easyim.biz.api.protocol.c2s.MessagePush;
 import com.easyim.biz.api.service.conversation.IConversationService;
@@ -147,6 +148,33 @@ public class ConversationServiceImpl implements IConversationService{
 		for(ConversationDo c:cs){
 			ConversationDto dto = mapper.map(c, ConversationDto.class);
 			dto.setCid(c.getId());
+			
+			dtos.add(dto);
+		}
+		
+		return dtos;
+	}
+
+
+	@Override
+	public List<UnreadDto> selectUnread(String userId, List<Long> cids) {
+		
+		List<String> keys = new ArrayList<String>();
+		for(long cid:cids){
+			String key = getUnreadKey(userId,cid);
+			keys.add(key);
+		}
+		
+		List<String> results = this.redisTemplate.mget(keys.toArray(new String[]{}));
+		
+		List<UnreadDto> dtos = new ArrayList<UnreadDto>();
+		for(int i=0;i<cids.size();i++){
+			UnreadDto dto = new UnreadDto();
+			dto.setCid(cids.get(i));
+			
+			if(results.get(i)!=null){
+				dto.setUnreads(Integer.parseInt(results.get(i)));
+			}
 			
 			dtos.add(dto);
 		}

@@ -25,6 +25,8 @@ public class SessionEventListenerManager implements BeanPostProcessor{
 	private static LinkedBlockingQueue<SessionEventDto> queue = new LinkedBlockingQueue<SessionEventDto>();
 	
 	public static void addSessionEventDto(SessionEventDto sessionEventDto){
+		log.info("SessionEventListenerManager l,syn:{},{}",listeners.size(),synListeners.size());
+		
 		queue.add(sessionEventDto);
 		
 		for(SessionEventListener sl:synListeners){

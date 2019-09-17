@@ -35,7 +35,7 @@ public interface IUserRouteService {
 	 * @param userId
 	 * @return
 	 */
-	public UserSessionDto getUserRoute(long tenementId,String userId);
+	public String getUserRoute(long tenementId,String userId);
 	
 	/**
 	 * 用户增加路由信息
