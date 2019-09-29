@@ -60,6 +60,7 @@ import com.easyim.biz.mapper.conversation.IProxyConversationMapper;
 import com.easyim.biz.mapper.message.IMessageMapper;
 import com.easyim.biz.mapper.tenement.ITenementMapper;
 import com.easyim.biz.task.SynMessageTask;
+import com.easyim.biz.task.SynMessageTask.SynMessageTaskDto;
 import com.easyim.route.service.IProtocolRouteService;
 
 import cn.linkedcare.springboot.redis.template.RedisTemplate;
@@ -379,12 +380,16 @@ public class MessageServiceImpl implements IMessageService {
 	
 
 	@Override
-	public void batchSendMsg(SendMsgDto message, List<String> userIds) {
+	public void batchSendMsg(SendMsgDto message,String excludeSessionId, List<String> userIds) {
 		for (String userId : userIds) {
 			SendMsgDto dto = mapper.map(message, SendMsgDto.class);
 			dto.setToId(userId);
 
-			SynMessageTask.addTask(dto);
+			SynMessageTaskDto taskDto = new SynMessageTaskDto();
+			taskDto.setSendMsgDto(dto);
+			taskDto.setExcludeSessionId(excludeSessionId);
+			
+			SynMessageTask.addTask(taskDto);
 		}
 	}
 

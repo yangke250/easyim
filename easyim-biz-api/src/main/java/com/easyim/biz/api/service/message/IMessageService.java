@@ -28,7 +28,8 @@ public interface IMessageService {
 	 * @param message
 	 * @return
 	 */
-	public void batchSendMsg(SendMsgDto message,List<String> userIds);
+	public void batchSendMsg(SendMsgDto message,String excludeSessionId,List<String> userIds);
+	
 	
 	/**
 	 * 推送消息
