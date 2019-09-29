@@ -50,7 +50,7 @@ public interface IConversationService {
 	public void addRecentlyConversation(MessagePush messagePush);
 	
 	/**
-	 * 查询一个用户的最近聊天记录
+	 * 查询一个用户的最近的会话列表
 	 * @param tenementId
 	 * @param userId
 	 * @return
