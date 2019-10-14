@@ -12,6 +12,13 @@ import com.easyim.biz.api.protocol.enums.c2s.ResourceType;
  */
 public interface IUserRouteService {
 	
+	/**
+	 * 用户最后一次登录时间
+	 * @param tenementId
+	 * @param userIds
+	 * @return
+	 */
+	public List<String> getLastLoginTime(long tenementId,List<String> userIds);
 
 	/**
 	 * 得到在线的用户列表

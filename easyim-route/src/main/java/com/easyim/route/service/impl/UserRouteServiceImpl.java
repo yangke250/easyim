@@ -1,6 +1,8 @@
 package com.easyim.route.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -69,6 +71,11 @@ public class UserRouteServiceImpl implements IUserRouteService {
 			redisTemplate.hset(hashKey,sessionId,sessionId);
 			redisTemplate.expire(hashKey,timeOut);
 		}
+		
+		//增加用户最后一次登录时间
+		String loginKey = Constant.getLoginString(uid);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		redisTemplate.set(loginKey,sdf.format(new Date()));
 		
 		return true;
 	}
@@ -150,19 +157,37 @@ public class UserRouteServiceImpl implements IUserRouteService {
 		List<String> uids = new ArrayList<String>();
 		
 		for(String userId:userIds){
-			uids.add(Constant.getUid(tenementId,userId));
+			String uid =Constant.getUid(tenementId,userId);
+			uids.add(Constant.getRouteString(uid));
 		}
 		
 		List<String> onlineUsers = new ArrayList<String>();
 		
 		List<String> results = redisTemplate.mget(uids.toArray(new String[]{}));
 		for(int i=0;i<userIds.size();i++){
-			if(results.get(i)!=null){//用户在线就添加
-				onlineUsers.add(userIds.get(i));
+			if(results.get(i)==null){//用户在线就添加
+				onlineUsers.add(i,null);
+			}else{
+				onlineUsers.add(i,userIds.get(i));
 			}
 		}
 		
 		return onlineUsers;
+	}
+
+	@Override
+	public List<String> getLastLoginTime(long tenementId, List<String> userIds) {
+		List<String> uids = new ArrayList<String>();
+		
+		for(String userId:userIds){
+			String uid =Constant.getUid(tenementId,userId);
+			uids.add(Constant.getLoginString(uid));
+		}
+		
+		
+		List<String> results = redisTemplate.mget(uids.toArray(new String[]{}));
+		
+		return results;
 	}
 
 }

@@ -16,4 +16,13 @@ public interface IUserService {
 	 * @return
 	 */
 	List<String> selectUserOnline(long tenementId,List<String> userIds);
+	
+	/**
+	 * 
+	 * @param tenementId
+	 * @param userIds
+	 * @return
+	 */
+	List<String> selectUserLoginTime(long tenementId,List<String> userIds);
+	
 }

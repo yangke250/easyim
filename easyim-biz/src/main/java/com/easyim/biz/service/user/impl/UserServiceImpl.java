@@ -20,4 +20,9 @@ public class UserServiceImpl implements IUserService {
 		return userRouteService.getOnlineUsers(tenementId, userIds);
 	}
 
+	@Override
+	public List<String> selectUserLoginTime(long tenementId, List<String> userIds) {
+		return userRouteService.getOnlineUsers(tenementId, userIds);
+	}
+
 }

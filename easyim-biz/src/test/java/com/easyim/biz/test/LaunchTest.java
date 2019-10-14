@@ -11,9 +11,6 @@ import com.easyim.biz.Launch;
 
 @RunWith(SpringRunner.class) //SpringJUnit支持，由此引入Spring-Test框架支持！ 
 @SpringBootTest(classes={
-//		cn.linkedcare.springboot.redis.Launch.class,
-//		com.easy.springboot.c2s.Launch.class,
-//		com.easyim.route.Launch.class,
 		Launch.class})
 public abstract class LaunchTest {
 	
